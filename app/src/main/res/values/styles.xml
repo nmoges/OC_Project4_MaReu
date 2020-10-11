@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- No Action Bar theme -->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
+
+    <!-- FloatingActionButton style -->
+    <style name="FloatingActionButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:src">@drawable/ic_add_white_24dp</item>
+        <item name="android:backgroundTint">@color/colorFloatingButton</item>
+        <item name="tint">#FFFFFF</item>
+    </style>
+
+    <!-- Toolbar Title style -->
+    <style name="ToolbarTitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Button style -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/colorButton</item>
+    </style>
+
+    <!-- TextInputLayout style -->
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/colorBoxBackground</item>
+        <item name="boxStrokeColor">@color/colorBoxStrokes</item>
+        <item name="startIconTint">@color/colorStartIcon</item>
+    </style>
+
+    <!-- ImageButton style -->
+    <style name="ImageButtonStyle">
+        <item name="android:backgroundTint">@color/colorBackgroundImgButton</item>
+    </style>
+
+    <!-- Dialog theme -->
+    <style name="DialogTheme" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorPrimaryDark</item> <!-- Buttons -->
+    </style>
+
+    <style name="SnackBar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="animationMode">slide</item>
+    </style>
+</resources>

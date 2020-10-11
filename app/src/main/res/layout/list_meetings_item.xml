@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_item_recycler_view"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/ic_lens_light_green_24dp"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="20dp"/>
+
+        <TextView
+            android:id="@+id/title_item_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_item_recycler_view"
+            android:textColor="@color/colorTextItem"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/img_item_recycler_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_item_recycler_view"
+            />
+
+        <TextView
+            android:id="@+id/text_item_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_item_recycler_view"
+            android:textColor="@color/colorTextItem"
+            android:textSize="15sp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/img_item_recycler_view"
+            app:layout_constraintTop_toBottomOf="@id/title_item_recycler_view"
+            app:layout_constraintBottom_toTopOf="@id/subtext_item_recycler_view"/>
+
+        <TextView
+            android:id="@+id/subtext_item_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subtext_item_recycler_view"
+            android:textColor="@color/colorSubtextItem"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/img_item_recycler_view"
+            app:layout_constraintTop_toBottomOf="@id/text_item_recycler_view"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/icon_delete_item_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:src="@drawable/ic_delete_blue_24dp"
+        android:layout_marginEnd="20dp"/>
+</androidx.cardview.widget.CardView>

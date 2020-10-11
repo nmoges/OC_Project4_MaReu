@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4E92DF</color>
+    <color name="colorPrimaryDark">#3F7ABD</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Color Buttons -->
+    <color name="colorFloatingButton">#D21024</color>
+    <color name="colorButton">#D21024</color>
+
+    <!-- Color TextInputLayout -->
+    <color name="colorBoxBackground">#ECECF1</color>
+    <color name="colorBoxStrokes">#3D73DD</color>
+    <color name="colorStartIcon">#3D73DD</color>
+
+    <!-- list_meetings_item.xml -->
+    <color name="colorTextItem">#000000</color>
+    <color name="colorSubtextItem">#666666</color>
+
+    <!-- Color ImageButton -->
+    <color name="colorBackgroundImgButton">#00FFFFFF</color>
+</resources>

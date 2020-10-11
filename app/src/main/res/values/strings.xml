@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">MaReuApplication</string>
+
+    <!-- List of room names -->
+    <string name="room_1">Feynman</string>
+    <string name="room_2">Bohr</string>
+    <string name="room_3">Heisenberg</string>
+    <string name="room_4">Newton</string>
+    <string name="room_5">Dirac</string>
+    <string name="room_6">Faraday</string>
+    <string name="room_7">Planck</string>
+    <string name="room_8">Maxwell</string>
+    <string name="room_9">Einstein</string>
+    <string name="room_10">Pauli</string>
+
+    <!-- activity_list_meetings.xml -->
+    <string name="toolbar_name_list_meeting_activity">Me Réu</string>
+
+    <!-- fragment_list_employees.xml -->
+    <string name="toolbar_name_frag_list_meeting">Ma Réu</string>
+
+    <!-- fragment_info_meeting.xml -->
+    <string name="toolbar_name_frag_list_employees">Select participants</string>
+    <string name="txt_participants">Participants</string>
+
+    <!-- fragment_info_meeting.xml -->
+    <string name="text_info_meeting_date">Le : </string>
+    <string name="text_info_meeting_hour">À : </string>
+    <string name="text_info_meeting_room">Salle : </string>
+
+    <!-- fragment_add_meeting.xml -->
+    <string name="toolbar_name_frag_add_meeting">Create Meeting</string>
+    <string name="edit_input_object_meeting">Object</string>
+    <string name="edit_input_room_meeting">Room meeting</string>
+    <string name="edit_input_date_meeting">Date</string>
+    <string name="edit_input_hour_meeting">Hour</string>
+    <string name="edit_input_participants_meeting">Participants</string>
+    <string name="edit_input_participants_info">Information</string>
+    <string name="button_cancel">CANCEL</string>
+    <string name="button_ok">OK</string>
+
+    <!-- menu_list_meetings_fragment.xml -->
+    <string name="title_icon_filter_by_date">Filter by date</string>
+    <string name="title_icon_filter_by_room">Filter by room</string>
+
+    <!-- menu_add_meeting_fragment.xml -->
+    <string name="title_icon_reset">Reset</string>
+
+    <!-- list_meetings_item.xml -->
+    <!-- THE FOLLOWING VALUES ARE DEFAULT VALUES FOR TESTING DISPLAY ONLY -->
+    <string name="title_item_recycler_view">Réunion A</string>
+    <string name="text_item_recycler_view">01/10/20 – 6H00 - Faraday</string>
+    <string name="subtext_item_recycler_view">nicolasmoges@gmail.com</string>
+
+    <!-- MeetingRoomDialog.java -->
+    <string name="title_dialog_meeting_room">Select Meeting room</string>
+
+    <!-- DateDialog.java -->
+    <string name="title_dialog_date">Select Date</string>
+
+    <!-- ConfirmDeleteDialog.java -->
+    <string name="title_dialog_confirm_delete">Delete meeting</string>
+    <string name="text_dialog_confirm_delete">This meeting will deleted. Confirm ?</string>
+    <string name="btn_yes_dialog_confirm_delete">Yes</string>
+    <string name="btn_no_dialog_confirm_delete">No</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
