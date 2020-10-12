@@ -21,6 +21,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
 
     private List<Employee> listEmployees;
     private ArrayList<SelectedEmployee> listSelectedEmployee = new ArrayList<>();
+    private int nbSelectedEmployees;
 
     // To perform click on CheckBox items
     private final OnItemClickBoxListener onItemClickBoxListener;
@@ -33,6 +34,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
         for(int i = 0; i < listEmployees.size(); i++){
             listSelectedEmployee.add(new SelectedEmployee(listEmployees.get(i))); // selected == false (by default)
         }
+
+        this.nbSelectedEmployees = 0;
     }
 
     @NonNull
@@ -71,7 +74,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
 
         ViewHolderItemEmployee(View view, OnItemClickBoxListener onItemClickBoxListener){
             super(view);
-
+            // Init
             nameEmployee = view.findViewById(R.id.name_employee_item_recycler_view);
             mailEmployee = view.findViewById(R.id.mail_employee_item_recycler_view);
             employeeSelected = view.findViewById(R.id.checkbox_item_recycler_view);
@@ -112,9 +115,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
     /**
      * Method which reinitialize all "seleted" status to false when user
      * clicks on "Reset" icon from toolbar ListEmployeesFragment fragment
-     * @param nbSelectedEmployees : int
      */
-    public void reinitAllSelectedStatus(int nbSelectedEmployees){
+    public void reinitAllSelectedStatus(){
         int indice = 0;
 
         // Reinit status
@@ -127,8 +129,19 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
                 indice++;
             }
         }
-
         // Update display
         notifyDataSetChanged();
+    }
+
+    public int getNbSelectedEmployees(){
+        return this.nbSelectedEmployees;
+    }
+
+    public void incrementSelectedEmployees(){
+        this.nbSelectedEmployees++;
+    }
+
+    public void decrementSelectedEmployees(){
+        this.nbSelectedEmployees--;
     }
 }

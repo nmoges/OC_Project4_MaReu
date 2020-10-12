@@ -21,6 +21,7 @@ public class Employee {
         this.id = id;
     }
 
+    // Getters
     public String getName(){
         return this.name;
     }

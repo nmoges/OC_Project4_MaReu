@@ -5,20 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.di.DI;
+import com.openclassrooms.mareu.service.ListApiService;
 import com.openclassrooms.mareu.ui.fragments.AddMeetingFragment;
 import com.openclassrooms.mareu.ui.fragments.InfoMeetingFragment;
 import com.openclassrooms.mareu.ui.fragments.listemployees.ListEmployeesFragment;
 import com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment;
 
+/**
+ * Main activity of the application, contains all fragments instances to display
+ */
 public class MainActivity extends AppCompatActivity {
 
     // Parameters to handle fragments to display
-    private FragmentManager fragmentManager;
-    private AddMeetingFragment addMeetingFragment;
-    private InfoMeetingFragment infoMeetingFragment;
-    private ListMeetingsFragment listMeetingsFragment;
-    private ListEmployeesFragment listEmployeesFragment;
+    private static FragmentManager fragmentManager;
+    private static AddMeetingFragment addMeetingFragment;
+    private static InfoMeetingFragment infoMeetingFragment;
+    private static ListMeetingsFragment listMeetingsFragment;
+    private static ListEmployeesFragment listEmployeesFragment;
+
+    // Service
+    private ListApiService listApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +37,23 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         // Initialize fragment instances
-        addMeetingFragment = new AddMeetingFragment(this);
-        infoMeetingFragment = new InfoMeetingFragment(this);
-        listMeetingsFragment = new ListMeetingsFragment(this);
-        listEmployeesFragment = new ListEmployeesFragment(this);
+        addMeetingFragment = AddMeetingFragment.newInstance();
+        infoMeetingFragment = InfoMeetingFragment.newInstance();
+        listMeetingsFragment = ListMeetingsFragment.newInstance();
+        listEmployeesFragment = ListEmployeesFragment.newInstance();
 
-        // Initialize by displaying list fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listMeetingsFragment).commit();
+        // Initialize service
+        listApiService = DI.getListApiService();
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -54,18 +68,21 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
 
         if(addMeetingFragment.isVisible()){
-            // If AddMeetingFragment visible, replace by mListMeetingFragment
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, listMeetingsFragment).commit();
+            // Remove AddMeetingFragment from stack
+            fragmentManager.popBackStack();
             // Reset text inputs
             addMeetingFragment.clearTextInputsFields();
+            // Reset CheckBox selection
+            MainActivity.getListEmployeesFragment().resetSelectionParameter();
         }
         else if (infoMeetingFragment.isVisible()){
-            // If InfoMeetingFragment visible, replace by mListMeetingFragment
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, listMeetingsFragment).commit();
+            // TODO() : fragment InfoMeetingFragment to implement
         }
         else if(listEmployeesFragment.isVisible()){
+            // Remove AddMeetingFragment from stack
+            fragmentManager.popBackStack();
+            // Save selected employees for meeting creation
             listEmployeesFragment.saveSelectionToForNewMeeting();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, addMeetingFragment).commit();
         }
         else { // ListMeetingsFragment.isVisible()
             // Else no fragment visible, then quit application
@@ -73,15 +90,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public AddMeetingFragment getAddMeetingFragment(){
-        return this.addMeetingFragment;
+    // Getters for static fragment instances
+    public static AddMeetingFragment getAddMeetingFragment(){
+        return addMeetingFragment;
     }
 
-    public ListMeetingsFragment getListMeetingsFragment(){
-        return this.listMeetingsFragment;
+    public static ListMeetingsFragment getListMeetingsFragment(){
+        return listMeetingsFragment;
     }
 
-    public ListEmployeesFragment getListEmployeesFragment(){
-        return this.listEmployeesFragment;
+    public static ListEmployeesFragment getListEmployeesFragment(){
+        return listEmployeesFragment;
+    }
+
+    // Getter for service
+    public ListApiService getListApiService(){
+        return this.listApiService;
     }
 }

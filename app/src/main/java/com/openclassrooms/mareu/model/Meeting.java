@@ -1,5 +1,7 @@
 package com.openclassrooms.mareu.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.List;
 
 /**
@@ -23,7 +25,8 @@ public class Meeting {
      * @param information : String
      * @param participants : List<Employee>
      */
-    public Meeting(String objectMeeting, String meetingRoom, String date, String hour, String information, List<Employee> participants){
+    public Meeting(String objectMeeting, String meetingRoom, String date,
+                   String hour, String information, List<Employee> participants){
         this.objectMeeting = objectMeeting;
         this.meetingRoom = meetingRoom;
         this.date = date;
@@ -32,6 +35,7 @@ public class Meeting {
         this.listParticipants = participants;
     }
 
+    // Getters
     public String getObjectMeeting(){
         return this.objectMeeting;
     }
@@ -55,4 +59,5 @@ public class Meeting {
     public String getInformation(){
         return this.information;
     }
+
 }

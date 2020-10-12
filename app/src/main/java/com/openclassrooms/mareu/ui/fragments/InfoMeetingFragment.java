@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.openclassrooms.mareu.R;
-import com.openclassrooms.mareu.ui.MainActivity;
 
 public class InfoMeetingFragment extends Fragment {
 
-    public InfoMeetingFragment(MainActivity activity) {
-        // Required empty public constructor
+    public InfoMeetingFragment(){ }
+
+    public static InfoMeetingFragment newInstance(){
+        return new InfoMeetingFragment();
     }
 
     @Override
@@ -30,6 +31,5 @@ public class InfoMeetingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 }

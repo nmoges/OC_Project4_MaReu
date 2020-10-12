@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * This Dialog is displayed every time the user clicks on "Room meeting" TextInput of AddMeetingFragment
+ * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
  */
 
 public class MeetingRoomDialog extends DialogFragment {
@@ -23,6 +24,7 @@ public class MeetingRoomDialog extends DialogFragment {
     public MeetingRoomDialog(TextInputEditText textInput){
         this.textInput = textInput;
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
@@ -46,7 +48,6 @@ public class MeetingRoomDialog extends DialogFragment {
         super.onResume();
 
         handleMeetingRoomSelection();
-        //handleCloseButton();
     }
 
     /**

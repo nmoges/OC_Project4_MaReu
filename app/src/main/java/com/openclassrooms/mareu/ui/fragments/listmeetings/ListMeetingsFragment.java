@@ -18,10 +18,8 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
-import com.openclassrooms.mareu.service.ListMeetingsGenerator;
 import com.openclassrooms.mareu.ui.MainActivity;
-
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ListMeetingsFragment extends Fragment {
@@ -29,14 +27,18 @@ public class ListMeetingsFragment extends Fragment {
     private FloatingActionButton fab;
     private Toolbar toolbar;
 
+    // For displaying list of meetings
+    private ArrayList<Meeting> listMeetings;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapterListMeetings adapterListMeetings;
+
+    // Parent activity
     private MainActivity parentActivity;
 
-    // For displaying list of meetings
-    private List<Meeting> listMeetings;
-    private RecyclerView recyclerView;
+    public ListMeetingsFragment(){ }
 
-    public ListMeetingsFragment(MainActivity mainActivity) {
-        this.parentActivity = mainActivity;
+    public static ListMeetingsFragment newInstance(){
+        return new ListMeetingsFragment();
     }
 
     @Override
@@ -48,37 +50,35 @@ public class ListMeetingsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         handleFabClick();
+        adapterListMeetings.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        parentActivity = (MainActivity) getActivity();
         return inflater.inflate(R.layout.fragment_list_meetings, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        toolbar = parentActivity.findViewById(R.id.toolbar_list_meeting_fragment);
-        fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
+        toolbar = requireActivity().findViewById(R.id.toolbar_list_meeting_fragment);
+        fab = requireActivity().findViewById(R.id.fab_list_meetings_fragment);
 
         initializeToolbar();
-
-        listMeetings = ListMeetingsGenerator.generateListMeetings();
-
-        recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        RecyclerViewAdapterListMeetings adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings);
-        recyclerView.setAdapter(adapterListMeetings);
+        initializeList();
+        initializeRecyclerView();
     }
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater){
         inflater.inflate(R.menu.menu_list_meetings_fragment, menu);
     }
 
@@ -87,14 +87,26 @@ public class ListMeetingsFragment extends Fragment {
 
         switch(item.getItemId()){
             case R.id.filter_by_date_item_menu :
-                Log.i("FILTER_OPTION", "DATE");
+                // TODO() : To implement
                 break;
             case R.id.filter_by_room_item_menu :
-                Log.i("FILTER_OPTION", "ROOM");
+                // TODO() : To implement
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeList(){
+        listMeetings = parentActivity.getListApiService().getListMeetings();
+    }
+
+    public void initializeRecyclerView(){
+        recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, getParentFragmentManager());
+        recyclerView.setAdapter(adapterListMeetings);
     }
 
     /**
@@ -103,8 +115,7 @@ public class ListMeetingsFragment extends Fragment {
     private void initializeToolbar(){
         // Set Support Action Bar to modify Toolbar title
         parentActivity.setSupportActionBar(toolbar);
-        Objects.requireNonNull(parentActivity.getSupportActionBar())
-                .setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
+        Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
     }
 
     /**
@@ -113,8 +124,8 @@ public class ListMeetingsFragment extends Fragment {
      */
     public void handleFabClick(){
         fab.setOnClickListener((View view) -> {
-                    parentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, parentActivity.getAddMeetingFragment()).commit();
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment()).addToBackStack(null).commit();
                 }
         );
     }

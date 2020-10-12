@@ -2,7 +2,6 @@ package com.openclassrooms.mareu.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.util.Log;
 import android.widget.DatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
@@ -12,6 +11,7 @@ import java.util.Objects;
 /**
  * Class used to display a DatePickerDialog to allow user to choose
  * a meeting Date
+ * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
  */
 public class DatePickerMeetingDialog {
 

@@ -15,6 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment"/>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

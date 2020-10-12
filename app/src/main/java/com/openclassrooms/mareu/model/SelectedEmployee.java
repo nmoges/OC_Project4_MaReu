@@ -1,8 +1,8 @@
 package com.openclassrooms.mareu.model;
 
 /**
- * This class extends the class Employee, add an additional "selected" boolean parameter.
- * Its usage if for the ListEmployeesFragment class only, in which it enables the adapter
+ * This class extends the class @{@link Employee}, add an additional "selected" boolean parameter.
+ * Its usage is for the ListEmployeesFragment class only, in which it enables the adapter
  * to determine which associated CheckBox is clicked and which is not.
  */
 public class SelectedEmployee extends Employee {

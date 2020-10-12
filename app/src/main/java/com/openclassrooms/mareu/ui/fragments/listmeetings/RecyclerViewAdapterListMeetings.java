@@ -6,21 +6,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
-
-import java.util.List;
+import com.openclassrooms.mareu.ui.dialogs.ConfirmDeleteDialog;
+import java.util.ArrayList;
 
 /**
- * Adapter for ListMeetingsFragment
+ * Adapter for @{@link ListMeetingsFragment} fragment
  */
-public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<RecyclerViewAdapterListMeetings.ViewHolderItemMeeting>{
+public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<RecyclerViewAdapterListMeetings.ViewHolderItemMeeting> {
 
-    private List<Meeting> listMeetings;
+    // Contains all Meeting to display
+    private ArrayList<Meeting> listMeetings;
 
-    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings){
+    // For ConfirmDeleteDialog dialog display
+    private FragmentManager fragmentManager;
+
+    public RecyclerViewAdapterListMeetings(ArrayList<Meeting> listMeetings, FragmentManager fragmentManager){
         this.listMeetings = listMeetings;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -30,12 +36,11 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         return new ViewHolderItemMeeting(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItemMeeting holder, int position) {
 
         // Icon Status Item
-        // TODO()
+        // TODO() : Use system Date to compare to date from Meeting item
 
         // Title Item
         String title = listMeetings.get(position).getObjectMeeting();
@@ -49,13 +54,16 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         String subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
         holder.subTextItem.setText(subText);
 
-        // Icon Delete Item
-        holder.iconDeleteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
+        // Icon Delete Item
+        holder.iconDeleteItem.setOnClickListener((View view) -> {
+                // TODO() : Add a ConfirmDeleteDialog
+                //ConfirmDeleteDialog confirmDeleteDialog = new ConfirmDeleteDialog();
+                //confirmDeleteDialog.show(fragmentManager, "DELETE_MEETING_DIALOG_TAG");
+                listMeetings.remove(position); // TODO() : Use ListAPiService method instead
+                notifyDataSetChanged();
             }
-        });
+        );
     }
 
     @Override
@@ -81,5 +89,4 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
             iconDeleteItem = view.findViewById(R.id.icon_delete_item_recycler_view);
         }
     }
-
 }

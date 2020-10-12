@@ -11,6 +11,7 @@ import java.util.Objects;
 /**
  * Class used to display a TimePickerDialog to allow user to choose
  * a meeting hour
+ * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
  */
 public class TimePickerMeetingDialog {
 
