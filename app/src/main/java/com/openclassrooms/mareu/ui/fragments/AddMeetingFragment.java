@@ -65,6 +65,8 @@ public class AddMeetingFragment extends Fragment {
     // Dialogs
     private MeetingRoomDialog meetingRoomDialog;
     private String MEETING_ROOM_DIALOG_TAG = "MEETING_ROOM_DIALOG_TAG";
+    private String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
+    private String TIME_DIALOG_TAG = "TIME_DIALOG_TAG";
 
     public AddMeetingFragment(){ }
 
@@ -230,13 +232,13 @@ public class AddMeetingFragment extends Fragment {
 
         dateInput.setOnClickListener((View view) -> {
                     DatePickerMeetingDialog datePickerMeetingDialog = new DatePickerMeetingDialog(getContext(), dateInput);
-                    datePickerMeetingDialog.showDatePickerDialogOnClick();
+                    datePickerMeetingDialog.show(getParentFragmentManager(), DATE_DIALOG_TAG);
                 }
         );
 
         hourInput.setOnClickListener((View view) -> {
                     TimePickerMeetingDialog timePickerMeetingDialog = new TimePickerMeetingDialog(getContext(), hourInput);
-                    timePickerMeetingDialog.showTimePickerDialogOnClick();
+                    timePickerMeetingDialog.show(getParentFragmentManager(), TIME_DIALOG_TAG);
                 }
         );
 

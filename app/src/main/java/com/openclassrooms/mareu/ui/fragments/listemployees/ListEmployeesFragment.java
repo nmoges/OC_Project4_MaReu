@@ -77,12 +77,11 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        listEmployees = ListEmployeesGenerator.generateListEmployee();
+        //listEmployees = ListEmployeesGenerator.generateListEmployee();
+        listEmployees = parentActivity.getListApiService().getListEmployees();
 
         initializeRecyclerView();
-
         initializeCheckBoxes();
-
         initializeToolbar();
     }
 

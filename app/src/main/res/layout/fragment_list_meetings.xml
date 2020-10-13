@@ -19,6 +19,19 @@
         app:titleTextColor="#FFFFFF"
         app:titleTextAppearance="@style/ToolbarTitleStyle"/>
 
+    <!-- Background Text -->
+    <TextView
+        android:id="@+id/background_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/background_txt"
+        android:textSize="20sp"
+        android:visibility="invisible"/>
+
     <!-- RecyclerView implementation -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_list_meetings"

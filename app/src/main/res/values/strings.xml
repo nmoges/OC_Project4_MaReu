@@ -13,8 +13,11 @@
     <string name="room_9">Einstein</string>
     <string name="room_10">Pauli</string>
 
-    <!-- activity_list_meetings.xml -->
+    <!-- ListMeetingsFragment.java -->
     <string name="toolbar_name_list_meeting_activity">Me Réu</string>
+
+    <!-- fragment_list_meetings.xml -->
+    <string name="background_txt">No meetings</string>
 
     <!-- fragment_list_employees.xml -->
     <string name="toolbar_name_frag_list_meeting">Ma Réu</string>

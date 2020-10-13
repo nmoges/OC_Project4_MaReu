@@ -1,10 +1,16 @@
 package com.openclassrooms.mareu.ui.dialogs;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.widget.DatePicker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -13,12 +19,14 @@ import java.util.Objects;
  * a meeting Date
  * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
  */
-public class DatePickerMeetingDialog {
+public class DatePickerMeetingDialog extends DialogFragment {
 
     private Context context;
     private TextInputEditText textInput;
 
     private DatePickerDialog datePickerDialog;
+
+    public DatePickerMeetingDialog(){ }
 
     public DatePickerMeetingDialog(Context context, TextInputEditText textInput){
         this.context = context;
@@ -28,7 +36,12 @@ public class DatePickerMeetingDialog {
     /**
      * This method creates a new DatePickerDialog and show it
      */
-    public void showDatePickerDialogOnClick(){
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+        setRetainInstance(true);
+
         int yearToSet;
         int monthToSet;
         int dayToSet;
@@ -56,21 +69,13 @@ public class DatePickerMeetingDialog {
                 String dateToDisplay = "";
 
                 // Format JJ/MM/AAAA
-                // JJ
-                if(day < 10){ dateToDisplay = "0" + dateToDisplay + day;}
-                else{dateToDisplay = dateToDisplay + day; }
-                // MM
-                if(month+1 < 10){ dateToDisplay = dateToDisplay +  "/0" + (month+1) + "/"; }
-                else{ dateToDisplay = dateToDisplay + "/" + (month+1) + "/"; }
-                // AA
-                dateToDisplay = dateToDisplay + year;
-                textInput.setText(dateToDisplay);
-            }
+                dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);
 
+                textInput.setText(dateToDisplay);
+
+            }
         }, yearToSet, monthToSet, dayToSet);
 
-        // Display DatePickerDialog
-        datePickerDialog.show();
+        return datePickerDialog;
     }
-
 }

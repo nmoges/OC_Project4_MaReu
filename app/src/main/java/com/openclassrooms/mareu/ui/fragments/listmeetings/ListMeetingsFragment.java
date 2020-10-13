@@ -15,10 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.event.DeleteMeetingEvent;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -35,6 +39,9 @@ public class ListMeetingsFragment extends Fragment {
     // Parent activity
     private MainActivity parentActivity;
 
+    // Background text
+    private TextView backgroundText; // Displayed if no Meeting stored
+
     public ListMeetingsFragment(){ }
 
     public static ListMeetingsFragment newInstance(){
@@ -45,6 +52,12 @@ public class ListMeetingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -60,6 +73,12 @@ public class ListMeetingsFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = (MainActivity) getActivity();
         return inflater.inflate(R.layout.fragment_list_meetings, container, false);
@@ -68,12 +87,12 @@ public class ListMeetingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbar = requireActivity().findViewById(R.id.toolbar_list_meeting_fragment);
-        fab = requireActivity().findViewById(R.id.fab_list_meetings_fragment);
 
+        initializeIds();
         initializeToolbar();
         initializeList();
         initializeRecyclerView();
+        updateBackgroundTxtDisplay();
     }
 
     @SuppressLint("RestrictedApi")
@@ -101,6 +120,29 @@ public class ListMeetingsFragment extends Fragment {
         listMeetings = parentActivity.getListApiService().getListMeetings();
     }
 
+    public void initializeIds(){
+        toolbar = parentActivity.findViewById(R.id.toolbar_list_meeting_fragment);
+        fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
+        backgroundText = parentActivity.findViewById(R.id.background_txt);
+    }
+
+    /**
+     * Updates display of the background text according to the size of listMeetings :
+     *      - If no Meeting stored in list : display "No Meetings" message
+     *      - Else no display of 'No Meetings" message
+     */
+    public void updateBackgroundTxtDisplay(){
+        if(listMeetings.size() == 0){
+            backgroundText.setVisibility(View.VISIBLE);
+        }
+        else{
+            backgroundText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Initializes adapter and recyclerview display
+     */
     public void initializeRecyclerView(){
         recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
@@ -128,5 +170,22 @@ public class ListMeetingsFragment extends Fragment {
                             .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment()).addToBackStack(null).commit();
                 }
         );
+    }
+
+    /**
+     * Fired if the user clicks on a delete button
+     * @param event : DeleteMeetingEvent
+     */
+    @Subscribe
+    public void onDeleteMeeting(DeleteMeetingEvent event){
+
+        // Remove Meeting from list
+        parentActivity.getListApiService().removeMeeting(event.meeting);
+
+        // Update Meeting list
+        adapterListMeetings.notifyDataSetChanged();
+
+        // Update background text display
+        updateBackgroundTxtDisplay();
     }
 }

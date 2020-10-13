@@ -1,5 +1,6 @@
 package com.openclassrooms.mareu.ui.fragments.listmeetings;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.dialogs.ConfirmDeleteDialog;
+import com.openclassrooms.mareu.utils.DateAndTimeConverter;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Adapter for @{@link ListMeetingsFragment} fragment
@@ -39,6 +44,10 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItemMeeting holder, int position) {
 
+        Date currentDate = Calendar.getInstance().getTime();
+        Log.i("CURRENT_DATE", Long.toString(currentDate.getTime()));
+
+        compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHour());
         // Icon Status Item
         // TODO() : Use system Date to compare to date from Meeting item
 
@@ -51,17 +60,20 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         holder.textItem.setText(text);
 
         // Subtext Item
-        String subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
-        holder.subTextItem.setText(subText);
+        String subText = "";
+        if(listMeetings.get(position).getListParticipants().size() > 1){
+            subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
+        }
+        else{
+            subText = listMeetings.get(position).getListParticipants().get(0).getEmail();
+        }
 
+        holder.subTextItem.setText(subText);
 
         // Icon Delete Item
         holder.iconDeleteItem.setOnClickListener((View view) -> {
-                // TODO() : Add a ConfirmDeleteDialog
-                //ConfirmDeleteDialog confirmDeleteDialog = new ConfirmDeleteDialog();
-                //confirmDeleteDialog.show(fragmentManager, "DELETE_MEETING_DIALOG_TAG");
-                listMeetings.remove(position); // TODO() : Use ListAPiService method instead
-                notifyDataSetChanged();
+                ConfirmDeleteDialog confirmDeleteDialog = new ConfirmDeleteDialog(listMeetings, position);
+                confirmDeleteDialog.show(fragmentManager, "DELETE_MEETING_DIALOG_TAG");
             }
         );
     }
@@ -88,5 +100,21 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
             subTextItem = view.findViewById(R.id.subtext_item_recycler_view);
             iconDeleteItem = view.findViewById(R.id.icon_delete_item_recycler_view);
         }
+    }
+
+    public boolean compareDateMeetingToCurrentDate(String date, String time){
+        final Calendar calendar = Calendar.getInstance();
+        // Time
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinutes  = calendar.get(Calendar.MINUTE);
+        String currentTime = DateAndTimeConverter.timeConverter(currentHour, currentMinutes);
+
+        // Date
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        String currentDate = DateAndTimeConverter.dateConverter(currentYear, currentMonth, currentDay);
+
+        return true;
     }
 }

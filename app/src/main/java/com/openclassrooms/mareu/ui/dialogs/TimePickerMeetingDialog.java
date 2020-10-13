@@ -1,10 +1,16 @@
 package com.openclassrooms.mareu.ui.dialogs;
 
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.widget.TimePicker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -13,17 +19,25 @@ import java.util.Objects;
  * a meeting hour
  * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
  */
-public class TimePickerMeetingDialog {
+public class TimePickerMeetingDialog extends DialogFragment {
 
     private Context context;
     private TextInputEditText textInput;
+
+    private TimePickerDialog timePickerDialog;
+
+    public TimePickerMeetingDialog(){ }
 
     public TimePickerMeetingDialog(Context context, TextInputEditText textInput){
         this.context = context;
         this.textInput = textInput;
     }
 
-    public void showTimePickerDialogOnClick(){
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+        setRetainInstance(true);
 
         int hourCalendarToSet;
         int minutesCalendarToSet;
@@ -43,20 +57,19 @@ public class TimePickerMeetingDialog {
         }
 
         // Create TimePickerDialog instance
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+        timePickerDialog = new TimePickerDialog(context, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                String hourToDisplay = "";
+                String timeToDisplay = "";
 
                 // Format HH:MM
-                if(hour < 10){ hourToDisplay = hourToDisplay + "0" + hour + ":" + minutes; }
-                else{ hourToDisplay = hourToDisplay + hour + ":" + minutes;}
+                timeToDisplay = DateAndTimeConverter.timeConverter(hour, minutes);
 
-                textInput.setText(hourToDisplay);
+                // Update text input hour
+                textInput.setText(timeToDisplay);
             }
-        }, hourCalendarToSet, minutesCalendarToSet, false);
-
-        // Display TimePickerDialog
-        timePickerDialog.show();
+        }, hourCalendarToSet, minutesCalendarToSet, true);
+        return timePickerDialog;
     }
+
 }
