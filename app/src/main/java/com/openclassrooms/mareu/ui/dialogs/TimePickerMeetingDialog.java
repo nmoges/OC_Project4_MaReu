@@ -33,10 +33,18 @@ public class TimePickerMeetingDialog extends DialogFragment {
         this.textInput = textInput;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public void setTextInput(TextInputEditText textInput) {
+        this.textInput = textInput;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
+        //TODO ne pas utiliser de méthodes depréciées
         setRetainInstance(true);
 
         int hourCalendarToSet;

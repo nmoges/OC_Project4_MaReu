@@ -1,13 +1,17 @@
 package com.openclassrooms.mareu.ui.fragments.listmeetings;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,17 +20,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.event.DeleteMeetingEvent;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
+import com.openclassrooms.mareu.ui.dialogs.ConfirmDeleteDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ListMeetingsFragment extends Fragment {
+public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener {
 
     private FloatingActionButton fab;
     private Toolbar toolbar;
@@ -42,9 +50,10 @@ public class ListMeetingsFragment extends Fragment {
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
 
-    public ListMeetingsFragment(){ }
+    public ListMeetingsFragment() {
+    }
 
-    public static ListMeetingsFragment newInstance(){
+    public static ListMeetingsFragment newInstance() {
         return new ListMeetingsFragment();
     }
 
@@ -57,7 +66,6 @@ public class ListMeetingsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -97,18 +105,18 @@ public class ListMeetingsFragment extends Fragment {
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_list_meetings_fragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.filter_by_date_item_menu :
+        switch (item.getItemId()) {
+            case R.id.filter_by_date_item_menu:
                 // TODO() : To implement
                 break;
-            case R.id.filter_by_room_item_menu :
+            case R.id.filter_by_room_item_menu:
                 // TODO() : To implement
                 break;
         }
@@ -116,11 +124,17 @@ public class ListMeetingsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeList(){
+    public void initializeList() {
         listMeetings = parentActivity.getListApiService().getListMeetings();
     }
 
-    public void initializeIds(){
+    //TODO C'est plus le boulot de l'activity de gérer l'action bar
+    //Et comment faire ?
+    // 1) Créer une interface qui contiendra l'ensemble des actions que l'activité doit faire pour ses fragments
+    // 2) pour tous les objets gérés par le parent, il faut récupérer l'instance de l'activité, la caster en ton interface
+    // Et appeler l'action que tu veux exécuter
+    // C'est principalement le cas pour le changement de fragment
+    public void initializeIds() {
         toolbar = parentActivity.findViewById(R.id.toolbar_list_meeting_fragment);
         fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
         backgroundText = parentActivity.findViewById(R.id.background_txt);
@@ -128,14 +142,13 @@ public class ListMeetingsFragment extends Fragment {
 
     /**
      * Updates display of the background text according to the size of listMeetings :
-     *      - If no Meeting stored in list : display "No Meetings" message
-     *      - Else no display of 'No Meetings" message
+     * - If no Meeting stored in list : display "No Meetings" message
+     * - Else no display of 'No Meetings" message
      */
-    public void updateBackgroundTxtDisplay(){
-        if(listMeetings.size() == 0){
+    public void updateBackgroundTxtDisplay() {
+        if (listMeetings.size() == 0) {
             backgroundText.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             backgroundText.setVisibility(View.INVISIBLE);
         }
     }
@@ -143,18 +156,18 @@ public class ListMeetingsFragment extends Fragment {
     /**
      * Initializes adapter and recyclerview display
      */
-    public void initializeRecyclerView(){
+    public void initializeRecyclerView() {
         recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, getParentFragmentManager());
+        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this);
         recyclerView.setAdapter(adapterListMeetings);
     }
 
     /**
      * This method initialize Toolbar Fragment, using parent activity
      */
-    private void initializeToolbar(){
+    private void initializeToolbar() {
         // Set Support Action Bar to modify Toolbar title
         parentActivity.setSupportActionBar(toolbar);
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
@@ -164,7 +177,7 @@ public class ListMeetingsFragment extends Fragment {
      * This method handle click interaction on FloatingActionButton of MainActivity activity
      * When fab is clicked : AddMeetingFragment fragment is displayed, and the fab is hided.
      */
-    public void handleFabClick(){
+    public void handleFabClick() {
         fab.setOnClickListener((View view) -> {
                     requireActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment()).addToBackStack(null).commit();
@@ -173,19 +186,37 @@ public class ListMeetingsFragment extends Fragment {
     }
 
     /**
-     * Fired if the user clicks on a delete button
-     * @param event : DeleteMeetingEvent
+     * Display an alert dialog to confirm the meeting deletion
+     * @param meeting The meeting to delete
      */
-    @Subscribe
-    public void onDeleteMeeting(DeleteMeetingEvent event){
+    private void confirmSuppress(Meeting meeting) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Configure builder
+        builder.setTitle(R.string.title_dialog_confirm_delete)
+                .setMessage(R.string.text_dialog_confirm_delete)
+                .setPositiveButton(R.string.btn_yes_dialog_confirm_delete, (DialogInterface dialogInterface, int i) -> {
+                            deleteItem(meeting);
+                        }
+                )
+                .setNegativeButton(R.string.btn_no_dialog_confirm_delete, (DialogInterface dialogInterface, int i) -> {
+                            // Close Dialog
+                        }
+                );
+        //show the dialog
+        builder.create().show();
+    }
 
+    private void deleteItem(Meeting meeting) {
         // Remove Meeting from list
-        parentActivity.getListApiService().removeMeeting(event.meeting);
-
+        parentActivity.getListApiService().removeMeeting(meeting);
         // Update Meeting list
         adapterListMeetings.notifyDataSetChanged();
-
         // Update background text display
         updateBackgroundTxtDisplay();
+    }
+
+    @Override
+    public void onDeleteItem(Meeting meeting) {
+        confirmSuppress(meeting);
     }
 }

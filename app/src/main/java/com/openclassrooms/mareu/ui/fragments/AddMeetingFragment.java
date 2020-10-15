@@ -3,9 +3,11 @@ package com.openclassrooms.mareu.ui.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,8 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentResultListener;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,6 +32,7 @@ import com.openclassrooms.mareu.ui.dialogs.MeetingRoomDialog;
 import com.openclassrooms.mareu.ui.dialogs.TimePickerMeetingDialog;
 import com.openclassrooms.mareu.ui.MainActivity;
 import com.openclassrooms.mareu.utils.TextWatcherTextInput;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -68,9 +73,10 @@ public class AddMeetingFragment extends Fragment {
     private String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
     private String TIME_DIALOG_TAG = "TIME_DIALOG_TAG";
 
-    public AddMeetingFragment(){ }
+    public AddMeetingFragment() {
+    }
 
-    public static AddMeetingFragment newInstance(){
+    public static AddMeetingFragment newInstance() {
         return new AddMeetingFragment();
     }
 
@@ -81,7 +87,7 @@ public class AddMeetingFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         getSelectionFromListEmployeesFragment();
     }
@@ -93,7 +99,7 @@ public class AddMeetingFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize all views
@@ -111,19 +117,18 @@ public class AddMeetingFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_add_meeting_fragment, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        if(item.getItemId() == android.R.id.home){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             // Remove AddMeetingFragment from stack
             parentActivity.getSupportFragmentManager().popBackStack();
             // Reset CheckBox selection
             MainActivity.getListEmployeesFragment().resetSelectionParameter();
-        }
-        else{
+        } else {
             // Update participants input layout hint text
             participantsLayout.setHint(parentActivity.getResources().getString(R.string.edit_input_participants_meeting));
             // Reset CheckBox selection
@@ -136,7 +141,7 @@ public class AddMeetingFragment extends Fragment {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void initializeToolbar(){
+    private void initializeToolbar() {
         parentActivity.setSupportActionBar(toolbarFragment);
 
         // Add title
@@ -147,7 +152,7 @@ public class AddMeetingFragment extends Fragment {
         parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
     }
 
-    private void initializeIds(){
+    private void initializeIds() {
         // Toolbar
         toolbarFragment = parentActivity.findViewById(R.id.toolbar_fragment_add_meeting);
 
@@ -169,45 +174,47 @@ public class AddMeetingFragment extends Fragment {
         dateLayout = parentActivity.findViewById(R.id.text_layout_date);
         hourLayout = parentActivity.findViewById(R.id.text_layout_hour);
         participantsLayout = parentActivity.findViewById(R.id.text_layout_participants);
+
+        updateDialogs();
     }
 
     /**
      * Handles click interactions on both bottom fragment buttons :
-     *      - Click on "CANCEL" cancels new meeting creation and close fragment
-     *      - Click on "OK" add new meeting to the meetings list and close fragment
+     * - Click on "CANCEL" cancels new meeting creation and close fragment
+     * - Click on "OK" add new meeting to the meetings list and close fragment
      */
-    private void handleButtonsListeners(){
+    private void handleButtonsListeners() {
         // Set listeners
         cancelButton.setOnClickListener((View view) -> {
-                MainActivity.getListEmployeesFragment().resetSelectionParameter();
-                // Reset text inputs
-                clearTextInputsFields();
-                // Remove AddMeetingFragment from stack
-                parentActivity.getSupportFragmentManager().popBackStack();
-            }
+                    MainActivity.getListEmployeesFragment().resetSelectionParameter();
+                    // Reset text inputs
+                    clearTextInputsFields();
+                    // Remove AddMeetingFragment from stack
+                    parentActivity.getSupportFragmentManager().popBackStack();
+                }
         );
 
         okButton.setOnClickListener((View view) -> {
-                // Create New Meeting
-                Meeting meeting = createNewMeeting();
-                parentActivity.getListApiService().addMeeting(meeting);
+                    // Create New Meeting
+                    Meeting meeting = createNewMeeting();
+                    parentActivity.getListApiService().addMeeting(meeting);
 
-                // Reset text inputs for next Meeting creation
-                clearTextInputsFields();
+                    // Reset text inputs for next Meeting creation
+                    clearTextInputsFields();
 
-                // Reset CheckBox selection if ListEmployeesFragment for next Meeting creation
-                MainActivity.getListEmployeesFragment().resetSelectionParameter();
+                    // Reset CheckBox selection if ListEmployeesFragment for next Meeting creation
+                    MainActivity.getListEmployeesFragment().resetSelectionParameter();
 
-                // Remove AddMeetingFragment from stack
-                parentActivity.getSupportFragmentManager().popBackStack();
-            }
+                    // Remove AddMeetingFragment from stack
+                    parentActivity.getSupportFragmentManager().popBackStack();
+                }
         );
     }
 
     /**
      * This method resets all textInput fields
      */
-    public void clearTextInputsFields(){
+    public void clearTextInputsFields() {
         Objects.requireNonNull(objectMeetingInput.getText()).clear();
         Objects.requireNonNull(roomMeetingInput.getText()).clear();
         Objects.requireNonNull(dateInput.getText()).clear();
@@ -217,12 +224,24 @@ public class AddMeetingFragment extends Fragment {
     }
 
     /**
+     * Retrieve instance of dialogs in the fragment stack and update references to input texts
+     *
+     * TODO Do the same for Time and People pickers
+     */
+    private void updateDialogs() {
+        Fragment fragment = getParentFragmentManager().findFragmentByTag(DATE_DIALOG_TAG);
+        if (fragment instanceof DatePickerMeetingDialog) {
+            ((DatePickerMeetingDialog) fragment).setTextInput(dateInput);
+        }
+    }
+
+    /**
      * This methods handles clicks in TextInputEditText fields
      */
-    private void onTextInputsEditTextFields(){
+    private void onTextInputsEditTextFields() {
 
         roomMeetingInput.setOnClickListener((View view) -> {
-                    InputMethodManager manager =  (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                     meetingRoomDialog = new MeetingRoomDialog(roomMeetingInput);
@@ -243,9 +262,9 @@ public class AddMeetingFragment extends Fragment {
         );
 
         participantsInput.setOnClickListener((View view) -> {
-                parentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container_view, MainActivity.getListEmployeesFragment()).addToBackStack(null).commit();
-            }
+                    parentActivity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container_view, MainActivity.getListEmployeesFragment()).addToBackStack(null).commit();
+                }
         );
     }
 
@@ -253,7 +272,7 @@ public class AddMeetingFragment extends Fragment {
      * This method implements @{@link TextWatcherTextInput} objects as TextChangedListener for each TextInputLayout (except "Information" section)
      * If all these TextInpuLayout contains a text specified by user, then the "Ok" button can be enabled
      */
-    private void handleOkBtnClickableStatus(){
+    private void handleOkBtnClickableStatus() {
         TextWatcherTextInput objectMeetingTextWatcher = new TextWatcherTextInput(okButton, roomMeetingInput, dateInput, hourInput, participantsInput);
         TextWatcherTextInput roomMeetingTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, dateInput, hourInput, participantsInput);
         TextWatcherTextInput dateTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, roomMeetingInput, hourInput, participantsInput);
@@ -269,9 +288,10 @@ public class AddMeetingFragment extends Fragment {
 
     /**
      * Create a new Meeting object to send to ListMeetingsFragment
+     *
      * @return : Meeting
      */
-    private Meeting createNewMeeting(){
+    private Meeting createNewMeeting() {
         String objectMeeting = Objects.requireNonNull(objectMeetingInput.getText()).toString();
         String meetingRoom = Objects.requireNonNull(roomMeetingInput.getText()).toString();
         String date = Objects.requireNonNull(dateInput.getText()).toString();
@@ -283,8 +303,8 @@ public class AddMeetingFragment extends Fragment {
     /**
      * Get selection from ListEmployeesFragment for TextInput participants display update
      */
-    private void getSelectionFromListEmployeesFragment(){
-            parentActivity.getSupportFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+    private void getSelectionFromListEmployeesFragment() {
+        parentActivity.getSupportFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 // Get "selection" from ListMeetingsFragment
@@ -296,8 +316,8 @@ public class AddMeetingFragment extends Fragment {
                 meetingEmployees.clear();
 
                 // Initialize create list meeting employees
-                for(int i = 0; i < listEmployees.size(); i++){
-                    if(Character.toString(selection.charAt(i)).equals("1")){
+                for (int i = 0; i < listEmployees.size(); i++) {
+                    if (Character.toString(selection.charAt(i)).equals("1")) {
 
                         meetingEmployees.add(listEmployees.get(i));
                         nbMeetingEmployees++;
@@ -306,12 +326,14 @@ public class AddMeetingFragment extends Fragment {
 
                 // Update text input participants display
                 String infoToDisplay = "";
-                if(meetingEmployees.size() > 0){
-                    if(meetingEmployees.size() == 1){ infoToDisplay = meetingEmployees.get(0).getEmail(); }
-                    else{ infoToDisplay = meetingEmployees.get(0).getEmail() + "..."; }
+                if (meetingEmployees.size() > 0) {
+                    if (meetingEmployees.size() == 1) {
+                        infoToDisplay = meetingEmployees.get(0).getEmail();
+                    } else {
+                        infoToDisplay = meetingEmployees.get(0).getEmail() + "...";
+                    }
                     participantsLayout.setHint(requireActivity().getResources().getString(R.string.edit_input_participants_meeting) + "(" + nbMeetingEmployees + ")");
-                }
-                else{
+                } else {
                     participantsLayout.setHint(requireActivity().getResources().getString(R.string.edit_input_participants_meeting));
                     participantsInput.getText().clear();
                 }
