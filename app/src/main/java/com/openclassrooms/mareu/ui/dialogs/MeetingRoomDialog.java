@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,12 +22,20 @@ public class MeetingRoomDialog extends DialogFragment {
 
     private TextInputEditText textInput;
 
+    public MeetingRoomDialog(){ }
+
     public MeetingRoomDialog(TextInputEditText textInput){
+        this.textInput = textInput;
+    }
+
+    public void setTextInput(TextInputEditText textInput){
         this.textInput = textInput;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+
+        setRetainInstance(true);
 
         // Create Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -37,6 +46,7 @@ public class MeetingRoomDialog extends DialogFragment {
         // Set Builder
         builder.setView(inflater.inflate(R.layout.layout_dialog_meeting_rooms, null))
                .setTitle(R.string.title_dialog_meeting_room);
+
         return builder.create();
     }
 

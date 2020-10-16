@@ -1,7 +1,5 @@
 package com.openclassrooms.mareu.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import java.util.List;
 
 /**

@@ -133,10 +133,12 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
         notifyDataSetChanged();
     }
 
+    // Getter
     public int getNbSelectedEmployees(){
         return this.nbSelectedEmployees;
     }
 
+    // Methods for updates of the number of selected Employee
     public void incrementSelectedEmployees(){
         this.nbSelectedEmployees++;
     }

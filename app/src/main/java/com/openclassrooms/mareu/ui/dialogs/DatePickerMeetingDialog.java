@@ -33,6 +33,10 @@ public class DatePickerMeetingDialog extends DialogFragment {
         this.textInput = textInput;
     }
 
+    public void setTextInput(TextInputEditText textInput) {
+        this.textInput = textInput;
+    }
+
     /**
      * This method creates a new DatePickerDialog and show it
      */

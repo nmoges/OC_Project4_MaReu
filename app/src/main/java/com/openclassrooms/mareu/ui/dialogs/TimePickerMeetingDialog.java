@@ -33,6 +33,13 @@ public class TimePickerMeetingDialog extends DialogFragment {
         this.textInput = textInput;
     }
 
+    public void setTextInput(TextInputEditText textInput){
+        this.textInput = textInput;
+    }
+
+    /**
+     * This method creates a new TimePickerMeetingDialog and show it
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -7,13 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
-import com.openclassrooms.mareu.ui.dialogs.ConfirmDeleteDialog;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,12 +23,13 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     // Contains all Meeting to display
     private ArrayList<Meeting> listMeetings;
 
-    // For ConfirmDeleteDialog dialog display
-    private FragmentManager fragmentManager;
+    // For handling user actions
+    private final ListMeetingActionListener listener;
 
-    public RecyclerViewAdapterListMeetings(ArrayList<Meeting> listMeetings, FragmentManager fragmentManager){
+    //TODO: Utilise une list au lieu d'un ArrayList
+    public RecyclerViewAdapterListMeetings(ArrayList<Meeting> listMeetings, ListMeetingActionListener listener) {
         this.listMeetings = listMeetings;
-        this.fragmentManager = fragmentManager;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,7 +43,6 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(@NonNull ViewHolderItemMeeting holder, int position) {
 
         Date currentDate = Calendar.getInstance().getTime();
-        Log.i("CURRENT_DATE", Long.toString(currentDate.getTime()));
 
         compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHour());
         // Icon Status Item
@@ -61,10 +58,9 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         // Subtext Item
         String subText = "";
-        if(listMeetings.get(position).getListParticipants().size() > 1){
+        if (listMeetings.get(position).getListParticipants().size() > 1) {
             subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
-        }
-        else{
+        } else {
             subText = listMeetings.get(position).getListParticipants().get(0).getEmail();
         }
 
@@ -72,9 +68,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         // Icon Delete Item
         holder.iconDeleteItem.setOnClickListener((View view) -> {
-                ConfirmDeleteDialog confirmDeleteDialog = new ConfirmDeleteDialog(listMeetings, position);
-                confirmDeleteDialog.show(fragmentManager, "DELETE_MEETING_DIALOG_TAG");
-            }
+                    listener.onDeleteItem(listMeetings.get(position));
+                }
         );
     }
 
@@ -91,7 +86,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         private TextView subTextItem;
         private ImageView iconDeleteItem;
 
-        ViewHolderItemMeeting(View view){
+        ViewHolderItemMeeting(View view) {
             super(view);
 
             iconStatusItem = view.findViewById(R.id.img_item_recycler_view);
@@ -102,11 +97,11 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public boolean compareDateMeetingToCurrentDate(String date, String time){
+    public boolean compareDateMeetingToCurrentDate(String date, String time) {
         final Calendar calendar = Calendar.getInstance();
         // Time
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinutes  = calendar.get(Calendar.MINUTE);
+        int currentMinutes = calendar.get(Calendar.MINUTE);
         String currentTime = DateAndTimeConverter.timeConverter(currentHour, currentMinutes);
 
         // Date
