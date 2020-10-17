@@ -81,47 +81,72 @@ tools:context=".ui.fragments.AddMeetingFragment">
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Date & Hour -->
+            <!-- Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_input_date_meeting"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                app:boxBackgroundColor="#ECECF1"
+                app:boxStrokeColor="#3D73DD"
+                app:startIconTint="#3D73DD"
+                app:startIconDrawable="@drawable/ic_location_on_blue_24dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:focusableInTouchMode="false"
+                    android:cursorVisible="false"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Hour -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:rowCount="1">
 
-                <!-- Date -->
+                <!-- Begin -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_layout_date"
+                    android:id="@+id/text_layout_hour_start"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:hint="@string/edit_input_date_meeting"
+                    android:hint="@string/edit_input_hour_start_meeting"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
                     app:boxBackgroundColor="#ECECF1"
                     app:boxStrokeColor="#3D73DD"
                     app:startIconTint="#3D73DD"
-                    app:startIconDrawable="@drawable/ic_event_blue_24dp"
+                    app:startIconDrawable="@drawable/ic_access_time_blue_24dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_column="0"
                     android:layout_row="0"
                     >
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_date"
+                        android:id="@+id/text_input_hour_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date"
+                        android:inputType="datetime"
                         android:focusableInTouchMode="false"
                         android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Hour -->
+                <!-- End -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_layout_hour"
+                    android:id="@+id/text_layout_hour_end"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:hint="@string/edit_input_hour_meeting"
+                    android:hint="@string/edit_input_hour_end_meeting"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
@@ -134,7 +159,7 @@ tools:context=".ui.fragments.AddMeetingFragment">
                     android:layout_row="0"
                     >
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_hour"
+                        android:id="@+id/text_input_hour_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="datetime"

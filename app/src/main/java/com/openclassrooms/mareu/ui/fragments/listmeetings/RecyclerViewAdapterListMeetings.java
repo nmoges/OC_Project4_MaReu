@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Adapter for @{@link ListMeetingsFragment} fragment
@@ -21,13 +21,12 @@ import java.util.Date;
 public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<RecyclerViewAdapterListMeetings.ViewHolderItemMeeting> {
 
     // Contains all Meeting to display
-    private ArrayList<Meeting> listMeetings;
+    private List<Meeting> listMeetings;
 
     // For handling user actions
     private final ListMeetingActionListener listener;
 
-    //TODO: Utilise une list au lieu d'un ArrayList
-    public RecyclerViewAdapterListMeetings(ArrayList<Meeting> listMeetings, ListMeetingActionListener listener) {
+    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener) {
         this.listMeetings = listMeetings;
         this.listener = listener;
     }
@@ -44,16 +43,24 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         Date currentDate = Calendar.getInstance().getTime();
 
-        compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHour());
         // Icon Status Item
         // TODO() : Use system Date to compare to date from Meeting item
 
-        // Title Item
-        String title = listMeetings.get(position).getObjectMeeting();
+        // Title Item : Object Meeting + Name Meeting room
+        String title = "";
+        if(listMeetings.get(position).getObjectMeeting().length() < 17){
+            title = listMeetings.get(position).getObjectMeeting() + " (" +
+                    listMeetings.get(position).getMeetingRoom().toUpperCase() + ")";
+        }
+        else{
+            title = listMeetings.get(position).getObjectMeeting().substring(0,17) + "... ("
+                    + listMeetings.get(position).getMeetingRoom().toUpperCase() + ")";
+        }
         holder.titleItem.setText(title);
 
-        // Text Item
-        String text = listMeetings.get(position).getDate() + " - " + listMeetings.get(position).getHour() + " - " + listMeetings.get(position).getMeetingRoom();
+        // Text Item : Date + Start hour + End hour
+        String text = listMeetings.get(position).getDate() + " - " + listMeetings.get(position).getHourStart()
+                        + " - " + listMeetings.get(position).getHourEnd();
         holder.textItem.setText(text);
 
         // Subtext Item

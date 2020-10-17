@@ -2,6 +2,7 @@ package com.openclassrooms.mareu.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private static InfoMeetingFragment infoMeetingFragment;
     private static ListMeetingsFragment listMeetingsFragment;
     private static ListEmployeesFragment listEmployeesFragment;
+
+    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
+    private String TAG_LIST_EMPLOYEES_FRAGMENT = "TAG_LIST_EMPLOYEES_FRAGMENT";
 
     // Service
     private ListApiService listApiService;
@@ -66,26 +70,21 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed(){
-
-        if(addMeetingFragment.isVisible()){
+        if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT).isAdded()){
+            AddMeetingFragment fragment = (AddMeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
             // Remove AddMeetingFragment from stack
             fragmentManager.popBackStack();
             // Reset text inputs
-            addMeetingFragment.clearTextInputsFields();
-            // Reset CheckBox selection
-            MainActivity.getListEmployeesFragment().resetSelectionParameter();
+            fragment.clearTextInputsFields();
         }
-        else if (infoMeetingFragment.isVisible()){
-            // TODO() : fragment InfoMeetingFragment to implement
-        }
-        else if(listEmployeesFragment.isVisible()){
-            // Remove AddMeetingFragment from stack
+        else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
+            ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);
+            // Save selected Employee into String
+            fragment.saveSelectionToForNewMeeting();
+            // Remove ListEmployeesFragment from stack
             fragmentManager.popBackStack();
-            // Save selected employees for meeting creation
-            listEmployeesFragment.saveSelectionToForNewMeeting();
         }
-        else { // ListMeetingsFragment.isVisible()
-            // Else no fragment visible, then quit application
+        else{ // ListMeetingsFragment is added
             finish();
         }
     }

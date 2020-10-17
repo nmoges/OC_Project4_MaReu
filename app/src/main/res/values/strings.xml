@@ -37,6 +37,8 @@
     <string name="edit_input_room_meeting">Room meeting</string>
     <string name="edit_input_date_meeting">Date</string>
     <string name="edit_input_hour_meeting">Hour</string>
+    <string name="edit_input_hour_start_meeting">Start :</string>
+    <string name="edit_input_hour_end_meeting">End :</string>
     <string name="edit_input_participants_meeting">Participants</string>
     <string name="edit_input_participants_info">Information</string>
     <string name="button_cancel">CANCEL</string>
@@ -51,8 +53,8 @@
 
     <!-- list_meetings_item.xml -->
     <!-- THE FOLLOWING VALUES ARE DEFAULT VALUES FOR TESTING DISPLAY ONLY -->
-    <string name="title_item_recycler_view">Réunion A</string>
-    <string name="text_item_recycler_view">01/10/20 – 6H00 - Faraday</string>
+    <string name="title_item_recycler_view">Réunion A (Salle FARADAY)</string>
+    <string name="text_item_recycler_view">01/10/20 – 10:00 - 11:00</string>
     <string name="subtext_item_recycler_view">nicolasmoges@gmail.com</string>
 
     <!-- MeetingRoomDialog.java -->

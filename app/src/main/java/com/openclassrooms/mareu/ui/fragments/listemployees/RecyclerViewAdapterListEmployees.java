@@ -124,6 +124,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
             if(listSelectedEmployee.get(indice).getSelected()){
                 listSelectedEmployee.get(indice).setSelected(false);
                 nbSelectedEmployees--;
+
             }
             else{
                 indice++;

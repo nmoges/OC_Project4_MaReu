@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +43,8 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
 
+    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
+
     public ListMeetingsFragment() {
     }
 
@@ -64,6 +67,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void onResume() {
         super.onResume();
         handleFabClick();
+        initializeList();
         adapterListMeetings.notifyDataSetChanged();
     }
 
@@ -93,6 +97,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         initializeList();
         initializeRecyclerView();
         updateBackgroundTxtDisplay();
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -172,7 +177,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void handleFabClick() {
         fab.setOnClickListener((View view) -> {
                     requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment()).addToBackStack(null).commit();
+                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment(), TAG_ADD_MEETING_FRAGMENT).addToBackStack(null).commit();
                 }
         );
     }

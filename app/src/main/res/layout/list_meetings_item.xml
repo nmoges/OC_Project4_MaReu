@@ -47,7 +47,6 @@
             app:layout_constraintLeft_toRightOf="@id/img_item_recycler_view"
             app:layout_constraintTop_toBottomOf="@id/title_item_recycler_view"
             app:layout_constraintBottom_toTopOf="@id/subtext_item_recycler_view"/>
-
         <TextView
             android:id="@+id/subtext_item_recycler_view"
             android:layout_width="wrap_content"

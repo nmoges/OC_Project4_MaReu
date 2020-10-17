@@ -10,7 +10,8 @@ public class Meeting {
     private String objectMeeting;
     private String meetingRoom;
     private String date;
-    private String hour;
+    private String hourStart;
+    private String hourEnd;
     private List<Employee> listParticipants;
     private String information;
 
@@ -19,16 +20,18 @@ public class Meeting {
      * @param objectMeeting : String
      * @param meetingRoom : String
      * @param date : String
-     * @param hour : String
+     * @param hourStart : String
+     * @param hourEnd : String
      * @param information : String
      * @param participants : List<Employee>
      */
     public Meeting(String objectMeeting, String meetingRoom, String date,
-                   String hour, String information, List<Employee> participants){
+                   String hourStart, String hourEnd, String information, List<Employee> participants){
         this.objectMeeting = objectMeeting;
         this.meetingRoom = meetingRoom;
         this.date = date;
-        this.hour = hour;
+        this.hourStart = hourStart;
+        this.hourEnd = hourEnd;
         this.information = information;
         this.listParticipants = participants;
     }
@@ -46,9 +49,11 @@ public class Meeting {
         return this.date;
     }
 
-    public String getHour(){
-        return this.hour;
+    public String getHourStart(){
+        return this.hourStart;
     }
+
+    public String getHourEnd() { return this.hourEnd; }
 
     public List<Employee> getListParticipants(){
         return this.listParticipants;

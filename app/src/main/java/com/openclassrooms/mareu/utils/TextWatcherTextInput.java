@@ -5,6 +5,8 @@ import android.text.TextWatcher;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Objects;
+
 /**
  * This class extends the TextWatcher class and is used to detect if all
  * mandatory fields (TextInputEditText) are specified by user.
@@ -15,7 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
  *          - Object Meeting
  *          - Room Meeting
  *          - Date of the Meeting
- *          - Hour of the Meeting
+ *          - Start hour of the Meeting
+ *          - End hour of the Meeting
  *          - List of participants
  *
  * Field "Information" from AddMeetingFragment is optional
@@ -26,16 +29,18 @@ public class TextWatcherTextInput implements TextWatcher {
     private TextInputEditText secondTextInput;
     private TextInputEditText thirdTextInput;
     private TextInputEditText fourthTextInput;
+    private TextInputEditText fifthTextInput;
     private MaterialButton button;
 
     public TextWatcherTextInput(MaterialButton button, TextInputEditText firstTextInput,
                                 TextInputEditText secondTextInput, TextInputEditText thirdTextInput,
-                                TextInputEditText fourthTextInput){
+                                TextInputEditText fourthTextInput, TextInputEditText fifthTextInput){
         this.button = button;
         this.firstTextInput = firstTextInput;
         this.secondTextInput = secondTextInput;
         this.thirdTextInput = thirdTextInput;
         this.fourthTextInput = fourthTextInput;
+        this.fifthTextInput = fifthTextInput;
     }
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -51,10 +56,11 @@ public class TextWatcherTextInput implements TextWatcher {
     public void afterTextChanged(Editable editable) {
         // If all mandatory fields are specified, button can be enabled
         if(editable.length() > 0
-                && firstTextInput.getText().length() > 0
-                && secondTextInput.getText().length() > 0
-                && thirdTextInput.getText().length() > 0
-                && fourthTextInput.getText().length() > 0){
+                && Objects.requireNonNull(firstTextInput.getText()).length() > 0
+                && Objects.requireNonNull(secondTextInput.getText()).length() > 0
+                && Objects.requireNonNull(thirdTextInput.getText()).length() > 0
+                && Objects.requireNonNull(fourthTextInput.getText()).length() > 0
+                && Objects.requireNonNull(fifthTextInput.getText()).length() > 0){
             button.setEnabled(true);
         }
         else{

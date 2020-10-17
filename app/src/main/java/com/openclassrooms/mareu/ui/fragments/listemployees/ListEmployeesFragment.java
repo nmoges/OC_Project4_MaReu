@@ -91,7 +91,6 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
         }
 
         getOldSelectionFromAddMeetingFragment();
-
     }
 
     @Override
@@ -106,7 +105,9 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
         int id = item.getItemId();
 
         if(id == android.R.id.home){
+            // Save String selection in Bundle
             saveSelectionToForNewMeeting();
+            // Quit fragment
             parentActivity.getSupportFragmentManager().popBackStack();
         }
         else if(id == R.id.search_item_menu){
@@ -165,6 +166,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
             }
         }
     }
+
 
     /**
      * OnItemClickBoxListener interface implementation
@@ -267,5 +269,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
         });
     }
 
-
+    public RecyclerViewAdapterListEmployees getAdapterListEmployees(){
+        return this.adapterListEmployees;
+    }
 }
