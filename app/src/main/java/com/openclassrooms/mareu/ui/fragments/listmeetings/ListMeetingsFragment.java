@@ -159,7 +159,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this);
+        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this, getContext());
         recyclerView.setAdapter(adapterListMeetings);
     }
 

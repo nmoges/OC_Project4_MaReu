@@ -1,5 +1,7 @@
 package com.openclassrooms.mareu.ui.fragments.listmeetings;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,6 @@ import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,9 +27,12 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     // For handling user actions
     private final ListMeetingActionListener listener;
 
-    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener) {
+    private final Context context;
+
+    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener, Context context) {
         this.listMeetings = listMeetings;
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -40,11 +44,13 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItemMeeting holder, int position) {
-
-        Date currentDate = Calendar.getInstance().getTime();
-
         // Icon Status Item
-        // TODO() : Use system Date to compare to date from Meeting item
+
+        // Get Meeting status
+        int statusMeeting = compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHourStart(), listMeetings.get(position).getHourEnd());
+        // Get corresponding Drawable and update icon
+        Drawable drawable = defineIconStatusMeeting(statusMeeting);
+        holder.iconStatusItem.setImageDrawable(drawable);
 
         // Title Item : Object Meeting + Name Meeting room
         String title = "";
@@ -63,7 +69,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
                         + " - " + listMeetings.get(position).getHourEnd();
         holder.textItem.setText(text);
 
-        // Subtext Item
+        // Subtext Item : email first Employee + "..." (if several Employee)
         String subText = "";
         if (listMeetings.get(position).getListParticipants().size() > 1) {
             subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
@@ -104,19 +110,124 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public boolean compareDateMeetingToCurrentDate(String date, String time) {
+    /**
+     * This method compares current Date with Meeting Date information
+     * If current Date and Meeting date are the same, then compareTimeMeetingToCurrentTime() method is called
+     * to compare hours.
+     *      - If current date&hour are before Meeting -> return 1
+     *      - If current date&hour are during Meeting -> return 0
+     *      - If current date&hour are after Meeting -> return -1 (Meeting ended)
+     * @param date : String
+     * @param hourStart : String
+     * @param hourEnd : String
+     * @return : int
+     */
+
+    public int compareDateMeetingToCurrentDate(String date, String hourStart, String hourEnd) {
         final Calendar calendar = Calendar.getInstance();
-        // Time
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinutes = calendar.get(Calendar.MINUTE);
-        String currentTime = DateAndTimeConverter.timeConverter(currentHour, currentMinutes);
 
-        // Date
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH);
+        // Current Date
+        String formatYear = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        String currentDate = DateAndTimeConverter.dateConverter(currentYear, currentMonth, currentDay);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = Integer.parseInt(formatYear);//calendar.get(Calendar.YEAR);
 
-        return true;
+        // Date Meeting
+        int meetingDay = Integer.parseInt(date.substring(0,2));
+        int meetingMonth = Integer.parseInt(date.substring(3,5));
+        int meetingYear = Integer.parseInt(date.substring(6));
+
+        // Compare Year
+        if(meetingYear < currentYear){
+            return -1; }
+        else if(meetingYear > currentYear) {
+            return 1; }
+        else{
+            // Compare Month
+            if(meetingMonth < currentMonth){ return -1; }
+            else if(meetingMonth > currentMonth) { return 1; }
+            else{
+                // Compare Day
+                if(meetingDay < currentDay){ return -1; }
+                else if(meetingDay > currentDay) { return 1; }
+                else{
+                    return compareTimeMeetingToCurrentTime(calendar, hourStart, hourEnd);
+                }
+            }
+        }
+    }
+
+    /**
+     * This method compares current time with "start hour" and "end hour" of a Meeting.
+     * This method is only called if comparing Date is not enough.
+     *      - If Current hour is before Meeting hour -> return 1
+     *      - if Current hour is during Meeting hour -> return 0
+     *      - If Current hour is after Meeting jour -> return -1 (Meeting ended)
+     * @param calendar : Calendar
+     * @param hourStart : String
+     * @param hourEnd : String
+     * @return : int
+     */
+    public int compareTimeMeetingToCurrentTime(Calendar calendar, String hourStart, String hourEnd){
+        // Current Time
+        String currentTime = DateAndTimeConverter.timeConverter(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        int currentHour = Integer.parseInt(currentTime.substring(0,2));
+        int currentMinutes = Integer.parseInt(currentTime.substring(3));
+
+        // Start Hour Meeting
+        int startHour = Integer.parseInt(hourStart.substring(0,2));
+        int startMinutes = Integer.parseInt(hourStart.substring(3));
+
+        // End Hour Meeting
+        int endHour = Integer.parseInt(hourEnd.substring(0,2));
+        int endMinutes = Integer.parseInt(hourEnd.substring(3));
+
+        if(startHour == endHour){
+            if(currentHour < startHour){return 1;}
+            else if(currentHour > startHour){return -1;} // (equivalent : current > endHour)
+            else{
+                if(currentMinutes < startMinutes){return 1;}
+                else if(currentMinutes > endMinutes){return -1;}
+                else{return 0;}
+            }
+        }
+        else{ // startHour < endHour
+            if(currentHour < startHour){return  1;}
+            else if(currentHour > endHour){return -1;}
+            else{
+                if(currentHour == startHour){
+                    if(currentMinutes < startMinutes){return 1;}
+                    else {return 0;} // currentMinuter >= startMinutes
+                }
+                else if(currentHour == endHour){
+                    if(currentMinutes < endMinutes){return 0;}
+                    else {return -1;} // currentMinutes >= endMinutes
+                }
+                else{
+                    return 0;
+                }
+            }
+        }
+    }
+
+    /**
+     * This method returns the corresponding Drawable icon for a Meeting item, according to its status
+     * @param status: int
+     * @return : Drawable
+     */
+    public Drawable defineIconStatusMeeting(int status){
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_lens_light_green_24dp, null);
+        switch (status){
+            case -1: // Meeting ended - Icon Red
+                drawable = context.getResources().getDrawable(R.drawable.ic_baseline_lens_red_24dp, null);
+                break;
+            case 0: // Current Meeting - Icon Orange
+                drawable = context.getResources().getDrawable(R.drawable.ic_baseline_lens_orange_24dp, null);
+                break;
+            case 1: // Planned Meeting - Icon Green
+                drawable = context.getResources().getDrawable(R.drawable.ic_lens_light_green_24dp, null);
+                break;
+        }
+        return drawable;
     }
 }
