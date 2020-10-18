@@ -23,7 +23,6 @@ public class DatePickerMeetingDialog extends DialogFragment {
 
     private Context context;
     private TextInputEditText textInput;
-
     private DatePickerDialog datePickerDialog;
 
     public DatePickerMeetingDialog(){ }
@@ -33,6 +32,10 @@ public class DatePickerMeetingDialog extends DialogFragment {
         this.textInput = textInput;
     }
 
+    /**
+     * To update DatePickerMeetingDialog textInput attribute with current TextInputEditText
+     * @param textInput : TextInputEditText
+     */
     public void setTextInput(TextInputEditText textInput) {
         this.textInput = textInput;
     }
@@ -44,6 +47,7 @@ public class DatePickerMeetingDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
+        // Retain current DialogFragment instance
         setRetainInstance(true);
 
         int yearToSet;
@@ -74,9 +78,8 @@ public class DatePickerMeetingDialog extends DialogFragment {
 
                 // Format JJ/MM/AAAA
                 dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);
-
+                // Update Date TextInputEditText in AddMeetinFragment
                 textInput.setText(dateToDisplay);
-
             }
         }, yearToSet, monthToSet, dayToSet);
 

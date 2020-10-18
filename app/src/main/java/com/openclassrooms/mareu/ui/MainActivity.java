@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize service
         listApiService = DI.getListApiService();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
+        if(fragment == null){
+            Log.i("FRAGMENT_DE_MERDe", "null");
+        }
     }
 
     @Override
@@ -70,19 +75,21 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed(){
-        if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT).isAdded()){
-            AddMeetingFragment fragment = (AddMeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
-            // Remove AddMeetingFragment from stack
-            fragmentManager.popBackStack();
-            // Reset text inputs
-            fragment.clearTextInputsFields();
-        }
-        else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
-            ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);
-            // Save selected Employee into String
-            fragment.saveSelectionToForNewMeeting();
-            // Remove ListEmployeesFragment from stack
-            fragmentManager.popBackStack();
+        if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT) != null){
+            if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT).isAdded()){
+                AddMeetingFragment fragment = (AddMeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
+                // Remove AddMeetingFragment from stack
+                fragmentManager.popBackStack();
+                // Reset text inputs
+                fragment.clearTextInputsFields();
+            }
+            else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
+                ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);
+                // Save selected Employee into String
+                fragment.saveSelectionToForNewMeeting();
+                // Remove ListEmployeesFragment from stack
+                fragmentManager.popBackStack();
+            }
         }
         else{ // ListMeetingsFragment is added
             finish();

@@ -9,7 +9,6 @@ import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,13 +27,21 @@ public class MeetingRoomDialog extends DialogFragment {
         this.textInput = textInput;
     }
 
+    /**
+     * To update DatePickerMeetingDialog textInput attribute with current TextInputEditText
+     * @param textInput : TextInputEditText
+     */
     public void setTextInput(TextInputEditText textInput){
         this.textInput = textInput;
     }
 
+    /**
+     * This method creates a new MeetingRoomDialog and show it
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
+        // Retain current DialogFragment instance
         setRetainInstance(true);
 
         // Create Builder

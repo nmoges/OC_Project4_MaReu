@@ -1,5 +1,8 @@
 package com.openclassrooms.mareu.utils;
 
+/**
+ * This class enables conversion of time and date values into String values to display
+ */
 public class DateAndTimeConverter {
 
     public static String timeConverter(int hour, int minutes){
@@ -12,7 +15,7 @@ public class DateAndTimeConverter {
         if(minutes < 10){ convertedTime = convertedTime + "0" + minutes; }
         else{ convertedTime = convertedTime + minutes; }
 
-        return convertedTime;
+        return convertedTime; // format : HH:MM
     }
 
     public static String dateConverter(int year, int month, int day){
@@ -27,6 +30,6 @@ public class DateAndTimeConverter {
         // AA
         convertedDate = convertedDate + year;
 
-        return convertedDate;
+        return convertedDate; // format : JJ/MM/AA
     }
 }

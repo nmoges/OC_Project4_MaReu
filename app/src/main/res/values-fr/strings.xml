@@ -17,38 +17,38 @@
     <string name="toolbar_name_list_meeting_activity">Me Réu</string>
 
     <!-- AddMeetingFragment.java -->
-    <string name="error_msg">Must be after start hour</string>
+    <string name="error_msg">Ne peut pas être avant l\'heure de début</string>
 
     <!-- fragment_list_meetings.xml -->
-    <string name="background_txt">No meetings</string>
+    <string name="background_txt">Pas de réunions planifiées</string>
 
     <!-- fragment_list_employees.xml -->
     <string name="toolbar_name_frag_list_meeting">Ma Réu</string>
 
     <!-- fragment_info_meeting.xml -->
-    <string name="toolbar_name_frag_list_employees">Select participants</string>
+    <string name="toolbar_name_frag_list_employees">Sélection participants</string>
     <string name="txt_participants">Participants</string>
 
     <!-- fragment_info_meeting.xml -->
-    <string name="text_info_meeting_date">On : </string>
-    <string name="text_info_meeting_hour">At : </string>
-    <string name="text_info_meeting_room">Room : </string>
+    <string name="text_info_meeting_date">Le : </string>
+    <string name="text_info_meeting_hour">À : </string>
+    <string name="text_info_meeting_room">Salle : </string>
 
     <!-- fragment_add_meeting.xml -->
-    <string name="toolbar_name_frag_add_meeting">Create Meeting</string>
-    <string name="edit_input_object_meeting">Object</string>
-    <string name="edit_input_room_meeting">Room meeting</string>
+    <string name="toolbar_name_frag_add_meeting">Créer réunion</string>
+    <string name="edit_input_object_meeting">Objet</string>
+    <string name="edit_input_room_meeting">Salle de réunion</string>
     <string name="edit_input_date_meeting">Date</string>
-    <string name="edit_input_hour_start_meeting">Start :</string>
-    <string name="edit_input_hour_end_meeting">End :</string>
+    <string name="edit_input_hour_start_meeting">Début :</string>
+    <string name="edit_input_hour_end_meeting">Fin :</string>
     <string name="edit_input_participants_meeting">Participants</string>
-    <string name="edit_input_participants_info">Information</string>
-    <string name="button_cancel">CANCEL</string>
+    <string name="edit_input_participants_info">Informations</string>
+    <string name="button_cancel">ANNULER</string>
     <string name="button_ok">OK</string>
 
     <!-- menu_list_meetings_fragment.xml -->
-    <string name="title_icon_filter_by_date">Filter by date</string>
-    <string name="title_icon_filter_by_room">Filter by room</string>
+    <string name="title_icon_filter_by_date">Filtrer par date</string>
+    <string name="title_icon_filter_by_room">Filtrer par salle</string>
 
     <!-- menu_add_meeting_fragment.xml -->
     <string name="title_icon_reset">Reset</string>
@@ -60,15 +60,15 @@
     <string name="subtext_item_recycler_view">nicolasmoges@gmail.com</string>
 
     <!-- MeetingRoomDialog.java -->
-    <string name="title_dialog_meeting_room">Select Meeting room</string>
+    <string name="title_dialog_meeting_room">Choisir la salle</string>
 
     <!-- DateDialog.java -->
-    <string name="title_dialog_date">Select Date</string>
+    <string name="title_dialog_date">Choisir la date</string>
 
     <!-- ConfirmDeleteDialog.java -->
-    <string name="title_dialog_confirm_delete">Delete meeting</string>
-    <string name="text_dialog_confirm_delete">This meeting will deleted. Confirm ?</string>
-    <string name="btn_yes_dialog_confirm_delete">YES</string>
+    <string name="title_dialog_confirm_delete">Supprimer la réunion</string>
+    <string name="text_dialog_confirm_delete">Cette réunion va être supprimée. Confirmer ?</string>
+    <string name="btn_yes_dialog_confirm_delete">OUI</string>
     <string name="btn_no_dialog_confirm_delete">NO</string>
 
 </resources>

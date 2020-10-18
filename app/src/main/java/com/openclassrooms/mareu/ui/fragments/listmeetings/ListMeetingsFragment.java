@@ -27,6 +27,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
+/**
+ * This class displays the list of all Meeting created by user,
+ * using the @{@link RecyclerViewAdapterListMeetings} class
+ */
 public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener {
 
     private FloatingActionButton fab;
@@ -43,14 +47,12 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
 
+    // Fragment TAG
     private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
 
-    public ListMeetingsFragment() {
-    }
+    public ListMeetingsFragment() { }
 
-    public static ListMeetingsFragment newInstance() {
-        return new ListMeetingsFragment();
-    }
+    public static ListMeetingsFragment newInstance() { return new ListMeetingsFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,12 +94,12 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialization
         initializeIds();
         initializeToolbar();
         initializeList();
         initializeRecyclerView();
         updateBackgroundTxtDisplay();
-
     }
 
     @SuppressLint("RestrictedApi")
