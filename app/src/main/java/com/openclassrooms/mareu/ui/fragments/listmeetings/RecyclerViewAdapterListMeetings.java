@@ -47,7 +47,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         // Icon Status Item
 
         // Get Meeting status
-        int statusMeeting = compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHourStart(), listMeetings.get(position).getHourEnd());
+        int statusMeeting = compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHourStart(), listMeetings.get(position).getHourEnd(), listMeetings.get(position));
+
         // Get corresponding Drawable and update icon
         Drawable drawable = defineIconStatusMeeting(statusMeeting);
         holder.iconStatusItem.setImageDrawable(drawable);
@@ -123,14 +124,14 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * @return : int
      */
 
-    public int compareDateMeetingToCurrentDate(String date, String hourStart, String hourEnd) {
-        final Calendar calendar = Calendar.getInstance();
+    public int compareDateMeetingToCurrentDate(String date, String hourStart, String hourEnd, Meeting meeting) {
 
+        final Calendar calendar = Calendar.getInstance();
         // Current Date
-        String formatYear = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
+      //  String formatYear = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        int currentYear = Integer.parseInt(formatYear);//calendar.get(Calendar.YEAR);
+        int currentYear = calendar.get(Calendar.YEAR);//Integer.parseInt(formatYear);//calendar.get(Calendar.YEAR);
 
         // Date Meeting
         int meetingDay = Integer.parseInt(date.substring(0,2));
@@ -169,6 +170,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * @return : int
      */
     public int compareTimeMeetingToCurrentTime(Calendar calendar, String hourStart, String hourEnd){
+
         // Current Time
         String currentTime = DateAndTimeConverter.timeConverter(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         int currentHour = Integer.parseInt(currentTime.substring(0,2));
@@ -216,6 +218,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * @return : Drawable
      */
     public Drawable defineIconStatusMeeting(int status){
+
         Drawable drawable = context.getResources().getDrawable(R.drawable.ic_lens_light_green_24dp, null);
         switch (status){
             case -1: // Meeting ended - Icon Red

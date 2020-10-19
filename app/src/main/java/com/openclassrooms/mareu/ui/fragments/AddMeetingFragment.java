@@ -161,6 +161,8 @@ public class AddMeetingFragment extends Fragment {
         }
         // Reset text Inputs
         clearTextInputsFields();
+        // Reset error enabled display
+        resetErrorEnabled();
 
         return super.onOptionsItemSelected(item);
     }
@@ -216,6 +218,8 @@ public class AddMeetingFragment extends Fragment {
                     MainActivity.getListEmployeesFragment().resetSelectionParameter();
                     // Reset text inputs
                     clearTextInputsFields();
+                    // Reset error enabled
+                    resetErrorEnabled();
                     // Remove AddMeetingFragment from stack
                     parentActivity.getSupportFragmentManager().popBackStack();
                 }
@@ -225,10 +229,10 @@ public class AddMeetingFragment extends Fragment {
                     // Create New Meeting
                     Meeting meeting = createNewMeeting();
                     parentActivity.getListApiService().addMeeting(meeting);
-
                     // Reset text inputs for next Meeting creation
                     clearTextInputsFields();
-
+                    // Reset error enabled
+                    resetErrorEnabled();
                     // Remove AddMeetingFragment from stack
                     parentActivity.getSupportFragmentManager().popBackStack();
                 }
@@ -439,4 +443,10 @@ public class AddMeetingFragment extends Fragment {
      * To reset "selection" parameter value. Used when TextInputEditText are cleaned
      */
     public void resetSelectionParameter(){ selection = ""; }
+
+    public void resetErrorEnabled(){
+        if(hourEndLayout.isErrorEnabled()){
+            hourEndLayout.setErrorEnabled(false);
+        }
+    }
 }

@@ -53,23 +53,23 @@ public abstract class ListMeetingsGenerator {
 
     public static ArrayList<Meeting> LIST_MEETINGS = new ArrayList<Meeting>(
             Arrays.asList(
-                    new Meeting("Kick-off meeting","Faraday","08/10/19",
+                    new Meeting("Kick-off meeting","Faraday","08/10/2019",
                             "10:00", "11:00", "Lancement du projet", LIST_EMPLOYEE_MEETING_1),
-                    new Meeting("Code review", "Maxwell", "10/08/20",
+                    new Meeting("Code review", "Maxwell", "10/08/2020",
                             "11:00", "12:00","Revue mise à jour 1.2", LIST_EMPLOYEE_MEETING_2),
-                    new Meeting("Point hebdo", "Planck", "12/08/20",
+                    new Meeting("Point hebdo", "Planck", "12/08/2020",
                             "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
-                    new Meeting("Entretien annuel", "Einstein", "18/10/20",
+                    new Meeting("Entretien annuel", "Einstein", "18/10/2020",
                             "20:00", "20:59", "Point individuel", LIST_EMPLOYEE_MEETING_4),
-                    new Meeting("Point hebdo", "Einstein", "18/10/20",
+                    new Meeting("Point hebdo", "Einstein", "18/10/2020",
                             "20:00", "21:00", "Point d'avancement", LIST_EMPLOYEE_MEETING_5),
-                    new Meeting("Point hebdo", "Feynman", "18/10/20",
+                    new Meeting("Point hebdo", "Feynman", "18/10/2020",
                             "21:00", "21:30", "Point d'avancement", LIST_EMPLOYEE_MEETING_6),
-                    new Meeting("Point hebdo", "Planck", "20/10/20",
+                    new Meeting("Point hebdo", "Planck", "20/10/2020",
                             "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
-                    new Meeting("Revue spec", "Planck", "21/11/20",
+                    new Meeting("Revue spec", "Planck", "21/11/2020",
                             "9:00", "10:00", "", LIST_EMPLOYEE_MEETING_4),
-                    new Meeting("Validation essais", "Planck", "20/08/22",
+                    new Meeting("Validation essais", "Planck", "20/08/2022",
                             "10:00", "11:00", "", LIST_EMPLOYEE_MEETING_1)
             )
     );

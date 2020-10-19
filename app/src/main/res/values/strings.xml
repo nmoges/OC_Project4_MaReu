@@ -2,16 +2,18 @@
     <string name="app_name">MaReuApplication</string>
 
     <!-- List of room names -->
-    <string name="room_1">Feynman</string>
-    <string name="room_2">Bohr</string>
-    <string name="room_3">Heisenberg</string>
-    <string name="room_4">Newton</string>
-    <string name="room_5">Dirac</string>
-    <string name="room_6">Faraday</string>
-    <string name="room_7">Planck</string>
-    <string name="room_8">Maxwell</string>
-    <string name="room_9">Einstein</string>
-    <string name="room_10">Pauli</string>
+    <string name="room_1">Bohr</string>
+    <string name="room_2">Dirac</string>
+    <string name="room_3">Einstein</string>
+    <string name="room_4">Faraday</string>
+    <string name="room_5">Feynman</string>
+    <string name="room_6">Heisenberg</string>
+    <string name="room_7">Maxwell</string>
+    <string name="room_8">Newton</string>
+    <string name="room_9">Pauli</string>
+    <string name="room_10">Planck</string>
+
+
 
     <!-- ListMeetingsFragment.java -->
     <string name="toolbar_name_list_meeting_activity">Me Réu</string>

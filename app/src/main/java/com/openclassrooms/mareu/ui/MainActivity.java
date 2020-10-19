@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         listApiService = DI.getListApiService();
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
-        if(fragment == null){
-            Log.i("FRAGMENT_DE_MERDe", "null");
-        }
     }
 
     @Override
@@ -82,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.popBackStack();
                 // Reset text inputs
                 fragment.clearTextInputsFields();
+                // Reset Error enable display
+                fragment.resetErrorEnabled();
             }
             else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
                 ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);

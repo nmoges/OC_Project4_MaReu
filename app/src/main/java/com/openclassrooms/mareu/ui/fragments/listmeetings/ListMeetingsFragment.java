@@ -22,10 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
-import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 /**
  * This class displays the list of all Meeting created by user,
@@ -81,7 +79,6 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -104,14 +101,15 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list_meetings_fragment, menu);
-    }
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) { inflater.inflate(R.menu.menu_list_meetings_fragment, menu); }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.reset_filters_item_menu:
+                // TODO() : To implement
+                break;
             case R.id.filter_by_date_item_menu:
                 // TODO() : To implement
                 break;
@@ -123,9 +121,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeList() {
-        listMeetings = parentActivity.getListApiService().getListMeetings();
-    }
+    public void initializeList() { listMeetings = parentActivity.getListApiService().getListMeetings(); }
 
     //TODO C'est plus le boulot de l'activity de gérer l'action bar
     //Et comment faire ?

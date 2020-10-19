@@ -1,5 +1,7 @@
 package com.openclassrooms.mareu.utils;
 
+import android.util.Log;
+
 /**
  * This class enables conversion of time and date values into String values to display
  */
@@ -30,6 +32,6 @@ public class DateAndTimeConverter {
         // AA
         convertedDate = convertedDate + year;
 
-        return convertedDate; // format : JJ/MM/AA
+        return convertedDate; // format : JJ/MM/AAAA
     }
 }
