@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         listApiService = DI.getListApiService();
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
-        if(fragment == null){
-            Log.i("FRAGMENT_DE_MERDe", "null");
-        }
     }
 
     @Override
