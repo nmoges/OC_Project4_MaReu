@@ -142,20 +142,34 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         int meetingMonth = Integer.parseInt(date.substring(3,5));
         int meetingYear = Integer.parseInt(date.substring(6));
 
+        Log.i("CHECK_HOUR", "Start :" + hourStart);
+        Log.i("CHECK_HOUR", "End :" + hourEnd);
+        Log.i("CHECK_HOUR", "date :" + date);
         // Compare Year
         if(meetingYear < currentYear){
+            Log.i("CHECK_HOUR", "1");
             return -1; }
         else if(meetingYear > currentYear) {
+            Log.i("CHECK_HOUR", "2");
             return 1; }
         else{
             // Compare Month
-            if(meetingMonth < currentMonth){ return -1; }
-            else if(meetingMonth > currentMonth) { return 1; }
+            if(meetingMonth < currentMonth){
+                Log.i("CHECK_HOUR", "3");
+                return -1; }
+            else if(meetingMonth > currentMonth) {
+                Log.i("CHECK_HOUR", "4");
+                return 1; }
             else{
                 // Compare Day
-                if(meetingDay < currentDay){ return -1; }
-                else if(meetingDay > currentDay) { return 1; }
+                if(meetingDay < currentDay){
+                    Log.i("CHECK_HOUR", "5");
+                    return -1; }
+                else if(meetingDay > currentDay) {
+                    Log.i("CHECK_HOUR", "6");
+                    return 1; }
                 else{
+                    Log.i("CHECK_HOUR", "7");
                     return compareTimeMeetingToCurrentTime(calendar, hourStart, hourEnd);
                 }
             }

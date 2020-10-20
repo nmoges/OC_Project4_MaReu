@@ -19,20 +19,20 @@ import java.util.List;
 
 public class MeetingRoomDialog extends DialogFragment {
 
-    private TextInputEditText textInput;
+    // Interface
+    private InputTextChangeCallback callback;
 
-    public MeetingRoomDialog(){ }
+    // Current value displayed
+    private String currentValue;
 
-    public MeetingRoomDialog(TextInputEditText textInput){
-        this.textInput = textInput;
+    public MeetingRoomDialog(){ /* Empty constructor */ }
+
+    public MeetingRoomDialog(InputTextChangeCallback callback){
+        this.callback = callback;
     }
 
-    /**
-     * To update DatePickerMeetingDialog textInput attribute with current TextInputEditText
-     * @param textInput : TextInputEditText
-     */
-    public void setTextInput(TextInputEditText textInput){
-        this.textInput = textInput;
+    public void setCallback(InputTextChangeCallback callback){
+        this.callback = callback;
     }
 
     /**
@@ -52,7 +52,7 @@ public class MeetingRoomDialog extends DialogFragment {
 
         // Set Builder
         builder.setView(inflater.inflate(R.layout.layout_dialog_meeting_rooms, null))
-               .setTitle(R.string.title_dialog_meeting_room);
+                .setTitle(R.string.title_dialog_meeting_room);
 
         return builder.create();
     }
@@ -86,15 +86,13 @@ public class MeetingRoomDialog extends DialogFragment {
 
         for(int i = 0; i < rooms.size(); i++){
             rooms.get(i).setOnClickListener((View view) -> {
-                    Button button = (Button) view;
-
-                    // Write selected room on text_input_room_meeting from fragment_add_meeting
-                    textInput.setText(button.getText().toString());
-                    getDialog().cancel();
-                }
+                        // Get name Meeting from button
+                        String roomName = ((Button) view).getText().toString();
+                        callback.onSetMeetingRoom(roomName);
+                        // Close Dialog
+                        getDialog().cancel();
+                    }
             );
         }
-
-
     }
 }

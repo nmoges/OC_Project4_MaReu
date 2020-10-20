@@ -27,8 +27,8 @@ public class DateAndTimeConverter {
         if(day < 10){ convertedDate = "0" + convertedDate + day;}
         else{convertedDate = convertedDate + day; }
         // MM
-        if(month+1 < 10){ convertedDate = convertedDate +  "/0" + (month+1) + "/"; }
-        else{ convertedDate = convertedDate + "/" + (month+1) + "/"; }
+        if(month < 10){ convertedDate = convertedDate +  "/0" + month + "/"; }
+        else{ convertedDate = convertedDate + "/" + month + "/"; }
         // AA
         convertedDate = convertedDate + year;
 

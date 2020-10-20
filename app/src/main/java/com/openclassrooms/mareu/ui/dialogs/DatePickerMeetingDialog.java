@@ -8,11 +8,9 @@ import android.widget.DatePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
-import java.util.Objects;
 
 /**
  * Class used to display a DatePickerDialog to allow user to choose
@@ -22,22 +20,23 @@ import java.util.Objects;
 public class DatePickerMeetingDialog extends DialogFragment {
 
     private Context context;
-    private TextInputEditText textInput;
+    // Dialog
     private DatePickerDialog datePickerDialog;
+    // Interface
+    private InputTextChangeCallback callback;
+    // Current value displayed
+    private String currentValue;
 
-    public DatePickerMeetingDialog(){ }
+    public DatePickerMeetingDialog(){/* Empty constructor */}
 
-    public DatePickerMeetingDialog(Context context, TextInputEditText textInput){
+    public DatePickerMeetingDialog(Context context, String currentValue, InputTextChangeCallback callback){
         this.context = context;
-        this.textInput = textInput;
+        this.currentValue = currentValue;
+        this.callback = callback;
     }
 
-    /**
-     * To update DatePickerMeetingDialog textInput attribute with current TextInputEditText
-     * @param textInput : TextInputEditText
-     */
-    public void setTextInput(TextInputEditText textInput) {
-        this.textInput = textInput;
+    public void setCallback(InputTextChangeCallback callback){
+        this.callback = callback;
     }
 
     /**
@@ -54,34 +53,29 @@ public class DatePickerMeetingDialog extends DialogFragment {
         int monthToSet;
         int dayToSet;
 
-        // Initialize date data to display
-        if(!Objects.requireNonNull(textInput.getText()).toString().equals("")){
-            // If a date has already been selected
-            String date = textInput.getText().toString();
-            dayToSet = Integer.parseInt(date.substring(0,2));
-            monthToSet = Integer.parseInt(date.substring(3,5)) - 1;
-            yearToSet = Integer.parseInt(date.substring(6));
+        // Extract day, month, year in a String[3] tab
+        String[] parts = currentValue.split("/");
+        if(parts.length >= 3){
+            // If a date is already displayed, parts[] contains previous values
+            dayToSet = Integer.parseInt(parts[0]);
+            monthToSet = Integer.parseInt(parts[1]);
+            yearToSet = Integer.parseInt(parts[2]);
         }
         else{
-            // If first display of the Dialog, no date selected yet
+            // else no date displayed, then display current values from Calendar instance
             final Calendar calendar = Calendar.getInstance();
             yearToSet = calendar.get(Calendar.YEAR);
-            monthToSet = calendar.get(Calendar.MONTH);
+            monthToSet = calendar.get(Calendar.MONTH) + 1;
             dayToSet = calendar.get(Calendar.DAY_OF_MONTH);
         }
 
-        // Create DatePickerDialog instance
-        datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String dateToDisplay = "";
-
-                // Format JJ/MM/AAAA
-                dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);
-                // Update Date TextInputEditText in AddMeetinFragment
-                textInput.setText(dateToDisplay);
-            }
-        }, yearToSet, monthToSet, dayToSet);
+        // Create DatePickerMeetingDialog
+        datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme, (DatePicker view, int year, int month, int day) -> {
+            // Format : DD/MM/YYYY
+            String dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);
+            callback.onSetDate(dateToDisplay);
+        }
+                , yearToSet, monthToSet, dayToSet);
 
         return datePickerDialog;
     }

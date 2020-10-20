@@ -82,7 +82,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
 
         listEmployees = parentActivity.getListApiService().getListEmployees();
 
-        initializeRecyclerView();
+        initializeRecyclerView(view);
 
         initializeToolbar();
 
@@ -140,8 +140,8 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
         parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
     }
 
-    private void initializeRecyclerView(){
-        recyclerView = requireActivity().findViewById(R.id.recycler_view_list_employees);
+    private void initializeRecyclerView(View view){
+        recyclerView = view.findViewById(R.id.recycler_view_list_employees);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterListEmployees = new RecyclerViewAdapterListEmployees(listEmployees, this);

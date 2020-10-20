@@ -17,17 +17,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
 import com.openclassrooms.mareu.ui.dialogs.FilterRoomDialog;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -86,16 +83,6 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = (MainActivity) getActivity();
         return inflater.inflate(R.layout.fragment_list_meetings, container, false);
@@ -106,10 +93,10 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         super.onViewCreated(view, savedInstanceState);
 
         // Initialization
-        initializeIds();
+        initializeIds(view);
         initializeToolbar();
         initializeList();
-        initializeRecyclerView();
+        initializeRecyclerView(view);
         updateBackgroundTxtDisplay();
     }
 
@@ -148,10 +135,10 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // 2) pour tous les objets gérés par le parent, il faut récupérer l'instance de l'activité, la caster en ton interface
     // Et appeler l'action que tu veux exécuter
     // C'est principalement le cas pour le changement de fragment
-    public void initializeIds() {
-        toolbar = parentActivity.findViewById(R.id.toolbar_list_meeting_fragment);
-        fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
-        backgroundText = parentActivity.findViewById(R.id.background_txt);
+    public void initializeIds(View view) {
+        toolbar = view.findViewById(R.id.toolbar_list_meeting_fragment);
+        fab = view.findViewById(R.id.fab_list_meetings_fragment);
+        backgroundText = view.findViewById(R.id.background_txt);
     }
 
 
@@ -161,18 +148,15 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * - Else no display of 'No Meetings" message
      */
     public void updateBackgroundTxtDisplay() {
-        if (listMeetings.size() == 0) {
-            backgroundText.setVisibility(View.VISIBLE);
-        } else {
-            backgroundText.setVisibility(View.INVISIBLE);
-        }
+        if (listMeetings.size() == 0) { backgroundText.setVisibility(View.VISIBLE); }
+        else { backgroundText.setVisibility(View.INVISIBLE); }
     }
 
     /**
      * Initializes adapter and recyclerview display
      */
-    public void initializeRecyclerView() {
-        recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
+    public void initializeRecyclerView(View view){
+        recyclerView = view.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this, getContext());
@@ -182,7 +166,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     /**
      * This method initialize Toolbar Fragment, using parent activity
      */
-    private void initializeToolbar() {
+    private void initializeToolbar(){
         // Set Support Action Bar to modify Toolbar title
         parentActivity.setSupportActionBar(toolbar);
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
