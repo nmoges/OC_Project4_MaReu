@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     // Contains all Meeting to display
     private List<Meeting> listMeetings;
-
+    private List<Meeting> listToDisplay;
     // For handling user actions
     private final ListMeetingActionListener listener;
 
@@ -31,6 +32,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener, Context context) {
         this.listMeetings = listMeetings;
+        this.listToDisplay = new ArrayList<>();
+        this.listToDisplay.addAll(listMeetings);
         this.listener = listener;
         this.context = context;
     }
@@ -47,7 +50,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         // Icon Status Item
 
         // Get Meeting status
-        int statusMeeting = compareDateMeetingToCurrentDate(listMeetings.get(position).getDate(), listMeetings.get(position).getHourStart(), listMeetings.get(position).getHourEnd(), listMeetings.get(position));
+        int statusMeeting = compareDateMeetingToCurrentDate(listToDisplay.get(position).getDate(), listToDisplay.get(position).getHourStart(), listToDisplay.get(position).getHourEnd(), listMeetings.get(position));
 
         // Get corresponding Drawable and update icon
         Drawable drawable = defineIconStatusMeeting(statusMeeting);
@@ -55,41 +58,42 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         // Title Item : Object Meeting + Name Meeting room
         String title = "";
-        if(listMeetings.get(position).getObjectMeeting().length() < 17){
-            title = listMeetings.get(position).getObjectMeeting() + " (" +
-                    listMeetings.get(position).getMeetingRoom().toUpperCase() + ")";
+        if(listToDisplay.get(position).getObjectMeeting().length() < 17){
+            title = listToDisplay.get(position).getObjectMeeting() + " (" +
+                    listToDisplay.get(position).getMeetingRoom().toUpperCase() + ")";
         }
         else{
-            title = listMeetings.get(position).getObjectMeeting().substring(0,17) + "... ("
-                    + listMeetings.get(position).getMeetingRoom().toUpperCase() + ")";
+            title = listToDisplay.get(position).getObjectMeeting().substring(0,17) + "... ("
+                    + listToDisplay.get(position).getMeetingRoom().toUpperCase() + ")";
         }
         holder.titleItem.setText(title);
 
         // Text Item : Date + Start hour + End hour
-        String text = listMeetings.get(position).getDate() + " - " + listMeetings.get(position).getHourStart()
-                        + " - " + listMeetings.get(position).getHourEnd();
+        String text = listToDisplay.get(position).getDate() + " - " + listToDisplay.get(position).getHourStart()
+                        + " - " + listToDisplay.get(position).getHourEnd();
         holder.textItem.setText(text);
 
         // Subtext Item : email first Employee + "..." (if several Employee)
         String subText = "";
-        if (listMeetings.get(position).getListParticipants().size() > 1) {
-            subText = listMeetings.get(position).getListParticipants().get(0).getEmail() + "...";
+        if (listToDisplay.get(position).getListParticipants().size() > 1) {
+            subText = listToDisplay.get(position).getListParticipants().get(0).getEmail() + "...";
         } else {
-            subText = listMeetings.get(position).getListParticipants().get(0).getEmail();
+            subText = listToDisplay.get(position).getListParticipants().get(0).getEmail();
         }
 
         holder.subTextItem.setText(subText);
 
         // Icon Delete Item
         holder.iconDeleteItem.setOnClickListener((View view) -> {
-                    listener.onDeleteItem(listMeetings.get(position));
+                    listener.onDeleteItem(listToDisplay.get(position));
+                    //listToDisplay.remove(position);
                 }
         );
     }
 
     @Override
     public int getItemCount() {
-        return listMeetings.size();
+        return listToDisplay.size();
     }
 
     static class ViewHolderItemMeeting extends RecyclerView.ViewHolder {
@@ -128,7 +132,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         final Calendar calendar = Calendar.getInstance();
         // Current Date
-      //  String formatYear = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
+       //  String formatYear = Integer.toString(calendar.get(Calendar.YEAR)).substring(2);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentYear = calendar.get(Calendar.YEAR);//Integer.parseInt(formatYear);//calendar.get(Calendar.YEAR);
@@ -232,5 +236,33 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
                 break;
         }
         return drawable;
+    }
+
+    /**
+     * Update current displayed list with new filtered list
+     * @param newListMeetings : ArrayList<Meeting>
+     */
+    public void updateListMeetingToDisplay(final ArrayList<Meeting> newListMeetings){
+        listToDisplay.clear();
+        listToDisplay.addAll(newListMeetings);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Reset filters by restoring all Meeting item in listToDisplay
+     */
+    public void resetDisplayAfterFilterRemoved(){
+        listToDisplay.clear();
+        listToDisplay.addAll(listMeetings);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * This method is called by Delete Dialog from ListMeetingsFragment to confirm
+     * @param meeting
+     */
+    public void deleteMeetingInListDisplayed(Meeting meeting){
+        listToDisplay.remove(meeting);
+        notifyDataSetChanged();
     }
 }

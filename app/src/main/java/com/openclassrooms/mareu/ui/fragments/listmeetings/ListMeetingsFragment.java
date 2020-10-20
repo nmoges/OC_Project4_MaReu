@@ -17,12 +17,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
+import com.openclassrooms.mareu.ui.dialogs.FilterRoomDialog;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -48,6 +53,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // Fragment TAG
     private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
 
+    // tab containing all status filter
+    private boolean[] tabRoomFiltersSelected;
+
     public ListMeetingsFragment() { }
 
     public static ListMeetingsFragment newInstance() { return new ListMeetingsFragment(); }
@@ -56,11 +64,17 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        // Initialize tab
+        tabRoomFiltersSelected = new boolean[10];
+        if(savedInstanceState != null){
+            // Get existing tab value after configuration change
+            tabRoomFiltersSelected = savedInstanceState.getBooleanArray("FiltersRoom");
+        }
+        else{
+            // If not : first launch (all meeting rooms selected)
+            Arrays.fill(tabRoomFiltersSelected, true);
+        }
     }
 
     @Override
@@ -108,13 +122,18 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
         switch (item.getItemId()) {
             case R.id.reset_filters_item_menu:
-                // TODO() : To implement
+                // Reset tab values
+                Arrays.fill(tabRoomFiltersSelected, true);
+                // Reset display list
+                adapterListMeetings.resetDisplayAfterFilterRemoved();
                 break;
             case R.id.filter_by_date_item_menu:
                 // TODO() : To implement
                 break;
             case R.id.filter_by_room_item_menu:
-                // TODO() : To implement
+
+                FilterRoomDialog filterRoomDialog = new FilterRoomDialog(tabRoomFiltersSelected);
+                filterRoomDialog.show(getParentFragmentManager(), "TAG");
                 break;
         }
 
@@ -134,6 +153,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
         backgroundText = parentActivity.findViewById(R.id.background_txt);
     }
+
 
     /**
      * Updates display of the background text according to the size of listMeetings :
@@ -214,6 +234,8 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         adapterListMeetings.notifyDataSetChanged();
         // Update background text display
         updateBackgroundTxtDisplay();
+
+        adapterListMeetings.deleteMeetingInListDisplayed(meeting);
     }
 
     /**
@@ -224,4 +246,69 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void onDeleteItem(Meeting meeting) {
         confirmSuppress(meeting);
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBooleanArray("FiltersRoom", tabRoomFiltersSelected);
+    }
+
+    public void filterListByRoomSelection(){
+        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+        ArrayList<String> filterNames = new ArrayList<>();
+
+        // Extract filter name
+        for(int i =0; i < tabRoomFiltersSelected.length; i++){
+            if(tabRoomFiltersSelected[i]){ // If filter selected
+                switch(i){
+                    case 0: // Room Bohr
+                        filterNames.add("BOHR");
+                        break;
+                    case 1: // Room Dirac
+                        filterNames.add("DIRAC");
+                        break;
+                    case 2: // Room Einstein
+                        filterNames.add("EINSTEIN");
+                        break;
+                    case 3: // Room Faraday
+                        filterNames.add("FARADAY");
+                        break;
+                    case 4: // Room Feynman
+                        filterNames.add("FEYNMAN");
+                        break;
+                    case 5 : // Room Heisenberg
+                        filterNames.add("HEISENBERG");
+                        break;
+                    case 6 : // Room Maxwell
+                        filterNames.add("MAXWELL");
+                        break;
+                    case 7 : // Room Newton
+                        filterNames.add("NEWTON");
+                        break;
+                    case 8: // Room Pauli
+                        filterNames.add("PAULI");
+                        break;
+                    case 9: // Room Planck
+                        filterNames.add("PLANCK");
+                        break;
+                }
+            }
+        }
+
+        // Filter meeting list
+        for(int i = 0; i< listMeetings.size(); i++) {
+            boolean found = false;
+            int j = 0;
+            while (j < filterNames.size() && !found) {
+                if (listMeetings.get(i).getMeetingRoom().toUpperCase().equals(filterNames.get(j))) {
+                    newFilteredListMeeting.add(listMeetings.get(i));
+                    found = true;
+                } else j++;
+            }
+        }
+
+        // Update List
+        adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
+    }
+
 }
