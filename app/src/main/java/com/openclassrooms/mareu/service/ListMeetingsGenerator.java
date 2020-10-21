@@ -59,22 +59,22 @@ public abstract class ListMeetingsGenerator {
                             "11:00", "12:00","Revue mise à jour 1.2", LIST_EMPLOYEE_MEETING_2),
                     new Meeting("Point hebdo", "Planck", "12/08/2020",
                             "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
-                    new Meeting("Entretien annuel", "Einstein", "18/10/2020",
-                            "20:00", "20:59", "Point individuel", LIST_EMPLOYEE_MEETING_4),
-                    new Meeting("Point hebdo", "Einstein", "18/10/2020",
-                            "20:00", "21:00", "Point d'avancement", LIST_EMPLOYEE_MEETING_5),
-                    new Meeting("Point hebdo", "Feynman", "18/10/2020",
+                    new Meeting("Entretien annuel", "Einstein", "21/10/2020",
+                            "8:00", "20:00", "Point individuel", LIST_EMPLOYEE_MEETING_4),
+                    new Meeting("Point hebdo", "Einstein", "21/10/2020",
+                            "10:00", "13:00", "Point d'avancement", LIST_EMPLOYEE_MEETING_5),
+                    new Meeting("Point hebdo", "Feynman", "25/10/2020",
                             "21:00", "21:30", "Point d'avancement", LIST_EMPLOYEE_MEETING_6),
-                    new Meeting("Point hebdo", "Planck", "20/10/2020",
+                    new Meeting("Point hebdo", "Planck", "26/10/2020",
                             "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
-                    new Meeting("Revue spec", "Planck", "21/11/2020",
+                    new Meeting("Revue spec", "Planck", "30/11/2020",
                             "9:00", "10:00", "", LIST_EMPLOYEE_MEETING_4),
-                    new Meeting("Validation essais", "Planck", "20/08/2022",
+                    new Meeting("Validation essais", "Planck", "30/08/2022",
                             "10:00", "11:00", "", LIST_EMPLOYEE_MEETING_1)
             )
     );
 
     public static ArrayList<Meeting> generateListMeetings(){
-        return new ArrayList<>();
+        return LIST_MEETINGS;
     }
 }

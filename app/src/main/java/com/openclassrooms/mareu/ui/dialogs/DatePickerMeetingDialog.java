@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Class used to display a DatePickerDialog to allow user to choose
@@ -77,6 +78,7 @@ public class DatePickerMeetingDialog extends DialogFragment {
         }
                 , yearToSet, monthToSet, dayToSet);
 
+        //datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
         return datePickerDialog;
     }
 }

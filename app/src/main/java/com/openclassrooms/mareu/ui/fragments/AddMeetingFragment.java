@@ -241,8 +241,6 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
                     parentActivity.getSupportFragmentManager().popBackStack();
                 }
         );
-
-
     }
 
     /**
