@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * This Dialog is displayed every time the user clicks on "Room meeting" TextInput of AddMeetingFragment
- * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
+ * Used in @{@link AddMeetingFragment} fragment
  */
 
 public class MeetingRoomDialog extends DialogFragment {

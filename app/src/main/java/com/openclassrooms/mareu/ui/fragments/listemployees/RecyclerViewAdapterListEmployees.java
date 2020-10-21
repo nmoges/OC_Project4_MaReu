@@ -1,6 +1,5 @@
 package com.openclassrooms.mareu.ui.fragments.listemployees;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

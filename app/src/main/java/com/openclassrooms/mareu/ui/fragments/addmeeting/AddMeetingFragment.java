@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.fragments;
+package com.openclassrooms.mareu.ui.fragments.addmeeting;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +30,6 @@ import com.openclassrooms.mareu.ui.MainActivity;
 import com.openclassrooms.mareu.ui.dialogs.TimeType;
 import com.openclassrooms.mareu.utils.TextWatcherTextInput;
 import com.openclassrooms.mareu.utils.TimeComparator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -330,20 +328,12 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      * If all these TextInputLayout contains a text specified by user, then the "Ok" button can be enabled
      */
     public void handleOkBtnClickableStatus() {
-
-        objectMeetingTextWatcher = new TextWatcherTextInput(okButton, roomMeetingInput, dateInput, hourStartInput, hourEndInput, participantsInput);
-        roomMeetingTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, dateInput, hourStartInput, hourEndInput, participantsInput);
-        dateTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, roomMeetingInput, hourStartInput, hourEndInput, participantsInput);
-        hourStartTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, roomMeetingInput, dateInput, hourEndInput, participantsInput);
-        hourEndTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, roomMeetingInput, dateInput, hourStartInput, participantsInput);
-        participantsTextWatcher = new TextWatcherTextInput(okButton, objectMeetingInput, roomMeetingInput, dateInput, hourStartInput, hourEndInput);
-
-        Objects.requireNonNull(objectMeetingLayout.getEditText()).addTextChangedListener(objectMeetingTextWatcher);
-        Objects.requireNonNull(roomMeetingLayout.getEditText()).addTextChangedListener(roomMeetingTextWatcher);
-        Objects.requireNonNull(dateLayout.getEditText()).addTextChangedListener(dateTextWatcher);
-        Objects.requireNonNull(hourStartLayout.getEditText()).addTextChangedListener(hourStartTextWatcher);
-        Objects.requireNonNull(hourEndLayout.getEditText()).addTextChangedListener(hourEndTextWatcher);
-        participantsInput.addTextChangedListener(participantsTextWatcher);
+        objectMeetingLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
+        roomMeetingLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
+        dateLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
+        hourStartLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
+        hourEndLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
+        participantsLayout.getEditText().addTextChangedListener(new TextWatcherTextInput(this));
     }
 
     /**
@@ -456,9 +446,10 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     /**
      * TimeChangeCallback interface implementation :
-     *      - onSetTime(String time, TimeType type) -> updates hourStartInput or hourEndInput TextInputEditText field
-     *      - onSetDate(String date) -> updates dateInput TextInputEditText field
-     *      - onSetMeetingRoom(String nameMeetingRoom) -> updates roomMeetingInput TextInputEditText field
+     *      - onSetTime(String time, TimeType type) : updates hourStartInput or hourEndInput TextInputEditText field
+     *      - onSetDate(String date) : updates dateInput TextInputEditText field
+     *      - onSetMeetingRoom(String nameMeetingRoom) : updates roomMeetingInput TextInputEditText field
+     *      - onCheckInputsTextStatus() : updates okButton status according to TextInputEditText fields and hourEndLayout error status
      */
     @Override
     public void onSetTime(String time, TimeType type) {
@@ -477,20 +468,32 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
         roomMeetingInput.setText(nameMeetingRoom);
     }
 
+    @Override
+    public void onCheckInputsTextStatus() {
+        if(objectMeetingInput.getText().length() > 0 && roomMeetingInput.getText().length() > 0  && dateInput.getText().length() > 0
+            && hourStartInput.getText().length() > 0 && hourEndInput.getText().length() > 0 && participantsInput.getText().length() > 0) {
+            okButton.setEnabled(!compareHourInputsFields());
+        }
+    }
+
     /**
      * Enables error message status displayed for hourEndLayout, if end hour detected is
      * not correct (before start hour)
      */
-    private void compareHourInputsFields(){
+    private boolean compareHourInputsFields(){
         if (hourStartInput.getText().length() > 0 && hourEndInput.getText().length() > 0) {
             TimeComparator timeComparator = new TimeComparator();
             int resultTimeComparator = timeComparator.compare(hourStartInput.getText().toString(), hourEndInput.getText().toString());
             if (resultTimeComparator < 0) {
                 hourEndLayout.setErrorEnabled(true);
                 hourEndLayout.setError(getResources().getString(R.string.error_msg));
-            } else {
+                return true;
+            }
+            else {
                 hourEndLayout.setErrorEnabled(false);
+                return false;
             }
         }
+        return false;
     }
 }

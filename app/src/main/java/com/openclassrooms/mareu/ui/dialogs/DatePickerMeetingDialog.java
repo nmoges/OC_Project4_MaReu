@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Class used to display a DatePickerDialog to allow user to choose
  * a meeting Date
- * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
+ * Used in @{@link AddMeetingFragment} fragment
  */
 public class DatePickerMeetingDialog extends DialogFragment {
 
@@ -66,19 +66,22 @@ public class DatePickerMeetingDialog extends DialogFragment {
             // else no date displayed, then display current values from Calendar instance
             final Calendar calendar = Calendar.getInstance();
             yearToSet = calendar.get(Calendar.YEAR);
-            monthToSet = calendar.get(Calendar.MONTH) + 1;
+            monthToSet = calendar.get(Calendar.MONTH);
             dayToSet = calendar.get(Calendar.DAY_OF_MONTH);
         }
 
         // Create DatePickerMeetingDialog
         datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme, (DatePicker view, int year, int month, int day) -> {
             // Format : DD/MM/YYYY
+
             String dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);
             callback.onSetDate(dateToDisplay);
         }
                 , yearToSet, monthToSet, dayToSet);
 
-        //datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+        // Specify min date
+        datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+
         return datePickerDialog;
     }
 }

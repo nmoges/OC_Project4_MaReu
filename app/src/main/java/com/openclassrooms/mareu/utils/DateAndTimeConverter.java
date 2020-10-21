@@ -1,7 +1,5 @@
 package com.openclassrooms.mareu.utils;
 
-import android.util.Log;
-
 /**
  * This class enables conversion of time and date values into String values to display
  */
@@ -27,6 +25,7 @@ public class DateAndTimeConverter {
         if(day < 10){ convertedDate = "0" + convertedDate + day;}
         else{convertedDate = convertedDate + day; }
         // MM
+        month++;
         if(month < 10){ convertedDate = convertedDate +  "/0" + month + "/"; }
         else{ convertedDate = convertedDate + "/" + month + "/"; }
         // AA

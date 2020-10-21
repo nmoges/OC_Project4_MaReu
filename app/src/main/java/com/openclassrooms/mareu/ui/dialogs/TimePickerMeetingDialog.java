@@ -4,19 +4,19 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import com.openclassrooms.mareu.utils.DateAndTimeConverter;
 import java.util.Calendar;
 
 /**
  * Class used to display a TimePickerDialog to allow user to choose
  * a meeting hour
- * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
+ * Used in @{@link AddMeetingFragment} fragment
  */
 public class TimePickerMeetingDialog extends DialogFragment {
 
