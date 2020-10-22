@@ -1,114 +1,88 @@
 package com.openclassrooms.mareu.ui;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import android.content.res.Configuration;
-import android.os.Bundle;
+
 import com.openclassrooms.mareu.R;
-import com.openclassrooms.mareu.di.DI;
-import com.openclassrooms.mareu.service.ListApiService;
-import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
-import com.openclassrooms.mareu.ui.fragments.InfoMeetingFragment;
-import com.openclassrooms.mareu.ui.fragments.listemployees.ListEmployeesFragment;
 import com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment;
 
 /**
  * Main activity of the application, contains all fragments instances to display
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityCallback {
 
     // Parameters to handle fragments to display
-    private static FragmentManager fragmentManager;
-    private static AddMeetingFragment addMeetingFragment;
-    private static InfoMeetingFragment infoMeetingFragment;
-    private static ListMeetingsFragment listMeetingsFragment;
-    private static ListEmployeesFragment listEmployeesFragment;
-
-    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
-    private String TAG_LIST_EMPLOYEES_FRAGMENT = "TAG_LIST_EMPLOYEES_FRAGMENT";
-
-    // Service
-    private ListApiService listApiService;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpToolbar();
 
-        fragmentManager = getSupportFragmentManager();
-
-        // Initialize fragment instances
-        addMeetingFragment = AddMeetingFragment.newInstance();
-        infoMeetingFragment = InfoMeetingFragment.newInstance();
-        listMeetingsFragment = ListMeetingsFragment.newInstance();
-        listEmployeesFragment = ListEmployeesFragment.newInstance();
-
-        // Initialize service
-        listApiService = DI.getListApiService();
-
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
+        //set the first fragment to [ListMeetingsFragment]
+        changeFragment(ListMeetingsFragment.newInstance(), ListMeetingsFragment.TAG);
     }
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
+    private void setUpToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.toolbar_name_list_meeting_activity);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(getDrawable(R.drawable.ic_arrow_back_white_24dp));
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-    }
-
-    /**
-     * Overriden to handle click on hardware back button
-     */
-    @Override
-    public void onBackPressed(){
-        if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT) != null){
-            if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT).isAdded()){
-                AddMeetingFragment fragment = (AddMeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
-                // Remove AddMeetingFragment from stack
-                fragmentManager.popBackStack();
-                // Reset text inputs
-                fragment.clearTextInputsFields();
-                // Reset Error enable display
-                fragment.resetErrorEnabled();
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    showBack();
+                } else {
+                    hideBAck();
+                }
             }
-            else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
-                ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);
-                // Save selected Employee into String
-                fragment.saveSelectionToForNewMeeting();
-                // Remove ListEmployeesFragment from stack
-                fragmentManager.popBackStack();
-            }
-        }
-        else{ // ListMeetingsFragment is added
-            finish();
+        });
+
+    }
+
+    @Override
+    public void setToolbarTitle(@StringRes int title) {
+        toolbar.setTitle(title);
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
+    @Override
+    public void changeFragment(Fragment fragment, String tag) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_view, fragment, tag)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void showBack() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(getDrawable(R.drawable.ic_arrow_back_white_24dp));
         }
     }
 
-    // Getters for static fragment instances
-    public static AddMeetingFragment getAddMeetingFragment(){
-        return addMeetingFragment;
+    private void hideBAck() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
-    public static ListMeetingsFragment getListMeetingsFragment(){
-        return listMeetingsFragment;
-    }
-
-    public static ListEmployeesFragment getListEmployeesFragment(){
-        return listEmployeesFragment;
-    }
-
-    // Getter for service
-    public ListApiService getListApiService(){
-        return this.listApiService;
+    @Override
+    public void popBack() {
+        getSupportFragmentManager().popBackStack();
     }
 }
