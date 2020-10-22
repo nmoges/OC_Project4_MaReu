@@ -1,6 +1,5 @@
 package com.openclassrooms.mareu.ui.fragments.listemployees;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +123,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
             if(listSelectedEmployee.get(indice).getSelected()){
                 listSelectedEmployee.get(indice).setSelected(false);
                 nbSelectedEmployees--;
+
             }
             else{
                 indice++;
@@ -133,10 +133,12 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
         notifyDataSetChanged();
     }
 
+    // Getter
     public int getNbSelectedEmployees(){
         return this.nbSelectedEmployees;
     }
 
+    // Methods for updates of the number of selected Employee
     public void incrementSelectedEmployees(){
         this.nbSelectedEmployees++;
     }

@@ -2,14 +2,14 @@ package com.openclassrooms.mareu.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.di.DI;
 import com.openclassrooms.mareu.service.ListApiService;
-import com.openclassrooms.mareu.ui.fragments.AddMeetingFragment;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import com.openclassrooms.mareu.ui.fragments.InfoMeetingFragment;
 import com.openclassrooms.mareu.ui.fragments.listemployees.ListEmployeesFragment;
 import com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment;
@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private static InfoMeetingFragment infoMeetingFragment;
     private static ListMeetingsFragment listMeetingsFragment;
     private static ListEmployeesFragment listEmployeesFragment;
+
+    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
+    private String TAG_LIST_EMPLOYEES_FRAGMENT = "TAG_LIST_EMPLOYEES_FRAGMENT";
 
     // Service
     private ListApiService listApiService;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize service
         listApiService = DI.getListApiService();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
     }
 
     @Override
@@ -66,26 +71,25 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed(){
-
-        if(addMeetingFragment.isVisible()){
-            // Remove AddMeetingFragment from stack
-            fragmentManager.popBackStack();
-            // Reset text inputs
-            addMeetingFragment.clearTextInputsFields();
-            // Reset CheckBox selection
-            MainActivity.getListEmployeesFragment().resetSelectionParameter();
+        if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT) != null){
+            if(getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT).isAdded()){
+                AddMeetingFragment fragment = (AddMeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_ADD_MEETING_FRAGMENT);
+                // Remove AddMeetingFragment from stack
+                fragmentManager.popBackStack();
+                // Reset text inputs
+                fragment.clearTextInputsFields();
+                // Reset Error enable display
+                fragment.resetErrorEnabled();
+            }
+            else if(getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT).isAdded()){
+                ListEmployeesFragment fragment = (ListEmployeesFragment) getSupportFragmentManager().findFragmentByTag(TAG_LIST_EMPLOYEES_FRAGMENT);
+                // Save selected Employee into String
+                fragment.saveSelectionToForNewMeeting();
+                // Remove ListEmployeesFragment from stack
+                fragmentManager.popBackStack();
+            }
         }
-        else if (infoMeetingFragment.isVisible()){
-            // TODO() : fragment InfoMeetingFragment to implement
-        }
-        else if(listEmployeesFragment.isVisible()){
-            // Remove AddMeetingFragment from stack
-            fragmentManager.popBackStack();
-            // Save selected employees for meeting creation
-            listEmployeesFragment.saveSelectionToForNewMeeting();
-        }
-        else { // ListMeetingsFragment.isVisible()
-            // Else no fragment visible, then quit application
+        else{ // ListMeetingsFragment is added
             finish();
         }
     }

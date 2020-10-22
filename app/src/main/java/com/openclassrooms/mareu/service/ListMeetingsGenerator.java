@@ -39,16 +39,38 @@ public abstract class ListMeetingsGenerator {
                 ListEmployeesGenerator.generateListEmployee().get(21) // Vincent
             );
 
+    private static List<Employee> LIST_EMPLOYEE_MEETING_5 = Arrays.asList(
+            ListEmployeesGenerator.generateListEmployee().get(10),
+            ListEmployeesGenerator.generateListEmployee().get(12),
+            ListEmployeesGenerator.generateListEmployee().get(9)
+
+    );
+
+    private static List<Employee> LIST_EMPLOYEE_MEETING_6 = Arrays.asList(
+            ListEmployeesGenerator.generateListEmployee().get(4),
+            ListEmployeesGenerator.generateListEmployee().get(5)
+    );
+
     public static ArrayList<Meeting> LIST_MEETINGS = new ArrayList<Meeting>(
             Arrays.asList(
-                    new Meeting("Kick-off meeting","Faraday","08/10/20",
-                            "10:00","Lancement du projet", LIST_EMPLOYEE_MEETING_1),
-                    new Meeting("Code review", "Maxwell", "10/08/20",
-                            "11:00", "Revue mise à jour 1.2", LIST_EMPLOYEE_MEETING_2),
-                    new Meeting("Point hebdo", "Planck", "11/08/20",
-                            "11:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
-                    new Meeting("Entretien annuel", "Einstein", "11/08/20",
-                            "14:30", "Point individuel", LIST_EMPLOYEE_MEETING_4)
+                    new Meeting("Kick-off meeting","Faraday","08/10/2019",
+                            "10:00", "11:00", "Lancement du projet", LIST_EMPLOYEE_MEETING_1),
+                    new Meeting("Code review", "Maxwell", "10/08/2020",
+                            "11:00", "12:00","Revue mise à jour 1.2", LIST_EMPLOYEE_MEETING_2),
+                    new Meeting("Point hebdo", "Planck", "12/08/2020",
+                            "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
+                    new Meeting("Entretien annuel", "Einstein", "21/10/2020",
+                            "8:00", "20:00", "Point individuel", LIST_EMPLOYEE_MEETING_4),
+                    new Meeting("Point hebdo", "Einstein", "21/10/2020",
+                            "10:00", "13:00", "Point d'avancement", LIST_EMPLOYEE_MEETING_5),
+                    new Meeting("Point hebdo", "Feynman", "25/10/2020",
+                            "21:00", "21:30", "Point d'avancement", LIST_EMPLOYEE_MEETING_6),
+                    new Meeting("Point hebdo", "Planck", "26/10/2020",
+                            "11:00", "12:00", "Avancement de la semaine", LIST_EMPLOYEE_MEETING_3),
+                    new Meeting("Revue spec", "Planck", "30/11/2020",
+                            "9:00", "10:00", "", LIST_EMPLOYEE_MEETING_4),
+                    new Meeting("Validation essais", "Planck", "30/08/2022",
+                            "10:00", "11:00", "", LIST_EMPLOYEE_MEETING_1)
             )
     );
 

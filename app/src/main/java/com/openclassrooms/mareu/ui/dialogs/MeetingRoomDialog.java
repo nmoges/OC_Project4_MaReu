@@ -7,26 +7,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * This Dialog is displayed every time the user clicks on "Room meeting" TextInput of AddMeetingFragment
- * Used in @{@link com.openclassrooms.mareu.ui.fragments.AddMeetingFragment} fragment
+ * Used in @{@link AddMeetingFragment} fragment
  */
 
 public class MeetingRoomDialog extends DialogFragment {
 
-    private TextInputEditText textInput;
+    // Interface
+    private InputTextChangeCallback callback;
 
-    public MeetingRoomDialog(TextInputEditText textInput){
-        this.textInput = textInput;
+    // Current value displayed
+    private String currentValue;
+
+    public MeetingRoomDialog(){ /* Empty constructor */ }
+
+    public MeetingRoomDialog(InputTextChangeCallback callback){
+        this.callback = callback;
     }
 
+    public void setCallback(InputTextChangeCallback callback){
+        this.callback = callback;
+    }
+
+    /**
+     * This method creates a new MeetingRoomDialog and show it
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+
+        // Retain current DialogFragment instance
+        setRetainInstance(true);
 
         // Create Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -36,7 +52,8 @@ public class MeetingRoomDialog extends DialogFragment {
 
         // Set Builder
         builder.setView(inflater.inflate(R.layout.layout_dialog_meeting_rooms, null))
-               .setTitle(R.string.title_dialog_meeting_room);
+                .setTitle(R.string.title_dialog_meeting_room);
+
         return builder.create();
     }
 
@@ -46,7 +63,6 @@ public class MeetingRoomDialog extends DialogFragment {
     @Override
     public void onResume(){
         super.onResume();
-
         handleMeetingRoomSelection();
     }
 
@@ -70,12 +86,12 @@ public class MeetingRoomDialog extends DialogFragment {
 
         for(int i = 0; i < rooms.size(); i++){
             rooms.get(i).setOnClickListener((View view) -> {
-                    Button button = (Button) view;
-
-                    // Write selected room on text_input_room_meeting from fragment_add_meeting
-                    textInput.setText(button.getText().toString());
-                    getDialog().cancel();
-                }
+                        // Get name Meeting from button
+                        String roomName = ((Button) view).getText().toString();
+                        callback.onSetMeetingRoom(roomName);
+                        // Close Dialog
+                        getDialog().cancel();
+                    }
             );
         }
     }

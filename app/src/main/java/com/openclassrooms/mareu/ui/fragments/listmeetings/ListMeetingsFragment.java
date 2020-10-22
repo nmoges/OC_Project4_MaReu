@@ -4,15 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,20 +17,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
-import com.openclassrooms.mareu.event.DeleteMeetingEvent;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
-import com.openclassrooms.mareu.ui.dialogs.ConfirmDeleteDialog;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
+import com.openclassrooms.mareu.ui.dialogs.FilterRoomDialog;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * This class displays the list of all Meeting created by user,
+ * using the @{@link RecyclerViewAdapterListMeetings} class
+ */
 public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener {
 
     private FloatingActionButton fab;
@@ -50,40 +46,39 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
 
-    public ListMeetingsFragment() {
-    }
+    // Fragment TAG
+    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
 
-    public static ListMeetingsFragment newInstance() {
-        return new ListMeetingsFragment();
-    }
+    // tab containing all status filter
+    private boolean[] tabRoomFiltersSelected;
+
+    public ListMeetingsFragment() { }
+
+    public static ListMeetingsFragment newInstance() { return new ListMeetingsFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        // Initialize tab
+        tabRoomFiltersSelected = new boolean[10];
+        if(savedInstanceState != null){
+            // Get existing tab value after configuration change
+            tabRoomFiltersSelected = savedInstanceState.getBooleanArray("FiltersRoom");
+        }
+        else{
+            // If not : first launch (all meeting rooms selected)
+            Arrays.fill(tabRoomFiltersSelected, true);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         handleFabClick();
+        initializeList();
         adapterListMeetings.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -96,37 +91,42 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initializeIds();
+        // Initialization
+        initializeIds(view);
         initializeToolbar();
         initializeList();
-        initializeRecyclerView();
+        initializeRecyclerView(view);
         updateBackgroundTxtDisplay();
     }
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list_meetings_fragment, menu);
-    }
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) { inflater.inflate(R.menu.menu_list_meetings_fragment, menu); }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.reset_filters_item_menu:
+                // Reset tab values
+                Arrays.fill(tabRoomFiltersSelected, true);
+                // Reset display list
+                adapterListMeetings.resetDisplayAfterFilterRemoved();
+                break;
             case R.id.filter_by_date_item_menu:
                 // TODO() : To implement
                 break;
             case R.id.filter_by_room_item_menu:
-                // TODO() : To implement
+
+                FilterRoomDialog filterRoomDialog = new FilterRoomDialog(tabRoomFiltersSelected);
+                filterRoomDialog.show(getParentFragmentManager(), "TAG");
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeList() {
-        listMeetings = parentActivity.getListApiService().getListMeetings();
-    }
+    public void initializeList() { listMeetings = parentActivity.getListApiService().getListMeetings(); }
 
     //TODO C'est plus le boulot de l'activity de gérer l'action bar
     //Et comment faire ?
@@ -134,11 +134,12 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // 2) pour tous les objets gérés par le parent, il faut récupérer l'instance de l'activité, la caster en ton interface
     // Et appeler l'action que tu veux exécuter
     // C'est principalement le cas pour le changement de fragment
-    public void initializeIds() {
-        toolbar = parentActivity.findViewById(R.id.toolbar_list_meeting_fragment);
-        fab = parentActivity.findViewById(R.id.fab_list_meetings_fragment);
-        backgroundText = parentActivity.findViewById(R.id.background_txt);
+    public void initializeIds(View view) {
+        toolbar = view.findViewById(R.id.toolbar_list_meeting_fragment);
+        fab = view.findViewById(R.id.fab_list_meetings_fragment);
+        backgroundText = view.findViewById(R.id.background_txt);
     }
+
 
     /**
      * Updates display of the background text according to the size of listMeetings :
@@ -146,28 +147,25 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * - Else no display of 'No Meetings" message
      */
     public void updateBackgroundTxtDisplay() {
-        if (listMeetings.size() == 0) {
-            backgroundText.setVisibility(View.VISIBLE);
-        } else {
-            backgroundText.setVisibility(View.INVISIBLE);
-        }
+        if (listMeetings.size() == 0) { backgroundText.setVisibility(View.VISIBLE); }
+        else { backgroundText.setVisibility(View.INVISIBLE); }
     }
 
     /**
      * Initializes adapter and recyclerview display
      */
-    public void initializeRecyclerView() {
-        recyclerView = parentActivity.findViewById(R.id.recycler_view_list_meetings);
+    public void initializeRecyclerView(View view){
+        recyclerView = view.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this);
+        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this, getContext());
         recyclerView.setAdapter(adapterListMeetings);
     }
 
     /**
      * This method initialize Toolbar Fragment, using parent activity
      */
-    private void initializeToolbar() {
+    private void initializeToolbar(){
         // Set Support Action Bar to modify Toolbar title
         parentActivity.setSupportActionBar(toolbar);
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
@@ -180,14 +178,14 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void handleFabClick() {
         fab.setOnClickListener((View view) -> {
                     requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment()).addToBackStack(null).commit();
+                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment(), TAG_ADD_MEETING_FRAGMENT).addToBackStack(null).commit();
                 }
         );
     }
 
     /**
      * Display an alert dialog to confirm the meeting deletion
-     * @param meeting The meeting to delete
+     * @param meeting : Meeting
      */
     private void confirmSuppress(Meeting meeting) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -202,10 +200,16 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
                             // Close Dialog
                         }
                 );
+
         //show the dialog
         builder.create().show();
     }
 
+    /**
+     * This methods handles the Meeting list update by removing selected meeting,
+     * and updates display (background elements + list)
+     * @param meeting : Meeting
+     */
     private void deleteItem(Meeting meeting) {
         // Remove Meeting from list
         parentActivity.getListApiService().removeMeeting(meeting);
@@ -213,10 +217,81 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         adapterListMeetings.notifyDataSetChanged();
         // Update background text display
         updateBackgroundTxtDisplay();
+
+        adapterListMeetings.deleteMeetingInListDisplayed(meeting);
     }
 
+    /**
+     * Implementation of ListMeetingActionListener interface
+     * @param meeting : Meeting
+     */
     @Override
     public void onDeleteItem(Meeting meeting) {
         confirmSuppress(meeting);
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBooleanArray("FiltersRoom", tabRoomFiltersSelected);
+    }
+
+    public void filterListByRoomSelection(){
+        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+        ArrayList<String> filterNames = new ArrayList<>();
+
+        // Extract filter name
+        for(int i =0; i < tabRoomFiltersSelected.length; i++){
+            if(tabRoomFiltersSelected[i]){ // If filter selected
+                switch(i){
+                    case 0: // Room Bohr
+                        filterNames.add("BOHR");
+                        break;
+                    case 1: // Room Dirac
+                        filterNames.add("DIRAC");
+                        break;
+                    case 2: // Room Einstein
+                        filterNames.add("EINSTEIN");
+                        break;
+                    case 3: // Room Faraday
+                        filterNames.add("FARADAY");
+                        break;
+                    case 4: // Room Feynman
+                        filterNames.add("FEYNMAN");
+                        break;
+                    case 5 : // Room Heisenberg
+                        filterNames.add("HEISENBERG");
+                        break;
+                    case 6 : // Room Maxwell
+                        filterNames.add("MAXWELL");
+                        break;
+                    case 7 : // Room Newton
+                        filterNames.add("NEWTON");
+                        break;
+                    case 8: // Room Pauli
+                        filterNames.add("PAULI");
+                        break;
+                    case 9: // Room Planck
+                        filterNames.add("PLANCK");
+                        break;
+                }
+            }
+        }
+
+        // Filter meeting list
+        for(int i = 0; i< listMeetings.size(); i++) {
+            boolean found = false;
+            int j = 0;
+            while (j < filterNames.size() && !found) {
+                if (listMeetings.get(i).getMeetingRoom().toUpperCase().equals(filterNames.get(j))) {
+                    newFilteredListMeeting.add(listMeetings.get(i));
+                    found = true;
+                } else j++;
+            }
+        }
+
+        // Update List
+        adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
+    }
+
 }
