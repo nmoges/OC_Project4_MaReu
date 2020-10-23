@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.dialogs;
+package com.openclassrooms.mareu.ui.dialogs.inputtexts;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

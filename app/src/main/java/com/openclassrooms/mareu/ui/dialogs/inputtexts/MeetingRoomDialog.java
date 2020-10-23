@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.dialogs;
+package com.openclassrooms.mareu.ui.dialogs.inputtexts;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.InputTextChangeCallback;
 import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import java.util.Arrays;
 import java.util.List;

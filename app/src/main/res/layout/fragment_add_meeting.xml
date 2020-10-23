@@ -47,7 +47,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                 app:boxStrokeColor="#3D73DD"
                 app:startIconTint="#3D73DD"
                 app:startIconDrawable="@drawable/ic_help_blue_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_object_meeting"
@@ -69,7 +69,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                 app:boxStrokeColor="#3D73DD"
                 app:startIconTint="#3D73DD"
                 app:startIconDrawable="@drawable/ic_location_on_blue_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_room_meeting"
@@ -94,7 +94,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                 app:boxStrokeColor="#3D73DD"
                 app:startIconTint="#3D73DD"
                 app:startIconDrawable="@drawable/ic_location_on_blue_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_date"
@@ -127,7 +127,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                     app:boxStrokeColor="#3D73DD"
                     app:startIconTint="#3D73DD"
                     app:startIconDrawable="@drawable/ic_access_time_blue_24dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_column="0"
                     android:layout_row="0"
                     >
@@ -154,7 +154,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                     app:boxStrokeColor="#3D73DD"
                     app:startIconTint="#3D73DD"
                     app:startIconDrawable="@drawable/ic_access_time_blue_24dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_column="1"
                     android:layout_row="0"
                     app:errorEnabled="false"
@@ -183,7 +183,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                 app:boxStrokeColor="#3D73DD"
                 app:startIconTint="#3D73DD"
                 app:startIconDrawable="@drawable/ic_account_circle_blue_24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_participants"
@@ -206,7 +206,7 @@ tools:context=".ui.fragments.addmeeting.AddMeetingFragment">
                 app:boxBackgroundColor="#ECECF1"
                 app:boxStrokeColor="#3D73DD"
                 app:startIconTint="#3D73DD"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_information"

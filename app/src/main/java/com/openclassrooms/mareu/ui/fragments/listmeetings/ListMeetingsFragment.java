@@ -21,16 +21,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
-import com.openclassrooms.mareu.ui.dialogs.FilterRoomDialog;
+import com.openclassrooms.mareu.ui.dialogs.filter.FilterActionListener;
+import com.openclassrooms.mareu.ui.dialogs.filter.FilterDateDialog;
+import com.openclassrooms.mareu.ui.dialogs.filter.FilterRoomDialog;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 /**
  * This class displays the list of all Meeting created by user,
  * using the @{@link RecyclerViewAdapterListMeetings} class
  */
-public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener {
+public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener, FilterActionListener {
 
     private FloatingActionButton fab;
     private Toolbar toolbar;
@@ -48,11 +53,18 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     // Fragment TAG
     private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
+    private String TAG_FILTER_BY_ROOM = "TAG_FILTER_BY_ROOM";
+    private String TAG_FILTER_BY_DATE = "TAG_FILTER_BY_DATE";
 
-    // tab containing all status filter
+    // Parameters for "Room" filtering (FilterRoomDialog)
     private boolean[] tabRoomFiltersSelected;
+    private boolean[] previousRoomFiltersSelected;
 
-    public ListMeetingsFragment() { }
+    // Parameters for ConfirmDeleteDialog
+    private int positionDelete;
+
+
+    public ListMeetingsFragment() { /* Empty constructor */ }
 
     public static ListMeetingsFragment newInstance() { return new ListMeetingsFragment(); }
 
@@ -63,13 +75,17 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
         // Initialize tab
         tabRoomFiltersSelected = new boolean[10];
+        previousRoomFiltersSelected = new boolean[10];
         if(savedInstanceState != null){
             // Get existing tab value after configuration change
             tabRoomFiltersSelected = savedInstanceState.getBooleanArray("FiltersRoom");
+            previousRoomFiltersSelected = savedInstanceState.getBooleanArray("PreviousFiltersRoom");
+            positionDelete = savedInstanceState.getInt("positionDelete");
         }
         else{
             // If not : first launch (all meeting rooms selected)
             Arrays.fill(tabRoomFiltersSelected, true);
+            Arrays.fill(previousRoomFiltersSelected, true);
         }
     }
 
@@ -78,6 +94,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         super.onResume();
         handleFabClick();
         initializeList();
+        filterListByRoomSelection();
         adapterListMeetings.notifyDataSetChanged();
     }
 
@@ -97,6 +114,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         initializeList();
         initializeRecyclerView(view);
         updateBackgroundTxtDisplay();
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -114,12 +132,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
                 adapterListMeetings.resetDisplayAfterFilterRemoved();
                 break;
             case R.id.filter_by_date_item_menu:
-                // TODO() : To implement
+                FilterDateDialog filterDateDialog = new FilterDateDialog(this, getContext());
+                filterDateDialog.show(getParentFragmentManager(), TAG_FILTER_BY_DATE);
                 break;
             case R.id.filter_by_room_item_menu:
-
-                FilterRoomDialog filterRoomDialog = new FilterRoomDialog(tabRoomFiltersSelected);
-                filterRoomDialog.show(getParentFragmentManager(), "TAG");
+                storePreviousSelection();
+                FilterRoomDialog filterRoomDialog = new FilterRoomDialog(this, tabRoomFiltersSelected);
+                filterRoomDialog.show(getParentFragmentManager(), TAG_FILTER_BY_ROOM);
                 break;
         }
 
@@ -217,7 +236,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         adapterListMeetings.notifyDataSetChanged();
         // Update background text display
         updateBackgroundTxtDisplay();
-
+        // Update display list
         adapterListMeetings.deleteMeetingInListDisplayed(meeting);
     }
 
@@ -230,10 +249,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         confirmSuppress(meeting);
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBooleanArray("FiltersRoom", tabRoomFiltersSelected);
+        outState.putBooleanArray("PreviousFiltersRoom", previousRoomFiltersSelected);
+        outState.putInt("positionDelete", positionDelete);
     }
 
     public void filterListByRoomSelection(){
@@ -294,4 +316,82 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
     }
 
+    /**
+     * FilterActionListener interface implementation :
+     * actionChangeFilterRoom(int position) : When a CheckBox from FilterRoomDialogFragment is
+     * clicked, the associated value in tabRoomFiltersSelected is updated
+     * @param position : int
+     */
+    @Override
+    public void actionChangeFilterRoom(int position) {
+        tabRoomFiltersSelected[position] = !tabRoomFiltersSelected[position];
+    }
+
+    @Override
+    public void validFilterRoom() {
+        filterListByRoomSelection();
+    }
+
+    @Override
+    public void restorePreviousSelection() {
+        for(int i =0; i < previousRoomFiltersSelected.length; i++){
+            tabRoomFiltersSelected[i] = previousRoomFiltersSelected[i];
+        }
+    }
+
+    @Override
+    public boolean validFilterDateOption1(String dateFilter) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+
+        try{
+            Date dateFilterFormat = dateFormat.parse(dateFilter);
+            for(int i = 0; i < listMeetings.size(); i++){
+                Date dateMeetingFormat = dateFormat.parse(listMeetings.get(i).getDate());
+                if(dateMeetingFormat.compareTo(dateFilterFormat) >= 0){
+                    newFilteredListMeeting.add(listMeetings.get(i));
+                }
+            }
+
+            // Update List
+            adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
+
+        } catch(ParseException exception){
+            exception.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean validFilterDateOption2(String startDateFilter, String endDateFilter) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+
+        try{
+            Date startDateFilterFormat = dateFormat.parse(startDateFilter);
+            Date endDateFilterFormat = dateFormat.parse(endDateFilter);
+            for(int i = 0; i < listMeetings.size(); i++){
+                Date dateMeetingFormat = dateFormat.parse(listMeetings.get(i).getDate());
+
+                if(dateMeetingFormat.compareTo(startDateFilterFormat) >= 0 && dateMeetingFormat.compareTo(endDateFilterFormat) <= 0){
+                    newFilteredListMeeting.add(listMeetings.get(i));
+                }
+            }
+
+            // Update List
+            adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
+
+        } catch(ParseException exception){
+            exception.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private void storePreviousSelection(){
+        for(int i =0; i < tabRoomFiltersSelected.length; i++){
+            previousRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
+        }
+    }
 }

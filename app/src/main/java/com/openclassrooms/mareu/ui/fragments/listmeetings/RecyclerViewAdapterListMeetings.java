@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Meeting;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,20 +27,23 @@ import java.util.List;
  */
 public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<RecyclerViewAdapterListMeetings.ViewHolderItemMeeting> {
 
+    private final Context context;
+
     // Contains all Meeting to display
     private List<Meeting> listMeetings;
     private List<Meeting> listToDisplay;
+
     // For handling user actions
     private final ListMeetingActionListener listener;
 
-    private final Context context;
-
-    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener, Context context) {
+    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings,
+                                           ListMeetingActionListener listener,
+                                           Context context) {
+        this.context = context;
         this.listMeetings = listMeetings;
         this.listToDisplay = new ArrayList<>();
         this.listToDisplay.addAll(listMeetings);
         this.listener = listener;
-        this.context = context;
     }
 
     @NonNull
@@ -74,7 +79,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         // Text Item : Date + Start hour + End hour
         String text = listToDisplay.get(position).getDate() + " - " + listToDisplay.get(position).getHourStart()
-                        + " - " + listToDisplay.get(position).getHourEnd();
+                + " - " + listToDisplay.get(position).getHourEnd();
         holder.textItem.setText(text);
 
         // Subtext Item : email first Employee + "..." (if several Employee)
@@ -90,7 +95,6 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         // Icon Delete Item
         holder.iconDeleteItem.setOnClickListener((View view) -> {
                     listener.onDeleteItem(listToDisplay.get(position));
-                    //listToDisplay.remove(position);
                 }
         );
     }
@@ -132,7 +136,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     public int compareDateMeetingToCurrentDate(String date, String hourStart, String hourEnd) {
 
         // Initialize date/hour format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
         final Calendar calendar = Calendar.getInstance();
         // Current Date & Hour
@@ -142,22 +146,10 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinutes = calendar.get(Calendar.MINUTE);
 
-        // Meeting
-        // Date
-        int meetingDay = Integer.parseInt(date.substring(0,2));
-        int meetingMonth = Integer.parseInt(date.substring(3,5));
-        int meetingYear = Integer.parseInt(date.substring(6));
-
-        // Time Start (Hour + Minutes)
-        String[] timeStart = hourStart.split(":");
-
-        // Time End (Hour + Minutes)
-        String[] timeEnd = hourEnd.split(":");
-
         try{
             Date currentDateTime = dateFormat.parse(currentDay + "/" +  currentMonth + "/" + currentYear + " " + currentHour + ":" + currentMinutes + ":00");
-            Date startDateTime = dateFormat.parse(meetingDay + "/" + meetingMonth + "/" + meetingYear + " " + timeStart[0] + ":" + timeStart[1] + ":00");
-            Date endDateTime = dateFormat.parse(meetingDay + "/" + meetingMonth + "/" + meetingYear + " " + timeEnd[0] + ":" + timeEnd[1] + ":00");
+            Date startDateTime = dateFormat.parse(date + " " + hourStart + ":00");
+            Date endDateTime = dateFormat.parse(date + " " + hourEnd + ":00");
 
             if(currentDateTime.compareTo(startDateTime) < 0){ // current time < start meeting time
                 return 1; // current Date before Start of meeting

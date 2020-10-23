@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.dialogs;
+package com.openclassrooms.mareu.ui.dialogs.inputtexts;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

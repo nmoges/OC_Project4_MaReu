@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.dialogs;
+package com.openclassrooms.mareu.ui.dialogs.inputtexts;
 
 /**
  * Handles Update TextInputEditText actions in @{@link com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment}

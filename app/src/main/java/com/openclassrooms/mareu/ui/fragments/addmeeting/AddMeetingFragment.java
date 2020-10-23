@@ -22,12 +22,12 @@ import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.model.Employee;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.service.ListEmployeesGenerator;
-import com.openclassrooms.mareu.ui.dialogs.DatePickerMeetingDialog;
-import com.openclassrooms.mareu.ui.dialogs.InputTextChangeCallback;
-import com.openclassrooms.mareu.ui.dialogs.MeetingRoomDialog;
-import com.openclassrooms.mareu.ui.dialogs.TimePickerMeetingDialog;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.DatePickerMeetingDialog;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.InputTextChangeCallback;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.MeetingRoomDialog;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.TimePickerMeetingDialog;
 import com.openclassrooms.mareu.ui.MainActivity;
-import com.openclassrooms.mareu.ui.dialogs.TimeType;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.TimeType;
 import com.openclassrooms.mareu.utils.TextWatcherTextInput;
 import com.openclassrooms.mareu.utils.TimeComparator;
 import java.util.ArrayList;
@@ -79,14 +79,6 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     // Fragment TAG
     private String TAG_LIST_EMPLOYEES_FRAGMENT = "TAG_LIST_EMPLOYEES_FRAGMENT";
-
-    // TextWatchers of TextInputEditText fields
-    TextWatcherTextInput objectMeetingTextWatcher;
-    TextWatcherTextInput roomMeetingTextWatcher;
-    TextWatcherTextInput dateTextWatcher;
-    TextWatcherTextInput hourStartTextWatcher;
-    TextWatcherTextInput hourEndTextWatcher;
-    TextWatcherTextInput participantsTextWatcher;
 
     public AddMeetingFragment() { }
 
@@ -288,6 +280,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
                     manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     meetingRoomDialog = new MeetingRoomDialog(this);
                     meetingRoomDialog.show(getParentFragmentManager(), MEETING_ROOM_DIALOG_TAG);
+                    //getActivity().change
                 }
         );
 
@@ -478,7 +471,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     /**
      * Enables error message status displayed for hourEndLayout, if end hour detected is
-     * not correct (before start hour)
+     * not correct compareHourInputsFields
      */
     private boolean compareHourInputsFields(){
         if (hourStartInput.getText().length() > 0 && hourEndInput.getText().length() > 0) {

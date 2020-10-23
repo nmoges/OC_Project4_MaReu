@@ -2,7 +2,7 @@ package com.openclassrooms.mareu.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import com.openclassrooms.mareu.ui.dialogs.InputTextChangeCallback;
+import com.openclassrooms.mareu.ui.dialogs.inputtexts.InputTextChangeCallback;
 
 /**
  * This class inherits of the TextWatcher class to check any change detected in the associated

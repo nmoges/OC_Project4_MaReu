@@ -1,4 +1,4 @@
-package com.openclassrooms.mareu.ui.dialogs;
+package com.openclassrooms.mareu.ui.dialogs.inputtexts;
 
 /**
  * Defines two values representing both types of hour :
