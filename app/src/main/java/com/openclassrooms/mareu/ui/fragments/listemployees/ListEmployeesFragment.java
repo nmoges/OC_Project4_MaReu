@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,13 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.di.DI;
 import com.openclassrooms.mareu.model.Employee;
 import com.openclassrooms.mareu.model.SelectedEmployee;
 import com.openclassrooms.mareu.service.ListEmployeesGenerator;
-import com.openclassrooms.mareu.ui.MainActivity;
+import com.openclassrooms.mareu.ui.MainActivityCallback;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class enables user to select participants for a meeting.
@@ -31,8 +29,8 @@ import java.util.Objects;
  */
 public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdapterListEmployees.OnItemClickBoxListener {
 
-    private MainActivity parentActivity;
-    private Toolbar toolbar;
+
+    public static final String TAG = "TAG_LIST_EMPLOYEES_FRAGMENT";
 
     // For displaying list of employees
     private List<Employee> listEmployees;
@@ -57,12 +55,14 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
+
         super.onResume();
         initializeCheckBoxes();
         updateToolbar();
@@ -70,22 +70,22 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_employees, container, false);
-        parentActivity = (MainActivity) getActivity();
-        return view;
+
+        return inflater.inflate(R.layout.fragment_list_employees, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
 
-        listEmployees = parentActivity.getListApiService().getListEmployees();
+        listEmployees = DI.getListApiService().getListEmployees();
 
         initializeRecyclerView(view);
 
         initializeToolbar();
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             selection = savedInstanceState.getString(TAG_SELECTION);
         }
 
@@ -93,13 +93,14 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_list_employee_fragment, menu);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 
@@ -107,39 +108,32 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
             // Save String selection in Bundle
             saveSelectionToForNewMeeting();
             // Quit fragment
-            parentActivity.getSupportFragmentManager().popBackStack();
-        }
-        else if(id == R.id.search_item_menu){
-            // TODO() : To implement
+            ((MainActivityCallback) getActivity()).popBack();
         }
         else { // id == R.id.reset_item_menu
             // Reset "selected" status + items display
             adapterListEmployees.reinitAllSelectedStatus();
 
             // Reset toolbar title
-            Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_frag_list_employees));
+            ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_frag_list_employees);
 
             // Reset toolbar icon
-            parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+            ((MainActivityCallback) getActivity()).updateHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void initializeToolbar(){
-        // Get Id
-        toolbar = requireActivity().findViewById(R.id.toolbar_list_employees_fragment);
+    private void initializeToolbar() {
 
-        ((MainActivity) requireActivity()).setSupportActionBar(toolbar);
-        // Add title
-        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.toolbar_name_frag_list_employees);
+        ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_frag_list_employees);
 
         // Add "back button"
-        Objects.requireNonNull(parentActivity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        ((MainActivityCallback) getActivity()).setHomeAsUpIndicator(true);
     }
 
-    private void initializeRecyclerView(View view){
+    private void initializeRecyclerView(View view) {
+
         recyclerView = view.findViewById(R.id.recycler_view_list_employees);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -151,15 +145,16 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      * This method updates the "selected" status of all SelectionEmployee
      * used to determine the status of each Checkbox displayed
      */
-    private void initializeCheckBoxes(){
+    private void initializeCheckBoxes() {
+
         // If a selection has already been made, restore checkboxes status
         if(!selection.equals("")){
-            for(int i = 0; i < adapterListEmployees.getListSelectedEmployee().size(); i++){
-                if(Character.toString(selection.charAt(i)).equals("1")){
+            for (int i = 0; i < adapterListEmployees.getListSelectedEmployee().size(); i++) {
+                if (Character.toString(selection.charAt(i)).equals("1")) {
                     adapterListEmployees.getListSelectedEmployee().get(i).setSelected(true);
                     adapterListEmployees.incrementSelectedEmployees();
-                                    }
-                else{
+                }
+                else {
                     adapterListEmployees.getListSelectedEmployee().get(i).setSelected(false);
                 }
             }
@@ -186,21 +181,23 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
         updateToolbar();
     }
 
-    public void updateToolbar(){
-        if(adapterListEmployees.getNbSelectedEmployees() == 0){
+    public void updateToolbar() {
+
+        if (adapterListEmployees.getNbSelectedEmployees() == 0) {
             // Update title
-            Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_frag_list_employees));
+            ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_frag_list_employees);
 
             // Update icon
-            parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+            ((MainActivityCallback) getActivity()).updateHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
         }
-        else{
+        else {
             // Update title
             String newToolbarTitle = getResources().getString(R.string.txt_participants) + " (" + adapterListEmployees.getNbSelectedEmployees() + ")";
-            Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(newToolbarTitle);
+            ((MainActivityCallback) getActivity()).setToolbarTitle(newToolbarTitle);
 
             // Update icon
-            parentActivity.getSupportActionBar().setHomeAsUpIndicator(parentActivity.getResources().getDrawable(R.drawable.ic_baseline_check_white_24dp));
+            ((MainActivityCallback) getActivity()).updateHomeAsUpIndicator(R.drawable.ic_baseline_check_white_24dp);
         }
     }
     /**
@@ -210,16 +207,18 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      *              - If the Employee is not selected, the corresponding character is "0"
      *
      */
-    public void saveSelectionToForNewMeeting(){
+    public void saveSelectionToForNewMeeting() {
+
         convertStatusIntoString();
 
         // Store value in Bundle
         Bundle result = new Bundle();
         result.putString("newSelectionString", selection);
-        parentActivity.getSupportFragmentManager().setFragmentResult("newSelection", result);
+        getActivity().getSupportFragmentManager().setFragmentResult("newSelection", result);
     }
 
-    public void resetSelectionParameter(){
+    public void resetSelectionParameter() {
+
         selection = "";
     }
 
@@ -227,16 +226,17 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      * Method use to convert the information about how many Employee has been selected,
      * into a String.
      */
-    public void convertStatusIntoString(){
+    public void convertStatusIntoString() {
+
         // Reinit "selection" value
         selection = "";
 
         ArrayList<SelectedEmployee> list = adapterListEmployees.getListSelectedEmployee();
 
         // Convert boolean status into String
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getSelected()){ selection = selection + "1"; }
-            else{ selection = selection + "0"; }
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getSelected()){ selection = selection + "1"; }
+            else { selection = selection + "0"; }
         }
     }
 
@@ -247,6 +247,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      * */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+
         super.onSaveInstanceState(outState);
         // Converting list of selected CheckBox in String
         convertStatusIntoString();
@@ -259,16 +260,12 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      * the ListEmployeesFragment list to update his selection
      */
     public void getOldSelectionFromAddMeetingFragment(){
-        parentActivity.getSupportFragmentManager().setFragmentResultListener("oldSelection", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+
+        getActivity().getSupportFragmentManager().setFragmentResultListener("oldSelection", this,
+                (@NonNull String requestKey, @NonNull Bundle result) -> {
                 // Get back previous selection value
                 selection = result.getString("oldSelectionString");
             }
-        });
-    }
-
-    public RecyclerViewAdapterListEmployees getAdapterListEmployees(){
-        return this.adapterListEmployees;
+        );
     }
 }

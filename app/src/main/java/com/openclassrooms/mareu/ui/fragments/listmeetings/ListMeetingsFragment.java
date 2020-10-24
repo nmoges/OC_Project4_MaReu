@@ -4,12 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,19 +11,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.mareu.R;
+import com.openclassrooms.mareu.di.DI;
 import com.openclassrooms.mareu.model.Meeting;
 import com.openclassrooms.mareu.ui.MainActivity;
+import com.openclassrooms.mareu.ui.MainActivityCallback;
 import com.openclassrooms.mareu.ui.dialogs.filter.FilterActionListener;
 import com.openclassrooms.mareu.ui.dialogs.filter.FilterDateDialog;
 import com.openclassrooms.mareu.ui.dialogs.filter.FilterRoomDialog;
+import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * This class displays the list of all Meeting created by user,
@@ -38,21 +39,16 @@ import java.util.Objects;
 public class ListMeetingsFragment extends Fragment implements ListMeetingActionListener, FilterActionListener {
 
     private FloatingActionButton fab;
-    private Toolbar toolbar;
 
     // For displaying list of meetings
     private ArrayList<Meeting> listMeetings;
     private RecyclerView recyclerView;
     private RecyclerViewAdapterListMeetings adapterListMeetings;
 
-    // Parent activity
-    private MainActivity parentActivity;
-
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
 
     // Fragment TAG
-    private String TAG_ADD_MEETING_FRAGMENT = "TAG_ADD_MEETING_FRAGMENT";
     private String TAG_FILTER_BY_ROOM = "TAG_FILTER_BY_ROOM";
     private String TAG_FILTER_BY_DATE = "TAG_FILTER_BY_DATE";
 
@@ -63,13 +59,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     // Parameters for ConfirmDeleteDialog
     private int positionDelete;
 
-
     public ListMeetingsFragment() { /* Empty constructor */ }
 
     public static ListMeetingsFragment newInstance() { return new ListMeetingsFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -91,6 +87,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     @Override
     public void onResume() {
+
         super.onResume();
         handleFabClick();
         initializeList();
@@ -100,12 +97,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentActivity = (MainActivity) getActivity();
+
         return inflater.inflate(R.layout.fragment_list_meetings, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
 
         // Initialization
@@ -114,7 +112,6 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         initializeList();
         initializeRecyclerView(view);
         updateBackgroundTxtDisplay();
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -145,20 +142,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeList() { listMeetings = parentActivity.getListApiService().getListMeetings(); }
+    public void initializeList() { listMeetings = DI.getListApiService().getListMeetings(); }
 
-    //TODO C'est plus le boulot de l'activity de gérer l'action bar
-    //Et comment faire ?
-    // 1) Créer une interface qui contiendra l'ensemble des actions que l'activité doit faire pour ses fragments
-    // 2) pour tous les objets gérés par le parent, il faut récupérer l'instance de l'activité, la caster en ton interface
-    // Et appeler l'action que tu veux exécuter
-    // C'est principalement le cas pour le changement de fragment
     public void initializeIds(View view) {
-        toolbar = view.findViewById(R.id.toolbar_list_meeting_fragment);
+
         fab = view.findViewById(R.id.fab_list_meetings_fragment);
         backgroundText = view.findViewById(R.id.background_txt);
     }
-
 
     /**
      * Updates display of the background text according to the size of listMeetings :
@@ -166,6 +156,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * - Else no display of 'No Meetings" message
      */
     public void updateBackgroundTxtDisplay() {
+
         if (listMeetings.size() == 0) { backgroundText.setVisibility(View.VISIBLE); }
         else { backgroundText.setVisibility(View.INVISIBLE); }
     }
@@ -174,6 +165,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * Initializes adapter and recyclerview display
      */
     public void initializeRecyclerView(View view){
+
         recyclerView = view.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -185,9 +177,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * This method initialize Toolbar Fragment, using parent activity
      */
     private void initializeToolbar(){
-        // Set Support Action Bar to modify Toolbar title
-        parentActivity.setSupportActionBar(toolbar);
-        Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(getResources().getString(R.string.toolbar_name_list_meeting_activity));
+
+        ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_list_meeting_activity);
+        ((MainActivityCallback) getActivity()).setHomeAsUpIndicator(false);
     }
 
     /**
@@ -195,9 +187,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * When fab is clicked : AddMeetingFragment fragment is displayed, and the fab is hided.
      */
     public void handleFabClick() {
+
         fab.setOnClickListener((View view) -> {
-                    requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container_view, MainActivity.getAddMeetingFragment(), TAG_ADD_MEETING_FRAGMENT).addToBackStack(null).commit();
+                    ((MainActivityCallback) getActivity()).changeFragment(MainActivity.getAddMeetingFragment(), AddMeetingFragment.TAG);
                 }
         );
     }
@@ -207,7 +199,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * @param meeting : Meeting
      */
     private void confirmSuppress(Meeting meeting) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         // Configure builder
         builder.setTitle(R.string.title_dialog_confirm_delete)
                 .setMessage(R.string.text_dialog_confirm_delete)
@@ -230,8 +224,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * @param meeting : Meeting
      */
     private void deleteItem(Meeting meeting) {
+
         // Remove Meeting from list
-        parentActivity.getListApiService().removeMeeting(meeting);
+        DI.getListApiService().removeMeeting(meeting);
         // Update Meeting list
         adapterListMeetings.notifyDataSetChanged();
         // Update background text display
@@ -252,13 +247,18 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+
         super.onSaveInstanceState(outState);
         outState.putBooleanArray("FiltersRoom", tabRoomFiltersSelected);
         outState.putBooleanArray("PreviousFiltersRoom", previousRoomFiltersSelected);
         outState.putInt("positionDelete", positionDelete);
     }
 
+    /**
+     * Creates the new filtered list to display according to "Room" filters selection
+     */
     public void filterListByRoomSelection(){
+
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
         ArrayList<String> filterNames = new ArrayList<>();
 
@@ -324,23 +324,38 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      */
     @Override
     public void actionChangeFilterRoom(int position) {
+
         tabRoomFiltersSelected[position] = !tabRoomFiltersSelected[position];
     }
 
+    /**
+     * Valid filter selection after click on FilterRoomDialog positive button
+     */
     @Override
     public void validFilterRoom() {
+
         filterListByRoomSelection();
     }
 
+    /**
+     * If click on FitlerRoomDialog negative button, restore previous selection applied for CheckBox,
+     * for next Dialog display
+     */
     @Override
     public void restorePreviousSelection() {
+
         for(int i =0; i < previousRoomFiltersSelected.length; i++){
             tabRoomFiltersSelected[i] = previousRoomFiltersSelected[i];
         }
     }
 
+    /**
+     * Creates a new filtered list according to the selected date
+     * @param dateFilter : String
+     */
     @Override
-    public boolean validFilterDateOption1(String dateFilter) {
+    public void validFilterDateOption1(String dateFilter) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
 
@@ -359,12 +374,16 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         } catch(ParseException exception){
             exception.printStackTrace();
         }
-
-        return false;
     }
 
+    /**
+     * Creates a new filtered list containing Meetings between the two specified dates
+     * @param startDateFilter : String
+     * @param endDateFilter : String
+     */
     @Override
-    public boolean validFilterDateOption2(String startDateFilter, String endDateFilter) {
+    public void validFilterDateOption2(String startDateFilter, String endDateFilter) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
 
@@ -385,13 +404,14 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         } catch(ParseException exception){
             exception.printStackTrace();
         }
-
-        return false;
     }
 
+    /**
+     * Stores a backup of room filters selection before displaying Dialog, and
+     * modifying these filters by clicking in Checkbox views.
+     */
     private void storePreviousSelection(){
-        for(int i =0; i < tabRoomFiltersSelected.length; i++){
-            previousRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
-        }
+
+        System.arraycopy(tabRoomFiltersSelected, 0, previousRoomFiltersSelected, 0, tabRoomFiltersSelected.length);
     }
 }

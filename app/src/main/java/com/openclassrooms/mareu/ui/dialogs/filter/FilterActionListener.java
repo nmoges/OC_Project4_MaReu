@@ -8,6 +8,6 @@ public interface FilterActionListener {
     void restorePreviousSelection();
 
     // Date filter actions
-    boolean validFilterDateOption1(String dateFilter);
-    boolean validFilterDateOption2(String startDateFilter, String endDateFilter);
+    void validFilterDateOption1(String dateFilter);
+    void validFilterDateOption2(String startDateFilter, String endDateFilter);
 }
