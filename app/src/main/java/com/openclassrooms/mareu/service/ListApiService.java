@@ -10,8 +10,9 @@ import java.util.List;
  */
 public class ListApiService {
 
-    private List<Employee> listEmployees = ListEmployeesGenerator.generateListEmployee();
-    private ArrayList<Meeting> listMeetings = ListMeetingsGenerator.generateListMeetings();
+    private final List<Employee> listEmployees = ListEmployeesGenerator.generateListEmployee();
+
+    private final ArrayList<Meeting> listMeetings = ListMeetingsGenerator.generateListMeetings();
 
     public List<Employee> getListEmployees(){
         return this.listEmployees;

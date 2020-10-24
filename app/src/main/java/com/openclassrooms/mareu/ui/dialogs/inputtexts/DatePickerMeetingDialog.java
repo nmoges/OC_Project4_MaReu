@@ -21,22 +21,24 @@ import java.util.Calendar;
 public class DatePickerMeetingDialog extends DialogFragment {
 
     private Context context;
-    // Dialog
-    private DatePickerDialog datePickerDialog;
+
     // Interface
     private InputTextChangeCallback callback;
+
     // Current value displayed
     private String currentValue;
 
     public DatePickerMeetingDialog(){/* Empty constructor */}
 
-    public DatePickerMeetingDialog(Context context, String currentValue, InputTextChangeCallback callback){
+    public DatePickerMeetingDialog(Context context, String currentValue, InputTextChangeCallback callback) {
+
         this.context = context;
         this.currentValue = currentValue;
         this.callback = callback;
     }
 
     public void setCallback(InputTextChangeCallback callback){
+
         this.callback = callback;
     }
 
@@ -71,7 +73,9 @@ public class DatePickerMeetingDialog extends DialogFragment {
         }
 
         // Create DatePickerMeetingDialog
-        datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme, (DatePicker view, int year, int month, int day) -> {
+        // Format : DD/MM/YYYY
+        // Dialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme, (DatePicker view, int year, int month, int day) -> {
             // Format : DD/MM/YYYY
 
             String dateToDisplay = DateAndTimeConverter.dateConverter(year, month, day);

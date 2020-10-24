@@ -20,24 +20,27 @@ public class FilterRoomDialog extends DialogFragment {
     // List of Dialog CheckBox
     private List<CheckBox> listCheckBox;
 
-    private boolean[] tabRoomFiltersSelected = new boolean[10];
+    private final boolean[] tabRoomFiltersSelected = new boolean[10];
 
 
 
-    private FilterActionListener listener;
+    private final FilterActionListener listener;
 
-    public FilterRoomDialog(FilterActionListener listener, boolean[] tabRoomFiltersSelected){
+    public FilterRoomDialog(FilterActionListener listener, boolean[] tabRoomFiltersSelected) {
+
         this.listener = listener;
+        for (int i = 0; i < tabRoomFiltersSelected.length; i++) {
+            this.tabRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
+        }
+    }
+
+    public void setTabRoomFiltersSelected(boolean[] tabRoomFiltersSelected) {
+        // TODO() : Check if needed
         for(int i = 0; i < tabRoomFiltersSelected.length; i++){
             this.tabRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
         }
     }
 
-    public void setTabRoomFiltersSelected(boolean[] tabRoomFiltersSelected){
-        for(int i = 0; i < tabRoomFiltersSelected.length; i++){
-            this.tabRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
-        }
-    }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class FilterRoomDialog extends DialogFragment {
 
     @Override
     public void onResume() {
+
         super.onResume();
         initializeListCheckBox();
         handleFiltersRoomSelection();
@@ -79,7 +83,8 @@ public class FilterRoomDialog extends DialogFragment {
      * This method initialize the list of CheckBox, and restore "checked" values using tabRoomFiltersSelected sent from
      * ListMeetingsFragment
      */
-    public void initializeListCheckBox(){
+    public void initializeListCheckBox() {
+
         listCheckBox = Arrays.asList(
                 Objects.requireNonNull(getDialog()).findViewById(R.id.checkbox_filter_room_1),
                 Objects.requireNonNull(getDialog()).findViewById(R.id.checkbox_filter_room_2),
@@ -102,7 +107,7 @@ public class FilterRoomDialog extends DialogFragment {
     /**
      * This method handles all CheckBox listeners to update list
      */
-    public void handleFiltersRoomSelection(){
+    public void handleFiltersRoomSelection() {
 
         for(int i = 0; i < listCheckBox.size(); i++){
             int indice = i;

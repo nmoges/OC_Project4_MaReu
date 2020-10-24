@@ -37,7 +37,8 @@ public abstract class ListEmployeesGenerator {
             new Employee("Zven", "zven@lamzone.com", 25)
     );
 
-    public static List<Employee> generateListEmployee(){
+    public static List<Employee> generateListEmployee() {
+
         return LIST_EMPLOYEES;
     }
 }

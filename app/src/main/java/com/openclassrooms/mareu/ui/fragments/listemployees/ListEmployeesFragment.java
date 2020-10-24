@@ -29,12 +29,10 @@ import java.util.List;
  */
 public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdapterListEmployees.OnItemClickBoxListener {
 
-
     public static final String TAG = "TAG_LIST_EMPLOYEES_FRAGMENT";
 
     // For displaying list of employees
     private List<Employee> listEmployees;
-    private RecyclerView recyclerView;
     private RecyclerViewAdapterListEmployees adapterListEmployees;
 
     /**
@@ -45,11 +43,12 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
      *      - A "1" char value means that the corresponding Employee is selected
      */
     private String selection = "";
-    private String TAG_SELECTION = "TAG_SELECTION";
+    private final String TAG_SELECTION = "TAG_SELECTION";
 
-    public ListEmployeesFragment(){ }
+    public ListEmployeesFragment() { }
 
-    public static ListEmployeesFragment newInstance(){
+    public static ListEmployeesFragment newInstance() {
+
         return new ListEmployeesFragment();
     }
 
@@ -134,7 +133,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
 
     private void initializeRecyclerView(View view) {
 
-        recyclerView = view.findViewById(R.id.recycler_view_list_employees);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_list_employees);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterListEmployees = new RecyclerViewAdapterListEmployees(listEmployees, this);

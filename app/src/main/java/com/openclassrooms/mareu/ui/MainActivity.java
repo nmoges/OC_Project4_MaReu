@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import com.openclassrooms.mareu.ui.fragments.listemployees.ListEmployeesFragment;
+import java.util.Objects;
 
 /**
  * Main activity of the application, contains all fragments instances to display
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     @Override
     public void setToolbarTitle(@StringRes int title) {
 
-        getSupportActionBar().setTitle(title);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 
     /**
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     @Override
     public void setToolbarTitle(String title) {
 
-        getSupportActionBar().setTitle(title);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 
     /**
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     @Override
     public void updateHomeAsUpIndicator(@DrawableRes int icon) {
 
-        getSupportActionBar().setHomeAsUpIndicator(icon);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(icon);
     }
 
     /**

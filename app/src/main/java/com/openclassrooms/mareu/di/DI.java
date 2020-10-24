@@ -13,7 +13,8 @@ public class DI {
      * Get an instance of @{@link ListApiService}
      * @return : ListAPiService
      */
-    public static ListApiService getListApiService(){
+    public static ListApiService getListApiService() {
+
         return service;
     }
 }

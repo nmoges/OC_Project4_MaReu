@@ -27,16 +27,16 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     private final Context context;
 
-    // Contains all Meeting to display
+    // Backup list
     private List<Meeting> listMeetings;
+    // Contains all Meeting to display
     private List<Meeting> listToDisplay;
 
     // For handling user actions
     private final ListMeetingActionListener listener;
 
-    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings,
-                                           ListMeetingActionListener listener,
-                                           Context context) {
+    public RecyclerViewAdapterListMeetings(List<Meeting> listMeetings, ListMeetingActionListener listener, Context context) {
+
         this.context = context;
         this.listMeetings = listMeetings;
         this.listToDisplay = new ArrayList<>();
@@ -47,6 +47,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     @NonNull
     @Override
     public ViewHolderItemMeeting onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_meetings_item, parent, false);
         return new ViewHolderItemMeeting(view);
     }
@@ -54,8 +55,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     @RequiresApi(api = Build.VERSION_CODES.O) // API 21
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItemMeeting holder, int position) {
-        // Icon Status Item
 
+        // Icon Status Item
         // Get Meeting status
         int statusMeeting = compareDateMeetingToCurrentDate(listToDisplay.get(position).getDate(), listToDisplay.get(position).getHourStart(), listToDisplay.get(position).getHourEnd());
 
@@ -65,11 +66,11 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
         // Title Item : Object Meeting + Name Meeting room
         String title = "";
-        if(listToDisplay.get(position).getObjectMeeting().length() < 17){
+        if (listToDisplay.get(position).getObjectMeeting().length() < 17) {
             title = listToDisplay.get(position).getObjectMeeting() + " (" +
                     listToDisplay.get(position).getMeetingRoom().toUpperCase() + ")";
         }
-        else{
+        else {
             title = listToDisplay.get(position).getObjectMeeting().substring(0,17) + "... ("
                     + listToDisplay.get(position).getMeetingRoom().toUpperCase() + ")";
         }
@@ -84,7 +85,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         String subText = "";
         if (listToDisplay.get(position).getListParticipants().size() > 1) {
             subText = listToDisplay.get(position).getListParticipants().get(0).getEmail() + "...";
-        } else {
+        }
+        else {
             subText = listToDisplay.get(position).getListParticipants().get(0).getEmail();
         }
 
@@ -99,18 +101,20 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
+
         return listToDisplay.size();
     }
 
     static class ViewHolderItemMeeting extends RecyclerView.ViewHolder {
 
-        private ImageView iconStatusItem;
-        private TextView titleItem;
-        private TextView textItem;
-        private TextView subTextItem;
-        private ImageView iconDeleteItem;
+        private final ImageView iconStatusItem;
+        private final TextView titleItem;
+        private final TextView textItem;
+        private final TextView subTextItem;
+        private final ImageView iconDeleteItem;
 
         ViewHolderItemMeeting(View view) {
+
             super(view);
 
             iconStatusItem = view.findViewById(R.id.img_item_recycler_view);
@@ -131,12 +135,13 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * @param hourEnd : String
      * @return : int
      */
-    public int compareDateMeetingToCurrentDate(String date, String hourStart, String hourEnd) {
+    public int compareDateMeetingToCurrentDate(final String date, final String hourStart, final String hourEnd) {
 
         // Initialize date/hour format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
         final Calendar calendar = Calendar.getInstance();
+
         // Current Date & Hour
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
@@ -144,22 +149,22 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinutes = calendar.get(Calendar.MINUTE);
 
-        try{
+        try {
             Date currentDateTime = dateFormat.parse(currentDay + "/" +  currentMonth + "/" + currentYear + " " + currentHour + ":" + currentMinutes + ":00");
             Date startDateTime = dateFormat.parse(date + " " + hourStart + ":00");
             Date endDateTime = dateFormat.parse(date + " " + hourEnd + ":00");
 
-            if(currentDateTime.compareTo(startDateTime) < 0){ // current time < start meeting time
+            if (currentDateTime.compareTo(startDateTime) < 0) { // current time < start meeting time
                 return 1; // current Date before Start of meeting
             }
-            else if (currentDateTime.compareTo(startDateTime) >=0 && currentDateTime.compareTo(endDateTime) < 0){
+            else if (currentDateTime.compareTo(startDateTime) >=0 && currentDateTime.compareTo(endDateTime) < 0) {
                 return 0; // current Date during meeting
             }
-            else{
+            else {
                 return -1; // current Date after End of meeting
             }
 
-        } catch(ParseException exception){
+        } catch (ParseException exception) {
             exception.printStackTrace();
         }
 
@@ -171,10 +176,11 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * @param status: int
      * @return : Drawable
      */
-    public Drawable defineIconStatusMeeting(int status){
+    public Drawable defineIconStatusMeeting(final int status) {
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.ic_lens_light_green_24dp, null);
-        switch (status){
+
+        switch (status) {
             case -1: // Meeting ended - Icon Red
                 drawable = context.getResources().getDrawable(R.drawable.ic_baseline_lens_red_24dp, null);
                 break;
@@ -185,6 +191,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
                 drawable = context.getResources().getDrawable(R.drawable.ic_lens_light_green_24dp, null);
                 break;
         }
+
         return drawable;
     }
 
@@ -192,7 +199,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * Update current displayed list with new filtered list
      * @param newListMeetings : ArrayList<Meeting>
      */
-    public void updateListMeetingToDisplay(final ArrayList<Meeting> newListMeetings){
+    public void updateListMeetingToDisplay(final ArrayList<Meeting> newListMeetings) {
+
         listToDisplay.clear();
         listToDisplay.addAll(newListMeetings);
         notifyDataSetChanged();
@@ -201,7 +209,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     /**
      * Reset filters by restoring all Meeting item in listToDisplay
      */
-    public void resetDisplayAfterFilterRemoved(){
+    public void resetDisplayAfterFilterRemoved() {
+
         listToDisplay.clear();
         listToDisplay.addAll(listMeetings);
         notifyDataSetChanged();
@@ -211,7 +220,8 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
      * This method is called by Delete Dialog from ListMeetingsFragment to confirm
      * @param meeting
      */
-    public void deleteMeetingInListDisplayed(Meeting meeting){
+    public void deleteMeetingInListDisplayed(Meeting meeting) {
+
         listToDisplay.remove(meeting);
         notifyDataSetChanged();
     }

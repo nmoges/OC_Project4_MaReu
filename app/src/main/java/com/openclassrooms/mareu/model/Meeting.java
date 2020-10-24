@@ -12,8 +12,8 @@ public class Meeting {
     private String date;
     private String hourStart;
     private String hourEnd;
-    private List<Employee> listParticipants;
     private String information;
+    private List<Employee> listParticipants;
 
     /**
      * Construtor

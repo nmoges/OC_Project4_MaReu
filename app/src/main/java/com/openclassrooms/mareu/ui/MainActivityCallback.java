@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
  * This interface allows fragments to access several methods to handle :
  *      - Toolbar title & icon updates
  *      - fragment transactions in backstack
+ * Implemented in @{@link MainActivity}
  */
 public interface MainActivityCallback {
 

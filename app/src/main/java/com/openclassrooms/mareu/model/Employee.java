@@ -15,22 +15,26 @@ public class Employee {
      * @param email : String
      * @param id : int
      */
-    public Employee(String name, String email, int id){
+    public Employee(String name, String email, int id) {
+
         this.name = name;
         this.email = email;
         this.id = id;
     }
 
     // Getters
-    public String getName(){
+    public String getName() {
+
         return this.name;
     }
 
     public String getEmail() {
+
         return this.email;
     }
 
     public int getId() {
+
         return this.id;
     }
 }

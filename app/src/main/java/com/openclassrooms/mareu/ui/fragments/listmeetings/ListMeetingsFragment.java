@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,15 +43,10 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     // For displaying list of meetings
     private ArrayList<Meeting> listMeetings;
-    private RecyclerView recyclerView;
     private RecyclerViewAdapterListMeetings adapterListMeetings;
 
     // Background text
     private TextView backgroundText; // Displayed if no Meeting stored
-
-    // Fragment TAG
-    private String TAG_FILTER_BY_ROOM = "TAG_FILTER_BY_ROOM";
-    private String TAG_FILTER_BY_DATE = "TAG_FILTER_BY_DATE";
 
     // Parameters for "Room" filtering (FilterRoomDialog)
     private boolean[] tabRoomFiltersSelected;
@@ -72,13 +68,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         // Initialize tab
         tabRoomFiltersSelected = new boolean[10];
         previousRoomFiltersSelected = new boolean[10];
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             // Get existing tab value after configuration change
             tabRoomFiltersSelected = savedInstanceState.getBooleanArray("FiltersRoom");
             previousRoomFiltersSelected = savedInstanceState.getBooleanArray("PreviousFiltersRoom");
             positionDelete = savedInstanceState.getInt("positionDelete");
         }
-        else{
+        else {
             // If not : first launch (all meeting rooms selected)
             Arrays.fill(tabRoomFiltersSelected, true);
             Arrays.fill(previousRoomFiltersSelected, true);
@@ -116,10 +112,18 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) { inflater.inflate(R.menu.menu_list_meetings_fragment, menu); }
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
 
+        inflater.inflate(R.menu.menu_list_meetings_fragment, menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // Fragment TAG
+        String TAG_FILTER_BY_ROOM = "TAG_FILTER_BY_ROOM";
+        String TAG_FILTER_BY_DATE = "TAG_FILTER_BY_DATE";
 
         switch (item.getItemId()) {
             case R.id.reset_filters_item_menu:
@@ -142,7 +146,10 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeList() { listMeetings = DI.getListApiService().getListMeetings(); }
+    public void initializeList() {
+
+        listMeetings = DI.getListApiService().getListMeetings();
+    }
 
     public void initializeIds(View view) {
 
@@ -164,9 +171,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     /**
      * Initializes adapter and recyclerview display
      */
-    public void initializeRecyclerView(View view){
+    public void initializeRecyclerView(View view) {
 
-        recyclerView = view.findViewById(R.id.recycler_view_list_meetings);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_list_meetings);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this, getContext());
@@ -176,7 +183,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     /**
      * This method initialize Toolbar Fragment, using parent activity
      */
-    private void initializeToolbar(){
+    private void initializeToolbar() {
 
         ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_list_meeting_activity);
         ((MainActivityCallback) getActivity()).setHomeAsUpIndicator(false);
@@ -241,6 +248,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      */
     @Override
     public void onDeleteItem(Meeting meeting) {
+
         confirmSuppress(meeting);
     }
 
@@ -257,13 +265,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     /**
      * Creates the new filtered list to display according to "Room" filters selection
      */
-    public void filterListByRoomSelection(){
+    public void filterListByRoomSelection() {
 
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
         ArrayList<String> filterNames = new ArrayList<>();
 
         // Extract filter name
-        for(int i =0; i < tabRoomFiltersSelected.length; i++){
+        for(int i =0; i < tabRoomFiltersSelected.length; i++) {
             if(tabRoomFiltersSelected[i]){ // If filter selected
                 switch(i){
                     case 0: // Room Bohr
@@ -308,7 +316,8 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
                 if (listMeetings.get(i).getMeetingRoom().toUpperCase().equals(filterNames.get(j))) {
                     newFilteredListMeeting.add(listMeetings.get(i));
                     found = true;
-                } else j++;
+                }
+                else j++;
             }
         }
 
@@ -354,9 +363,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * @param dateFilter : String
      */
     @Override
-    public void validFilterDateOption1(String dateFilter) {
+    public void validFilterDateOption1(final String dateFilter) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
 
         try{
@@ -382,18 +391,19 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * @param endDateFilter : String
      */
     @Override
-    public void validFilterDateOption2(String startDateFilter, String endDateFilter) {
+    public void validFilterDateOption2(final String startDateFilter, final String endDateFilter) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
 
-        try{
+        try {
             Date startDateFilterFormat = dateFormat.parse(startDateFilter);
             Date endDateFilterFormat = dateFormat.parse(endDateFilter);
-            for(int i = 0; i < listMeetings.size(); i++){
+
+            for (int i = 0; i < listMeetings.size(); i++) {
                 Date dateMeetingFormat = dateFormat.parse(listMeetings.get(i).getDate());
 
-                if(dateMeetingFormat.compareTo(startDateFilterFormat) >= 0 && dateMeetingFormat.compareTo(endDateFilterFormat) <= 0){
+                if (dateMeetingFormat.compareTo(startDateFilterFormat) >= 0 && dateMeetingFormat.compareTo(endDateFilterFormat) <= 0) {
                     newFilteredListMeeting.add(listMeetings.get(i));
                 }
             }
@@ -401,7 +411,8 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
             // Update List
             adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
 
-        } catch(ParseException exception){
+        }
+        catch(ParseException exception) {
             exception.printStackTrace();
         }
     }
@@ -410,7 +421,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      * Stores a backup of room filters selection before displaying Dialog, and
      * modifying these filters by clicking in Checkbox views.
      */
-    private void storePreviousSelection(){
+    private void storePreviousSelection() {
 
         System.arraycopy(tabRoomFiltersSelected, 0, previousRoomFiltersSelected, 0, tabRoomFiltersSelected.length);
     }

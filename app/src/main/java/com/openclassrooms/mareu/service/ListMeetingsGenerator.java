@@ -74,7 +74,8 @@ public abstract class ListMeetingsGenerator {
             )
     );
 
-    public static ArrayList<Meeting> generateListMeetings(){
+    public static ArrayList<Meeting> generateListMeetings() {
+
         return LIST_MEETINGS;
     }
 }

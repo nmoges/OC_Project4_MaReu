@@ -11,6 +11,7 @@ import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This Dialog is displayed every time the user clicks on "Room meeting" TextInput of AddMeetingFragment
@@ -28,10 +29,12 @@ public class MeetingRoomDialog extends DialogFragment {
     public MeetingRoomDialog(){ /* Empty constructor */ }
 
     public MeetingRoomDialog(InputTextChangeCallback callback){
+
         this.callback = callback;
     }
 
     public void setCallback(InputTextChangeCallback callback){
+
         this.callback = callback;
     }
 
@@ -39,7 +42,7 @@ public class MeetingRoomDialog extends DialogFragment {
      * This method creates a new MeetingRoomDialog and show it
      */
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Retain current DialogFragment instance
         setRetainInstance(true);
@@ -61,7 +64,8 @@ public class MeetingRoomDialog extends DialogFragment {
      * Called when DialogFragment is visible
      */
     @Override
-    public void onResume(){
+    public void onResume() {
+
         super.onResume();
         handleMeetingRoomSelection();
     }
@@ -69,22 +73,23 @@ public class MeetingRoomDialog extends DialogFragment {
     /**
      * Handles click on all "meeting room selection" buttons
      */
-    public void handleMeetingRoomSelection(){
+    public void handleMeetingRoomSelection() {
+
         // Initialize list
         List<Button> rooms = Arrays.asList(
-                getDialog().findViewById(R.id.button_room_1), // Feynman
-                getDialog().findViewById(R.id.button_room_2), // Bohr
-                getDialog().findViewById(R.id.button_room_3), // Heisenberg
-                getDialog().findViewById(R.id.button_room_4), // Newton
-                getDialog().findViewById(R.id.button_room_5), // Dirac
-                getDialog().findViewById(R.id.button_room_6), // Faraday
-                getDialog().findViewById(R.id.button_room_7), // Planck
-                getDialog().findViewById(R.id.button_room_8), // Schrodinger
-                getDialog().findViewById(R.id.button_room_9), // Einstein
-                getDialog().findViewById(R.id.button_room_10) // Pauli
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_1), // Feynman
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_2), // Bohr
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_3), // Heisenberg
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_4), // Newton
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_5), // Dirac
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_6), // Faraday
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_7), // Planck
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_8), // Schrodinger
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_9), // Einstein
+                Objects.requireNonNull(getDialog()).findViewById(R.id.button_room_10) // Pauli
         );
 
-        for(int i = 0; i < rooms.size(); i++){
+        for (int i = 0; i < rooms.size(); i++) {
             rooms.get(i).setOnClickListener((View view) -> {
                         // Get name Meeting from button
                         String roomName = ((Button) view).getText().toString();

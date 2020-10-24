@@ -13,7 +13,8 @@ public class TextWatcherTextInput implements TextWatcher {
 
     private InputTextChangeCallback callback;
 
-    public TextWatcherTextInput(InputTextChangeCallback callback){
+    public TextWatcherTextInput(InputTextChangeCallback callback) {
+
         this.callback = callback;
     }
 
@@ -30,7 +31,7 @@ public class TextWatcherTextInput implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
 
-        if(editable.length() > 0){
+        if (editable.length() > 0) {
             callback.onCheckInputsTextStatus();
         }
     }

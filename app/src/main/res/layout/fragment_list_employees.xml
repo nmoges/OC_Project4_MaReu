@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.listemployees.ListEmployeesFragment">
+    tools:context=".ui.fragments.listemployees.ListEmployeesFragment"
+    android:id="@+id/list_employees_fragment">
 
     <!-- RecyclerView implementation -->
     <androidx.recyclerview.widget.RecyclerView

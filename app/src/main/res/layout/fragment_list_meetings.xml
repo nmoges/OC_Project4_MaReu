@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.listmeetings.ListMeetingsFragment">
-
+    tools:context=".ui.fragments.listmeetings.ListMeetingsFragment"
+    android:id="@+id/list_meetings_fragment">
 
     <!-- Background Text -->
     <TextView

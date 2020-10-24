@@ -5,29 +5,31 @@ package com.openclassrooms.mareu.utils;
  */
 public class DateAndTimeConverter {
 
-    public static String timeConverter(int hour, int minutes){
+    public static String timeConverter(int hour, int minutes) {
+
         String convertedTime = "";
 
         // HH
-        if(hour < 10){ convertedTime = convertedTime + "0" + hour + ":"; }
-        else{ convertedTime = convertedTime + hour + ":";}
+        if (hour < 10) { convertedTime = convertedTime + "0" + hour + ":"; }
+        else { convertedTime = convertedTime + hour + ":"; }
         // MM
-        if(minutes < 10){ convertedTime = convertedTime + "0" + minutes; }
-        else{ convertedTime = convertedTime + minutes; }
+        if (minutes < 10) { convertedTime = convertedTime + "0" + minutes; }
+        else { convertedTime = convertedTime + minutes; }
 
         return convertedTime; // format : HH:MM
     }
 
-    public static String dateConverter(int year, int month, int day){
+    public static String dateConverter(int year, int month, int day) {
+
         String convertedDate = "";
 
         // JJ
-        if(day < 10){ convertedDate = "0" + convertedDate + day;}
-        else{convertedDate = convertedDate + day; }
+        if (day < 10){ convertedDate = "0" + convertedDate + day; }
+        else {convertedDate = convertedDate + day; }
         // MM
         month++;
-        if(month < 10){ convertedDate = convertedDate +  "/0" + month + "/"; }
-        else{ convertedDate = convertedDate + "/" + month + "/"; }
+        if (month < 10) { convertedDate = convertedDate +  "/0" + month + "/"; }
+        else { convertedDate = convertedDate + "/" + month + "/"; }
         // AA
         convertedDate = convertedDate + year;
 

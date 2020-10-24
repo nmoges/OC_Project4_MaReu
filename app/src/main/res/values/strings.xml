@@ -73,7 +73,7 @@
     <string name="btn_no_dialog_confirm_delete">NO</string>
 
     <!-- Dialog Filter by room -->
-    <string name="title_dialog_filter_by_room">Sélection salle</string>
+    <string name="title_dialog_filter_by_room">Select rooms</string>
     <string name="btn_yes_confirm_filter_by_room">Yes</string>
     <string name="btn_no_confirm_filter_by_room">No</string>
     <string name="filter_room_1">Room Bohr</string>
@@ -87,6 +87,13 @@
     <string name="filter_room_9">Room Pauli</string>
     <string name="filter_room_10">Room Planck</string>
 
+    <!-- Dialog Filter by date -->
+    <string name="title_dialog_filter_by_date">Select dates</string>
+    <string name="btn_yes_confirm_filter_by_date">Yes</string>
+    <string name="btn_no_confirm_filter_by_date">No</string>
+    <string name="hint_option1_date">Date :</string>
+    <string name="hint_option2_start_date">From :</string>
+    <string name="hint_option2_end_date">To :</string>
 </resources>
 
 

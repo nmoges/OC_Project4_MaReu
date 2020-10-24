@@ -15,15 +15,18 @@ public class SelectedEmployee extends Employee {
      * @param employee : Employee
      */
     public SelectedEmployee(Employee employee) {
+
         super(employee.getName(), employee.getEmail(), employee.getId());
         selected = false;
     }
 
-    public boolean getSelected(){
+    public boolean getSelected() {
+
         return this.selected;
     }
 
-    public void setSelected(boolean selected){
+    public void setSelected(boolean selected) {
+
         this.selected = selected;
     }
 }

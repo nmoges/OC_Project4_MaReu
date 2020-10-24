@@ -18,19 +18,21 @@ import java.util.List;
  */
 public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<RecyclerViewAdapterListEmployees.ViewHolderItemEmployee> {
 
-    private List<Employee> listEmployees;
+    private final List<Employee> listEmployees;
     private ArrayList<SelectedEmployee> listSelectedEmployee = new ArrayList<>();
     private int nbSelectedEmployees;
 
     // To perform click on CheckBox items
     private final OnItemClickBoxListener onItemClickBoxListener;
 
-    public RecyclerViewAdapterListEmployees(List<Employee> listEmployees, OnItemClickBoxListener onItemClickBoxListener){
+    public RecyclerViewAdapterListEmployees(List<Employee> listEmployees, OnItemClickBoxListener onItemClickBoxListener) {
+
         this.listEmployees = listEmployees;
         this.onItemClickBoxListener = onItemClickBoxListener;
 
         // Initialize list
-        for(int i = 0; i < listEmployees.size(); i++){
+        for (int i = 0; i < listEmployees.size(); i++) {
+
             listSelectedEmployee.add(new SelectedEmployee(listEmployees.get(i))); // selected == false (by default)
         }
 
@@ -40,12 +42,14 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
     @NonNull
     @Override
     public ViewHolderItemEmployee onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_employees_item, parent, false);
         return new ViewHolderItemEmployee(view, onItemClickBoxListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItemEmployee holder, int position) {
+
         // Name employee
         holder.nameEmployee.setText(listEmployees.get(position).getName());
 
@@ -58,6 +62,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
 
     @Override
     public int getItemCount() {
+
         return listEmployees.size();
     }
 
@@ -89,7 +94,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
          * @param view : View
          */
         @Override
-        public void onClick(View view){
+        public void onClick(View view) {
+
             onItemClickBoxListener.onItemClickBox(getAdapterPosition());
         }
     }
@@ -98,7 +104,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
      * Interface used to perform action when CheckBox at indice "position" in
      * RecyclerView is clicked
      */
-    public interface OnItemClickBoxListener{
+    public interface OnItemClickBoxListener {
+
         void onItemClickBox(int position);
     }
 
@@ -107,7 +114,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
      * using the implemented OnItemClickBoxListener interface
      * @return : ArrayList<SelectedEmployee>
      */
-    public ArrayList<SelectedEmployee> getListSelectedEmployee(){
+    public ArrayList<SelectedEmployee> getListSelectedEmployee() {
+
         return this.listSelectedEmployee;
     }
 
@@ -115,7 +123,8 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
      * Method which reinitialize all "seleted" status to false when user
      * clicks on "Reset" icon from toolbar ListEmployeesFragment fragment
      */
-    public void reinitAllSelectedStatus(){
+    public void reinitAllSelectedStatus() {
+
         int indice = 0;
 
         // Reinit status
@@ -134,16 +143,19 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
     }
 
     // Getter
-    public int getNbSelectedEmployees(){
+    public int getNbSelectedEmployees() {
+
         return this.nbSelectedEmployees;
     }
 
     // Methods for updates of the number of selected Employee
-    public void incrementSelectedEmployees(){
+    public void incrementSelectedEmployees() {
+
         this.nbSelectedEmployees++;
     }
 
-    public void decrementSelectedEmployees(){
+    public void decrementSelectedEmployees() {
+
         this.nbSelectedEmployees--;
     }
 }

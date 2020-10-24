@@ -67,20 +67,17 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
     // For meeting participants selection
     private String selection = "";
     private int nbMeetingEmployees = 0;
-    private List<Employee> meetingEmployees = new ArrayList<>();
-    private String TAG_SELECTION = "TAG_SELECTION";
+    private final List<Employee> meetingEmployees = new ArrayList<>();
+    private final String TAG_SELECTION = "TAG_SELECTION";
 
     // Dialogs
     private MeetingRoomDialog meetingRoomDialog;
 
     // Dialog TAG
-    private String MEETING_ROOM_DIALOG_TAG = "MEETING_ROOM_DIALOG_TAG";
-    private String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
-    private String HOUR_BEGIN_DIALOG_TAG = "HOUR_BEGIN_DIALOG_TAG";
-    private String HOUR_END_DIALOG_TAG = "HOUR_END_DIALOG_TAG";
-
-    // Fragment TAG
-    private String TAG_LIST_EMPLOYEES_FRAGMENT = "TAG_LIST_EMPLOYEES_FRAGMENT";
+    private final String MEETING_ROOM_DIALOG_TAG = "MEETING_ROOM_DIALOG_TAG";
+    private final String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
+    private final String HOUR_BEGIN_DIALOG_TAG = "HOUR_BEGIN_DIALOG_TAG";
+    private final String HOUR_END_DIALOG_TAG = "HOUR_END_DIALOG_TAG";
 
     public AddMeetingFragment() { }
 
@@ -88,12 +85,14 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onResume() {
+
         super.onResume();
         getNewSelectionFromListEmployeesFragment();
     }
@@ -119,7 +118,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
         onTextInputsEditTextListeners();
 
         // Restore listEmployee
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             // Restore "Selection" value
             selection = savedInstanceState.getString(TAG_SELECTION);
             if(selection != null){
@@ -127,7 +126,9 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
                 nbMeetingEmployees = meetingEmployees.size();
                 updateParticipantsTextInput();
             }
-            else{ selection = "";}
+            else {
+                selection = "";
+            }
 
             // Restore msg Error boolean value
             hourEndLayout.setErrorEnabled(savedInstanceState.getBoolean("errorMsg", false));
@@ -138,7 +139,10 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) { inflater.inflate(R.menu.menu_add_meeting_fragment, menu); }
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_add_meeting_fragment, menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -151,7 +155,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
             // Update participants input layout hint text
             participantsLayout.setHint(getActivity().getResources().getString(R.string.edit_input_participants_meeting));
             // Reset Error display
-            if(hourEndLayout.isErrorEnabled()){
+            if (hourEndLayout.isErrorEnabled()) {
                 hourEndLayout.setErrorEnabled(false);
             }
             // Reset nb Employee
@@ -167,6 +171,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void initializeToolbar() {
+
         // Add title
         ((MainActivityCallback) getActivity()).setToolbarTitle(R.string.toolbar_name_frag_add_meeting);
         ((MainActivityCallback) getActivity()).setHomeAsUpIndicator(true);
@@ -234,6 +239,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      * This method resets all textInput fields
      */
     public void clearTextInputsFields() {
+
         Objects.requireNonNull(objectMeetingInput.getText()).clear();
         Objects.requireNonNull(roomMeetingInput.getText()).clear();
         Objects.requireNonNull(dateInput.getText()).clear();
@@ -250,6 +256,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      * Retrieve instance of dialogs in the fragment stack and update references to input texts
      */
     private void updateDialogs() {
+
         // Date Fragment
         Fragment dateFragment = getParentFragmentManager().findFragmentByTag(DATE_DIALOG_TAG);
         if (dateFragment instanceof DatePickerMeetingDialog) { ((DatePickerMeetingDialog) dateFragment).setCallback(this); }
@@ -316,6 +323,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      * If all these TextInputLayout contains a text specified by user, then the "Ok" button can be enabled
      */
     public void handleOkBtnClickableStatus() {
+
         Objects.requireNonNull(objectMeetingLayout.getEditText()).addTextChangedListener(new TextWatcherTextInput(this));
         Objects.requireNonNull(roomMeetingLayout.getEditText()).addTextChangedListener(new TextWatcherTextInput(this));
         Objects.requireNonNull(dateLayout.getEditText()).addTextChangedListener(new TextWatcherTextInput(this));
@@ -329,6 +337,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      * @return : Meeting
      */
     private Meeting createNewMeeting() {
+
         String objectMeeting = Objects.requireNonNull(objectMeetingInput.getText()).toString();
         String meetingRoom = Objects.requireNonNull(roomMeetingInput.getText()).toString();
         String date = Objects.requireNonNull(dateInput.getText()).toString();
@@ -394,7 +403,8 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
             // Update Layout hint
             participantsLayout.setHint(requireActivity().getResources().getString(R.string.edit_input_participants_meeting) + "(" + nbMeetingEmployees + ")");
-        } else {
+        }
+        else {
             // Reset Layout hint
             participantsLayout.setHint(requireActivity().getResources().getString(R.string.edit_input_participants_meeting));
 
@@ -415,12 +425,14 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         super.onSaveInstanceState(outState);
+
         // Save "selection" to retrieve list of Employee after configuration change
         if (selection != null) {
-            if(!selection.equals("")) {
+            if (!selection.equals("")) {
                 outState.putString(TAG_SELECTION, selection);
             }
         }
+
         // Save error Msg boolean value
         if (hourEndLayout != null) {
             outState.putBoolean("errorMsg", hourEndLayout.isErrorEnabled());
@@ -469,8 +481,12 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
     @Override
     public void onCheckInputsTextStatus() {
 
-        if (objectMeetingInput.getText().length() > 0 && roomMeetingInput.getText().length() > 0  && dateInput.getText().length() > 0
-                && hourStartInput.getText().length() > 0 && hourEndInput.getText().length() > 0 && participantsInput.getText().length() > 0) {
+        if (Objects.requireNonNull(objectMeetingInput.getText()).length() > 0
+                && Objects.requireNonNull(roomMeetingInput.getText()).length() > 0
+                && Objects.requireNonNull(dateInput.getText()).length() > 0
+                && Objects.requireNonNull(hourStartInput.getText()).length() > 0
+                && Objects.requireNonNull(hourEndInput.getText()).length() > 0
+                && Objects.requireNonNull(participantsInput.getText()).length() > 0) {
             okButton.setEnabled(!compareHourInputsFields());
         }
     }
@@ -481,9 +497,11 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      */
     private boolean compareHourInputsFields() {
 
-        if (hourStartInput.getText().length() > 0 && hourEndInput.getText().length() > 0) {
+        if (Objects.requireNonNull(hourStartInput.getText()).length() > 0
+                && Objects.requireNonNull(hourEndInput.getText()).length() > 0) {
             TimeComparator timeComparator = new TimeComparator();
             int resultTimeComparator = timeComparator.compare(hourStartInput.getText().toString(), hourEndInput.getText().toString());
+
             if (resultTimeComparator < 0) {
                 hourEndLayout.setErrorEnabled(true);
                 hourEndLayout.setError(getResources().getString(R.string.error_msg));
