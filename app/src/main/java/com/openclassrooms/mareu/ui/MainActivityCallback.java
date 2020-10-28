@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 /**
  * This interface allows fragments to access several methods to handle :
  *      - Toolbar title & icon updates
- *      - fragment transactions in backstack
+ *      - fragment transactions in back stack
  * Implemented in @{@link MainActivity}
  */
 public interface MainActivityCallback {
@@ -18,7 +18,7 @@ public interface MainActivityCallback {
     void setHomeAsUpIndicator(boolean status);
     void updateHomeAsUpIndicator(@DrawableRes int icon);
 
-    // Backstack handler methods
+    // Back stack handler methods
     void changeFragment(Fragment fragment, String tag);
     void popBack();
 

@@ -7,7 +7,7 @@ import com.openclassrooms.mareu.service.ListApiService;
  */
 public class DI {
 
-    private static ListApiService service = new ListApiService();
+    private static final ListApiService service = new ListApiService();
 
     /**
      * Get an instance of @{@link ListApiService}

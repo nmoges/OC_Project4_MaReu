@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import com.openclassrooms.mareu.R;
 import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
@@ -23,9 +24,6 @@ public class MeetingRoomDialog extends DialogFragment {
     // Interface
     private InputTextChangeCallback callback;
 
-    // Current value displayed
-    private String currentValue;
-
     public MeetingRoomDialog(){ /* Empty constructor */ }
 
     public MeetingRoomDialog(InputTextChangeCallback callback){
@@ -41,6 +39,7 @@ public class MeetingRoomDialog extends DialogFragment {
     /**
      * This method creates a new MeetingRoomDialog and show it
      */
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

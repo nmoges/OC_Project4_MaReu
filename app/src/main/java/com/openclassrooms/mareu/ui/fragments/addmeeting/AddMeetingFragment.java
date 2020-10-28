@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import androidx.fragment.app.FragmentResultListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -79,7 +78,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
     private final String HOUR_BEGIN_DIALOG_TAG = "HOUR_BEGIN_DIALOG_TAG";
     private final String HOUR_END_DIALOG_TAG = "HOUR_END_DIALOG_TAG";
 
-    public AddMeetingFragment() { }
+    public AddMeetingFragment() { /* Empty constructor */ }
 
     public static AddMeetingFragment newInstance() { return new AddMeetingFragment(); }
 
@@ -353,9 +352,8 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
      */
     private void getNewSelectionFromListEmployeesFragment() {
 
-        getActivity().getSupportFragmentManager().setFragmentResultListener("newSelection", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+        getActivity().getSupportFragmentManager().setFragmentResultListener("newSelection", this,
+                (@NonNull String requestKey, @NonNull Bundle result) -> {
                 // Get "selection" from ListMeetingsFragment
                 selection = result.getString("newSelectionString");
 
@@ -365,7 +363,7 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
                 // Update text input participants display
                 updateParticipantsTextInput();
             }
-        });
+        );
     }
 
     /**
@@ -417,8 +415,8 @@ public class AddMeetingFragment extends Fragment implements InputTextChangeCallb
 
     /**
      * Method used to save data to prevent configuration change :
-     *      - "selection" : to retrive list of selected Employee after configuration change
-     *      - error msg : to retrive error msg status for hourEndLayout
+     *      - "selection" : to retrieve list of selected Employee after configuration change
+     *      - error msg : to retrieve error msg status for hourEndLayout
      * @param outState : Bundle
      */
     @Override

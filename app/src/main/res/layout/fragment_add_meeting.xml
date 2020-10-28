@@ -8,7 +8,6 @@
     tools:context=".ui.fragments.addmeeting.AddMeetingFragment"
     android:id="@+id/add_meeting_fragment">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,11 +95,9 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Hour -->
-            <GridLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="1">
+                android:layout_height="wrap_content">
 
                 <!-- Begin -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -118,7 +115,11 @@
                     app:boxStrokeColor="#3D73DD"
                     app:startIconTint="#3D73DD"
                     app:startIconDrawable="@drawable/ic_access_time_blue_24dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/text_layout_hour_end">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/text_input_hour_start"
@@ -146,7 +147,11 @@
                     app:startIconTint="#3D73DD"
                     app:startIconDrawable="@drawable/ic_access_time_blue_24dp"
                     app:errorEnabled="false"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/text_layout_hour_start">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/text_input_hour_end"
@@ -157,7 +162,7 @@
                         android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </GridLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- List of participants -->
             <com.google.android.material.textfield.TextInputLayout
@@ -184,7 +189,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Informations -->
+            <!-- Information -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -247,5 +252,4 @@
         </LinearLayout>
 
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

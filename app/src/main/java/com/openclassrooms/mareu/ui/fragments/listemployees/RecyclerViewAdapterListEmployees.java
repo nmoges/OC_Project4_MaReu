@@ -101,7 +101,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
     }
 
     /**
-     * Interface used to perform action when CheckBox at indice "position" in
+     * Interface used to perform action when CheckBox at index "position" in
      * RecyclerView is clicked
      */
     public interface OnItemClickBoxListener {
@@ -120,7 +120,7 @@ public class RecyclerViewAdapterListEmployees extends RecyclerView.Adapter<Recyc
     }
 
     /**
-     * Method which reinitialize all "seleted" status to false when user
+     * Method which reinitialize all "selected" status to false when user
      * clicks on "Reset" icon from toolbar ListEmployeesFragment fragment
      */
     public void reinitAllSelectedStatus() {

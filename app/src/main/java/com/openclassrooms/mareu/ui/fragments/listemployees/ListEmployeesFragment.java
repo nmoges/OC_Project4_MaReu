@@ -45,7 +45,7 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
     private String selection = "";
     private final String TAG_SELECTION = "TAG_SELECTION";
 
-    public ListEmployeesFragment() { }
+    public ListEmployeesFragment() { /* Empty constructor */ }
 
     public static ListEmployeesFragment newInstance() {
 
@@ -262,9 +262,9 @@ public class ListEmployeesFragment extends Fragment implements  RecyclerViewAdap
 
         getActivity().getSupportFragmentManager().setFragmentResultListener("oldSelection", this,
                 (@NonNull String requestKey, @NonNull Bundle result) -> {
-                // Get back previous selection value
-                selection = result.getString("oldSelectionString");
-            }
+                    // Get back previous selection value
+                    selection = result.getString("oldSelectionString");
+                }
         );
     }
 }

@@ -16,7 +16,7 @@ public class Meeting {
     private List<Employee> listParticipants;
 
     /**
-     * Construtor
+     * Constructor
      * @param objectMeeting : String
      * @param meetingRoom : String
      * @param date : String

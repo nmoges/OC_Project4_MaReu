@@ -19,29 +19,30 @@ import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.openclassrooms.mareu.testutils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.notNullValue;
 
+/**
+ * Instrumented test file to test the list displayed of ListMeetingsFragment
+ */
 @RunWith(AndroidJUnit4.class)
 public class MeetingListTest {
 
     private static final int NB_MEETINGS = DI.getListApiService().getListMeetings().size();
-    private MainActivity mainActivity;
 
     @Rule
     public ActivityTestRule<MainActivity> mMainActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp(){
-        mainActivity = mMainActivityRule.getActivity();
+        MainActivity mainActivity = mMainActivityRule.getActivity();
         assertThat(mainActivity, notNullValue());
     }
 
     /**
-     * Test to check if ListMeetingsFragment is correctly displayed aftet launching application
+     * Test to check if ListMeetingsFragment is correctly displayed after launching application
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_ListMeetingsFragment_isDisplayed() {
 
         onView(withId(R.id.list_meetings_fragment))
@@ -51,13 +52,17 @@ public class MeetingListTest {
     /**
      * Test to check if recyclerview displays at least one element
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_listOfMeetings_isNotBeEmpty() {
 
         onView(withId(R.id.recycler_view_list_meetings)).check(matches(hasMinimumChildCount(1)));
     }
 
-    @Test // STATUS : OK
+    /**
+     * Test to check if "Confirm Suppression" Dialog is displayed when clicking in a "delete" icon of
+     * an recyclerview item
+     */
+    @Test
     public void checkIf_deleteMeetingIcon_displays_confirmSuppressDialog() {
 
         // Perform a click on a delete icon
@@ -70,7 +75,10 @@ public class MeetingListTest {
                 .check(matches(isDisplayed()));
     }
 
-    @Test // STATUS : OK
+    /**
+     * Test to check if list is correctly updated after suppress confirmation with Dialog
+     */
+    @Test
     public void checkIf_deleteAction_removeItemFromMeetingList() {
 
         onView(withId(R.id.recycler_view_list_meetings))
@@ -90,6 +98,15 @@ public class MeetingListTest {
                 .check(withItemCount(NB_MEETINGS-1));
     }
 
+    @Test
+    public void checkIf_AddMeetingFragment_isLaunched_onFabCLick(){
 
+        // Click on Floating Button
+        onView(withId(R.id.fab_list_meetings_fragment))
+                .perform(click());
 
+        // Check if fragment is displayed to user
+        onView(withId(R.id.add_meeting_fragment))
+                .check(matches(isDisplayed()));
+    }
 }

@@ -23,6 +23,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * This Dialog is displayed when user select option "Filter by Date" in @{@link com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment}
+ * collapsing menu.
+ * It allows user to select which Meeting must be displayed according to one or two specified dates.
+ */
 public class FilterDateDialog extends DialogFragment {
 
     private Context context;
@@ -70,7 +75,6 @@ public class FilterDateDialog extends DialogFragment {
         builder.setView(inflater.inflate(R.layout.layout_dialog_filter_meeting_date, null))
                .setTitle(R.string.title_dialog_filter_by_date)
                .setPositiveButton(R.string.btn_yes_confirm_filter_by_date, (DialogInterface dialog, int which) -> {
-                    // TODO() : Call interface method
                     if (checkBox1.isChecked() && firstOptionDateInputText.getText().length() > 0) {
                         listener.validFilterDateOption1(firstOptionDateInputText.getText().toString());
                     }
@@ -80,7 +84,7 @@ public class FilterDateDialog extends DialogFragment {
                     }
             }
                 ).setNegativeButton(R.string.btn_no_confirm_filter_by_date, (DialogInterface dialog, int which) -> {
-                // TODO() : Restore previous parameters
+                    // Close dialog
                 }
         );
 
@@ -101,7 +105,7 @@ public class FilterDateDialog extends DialogFragment {
     }
 
     /**
-     * This method handles both Checkbox listeners and updates inputText fiels focus according
+     * This method handles both Checkbox listeners and updates inputText fields focus according
      * user selection
      */
     public void handleCheckBoxOptionsListeners() {
@@ -187,7 +191,7 @@ public class FilterDateDialog extends DialogFragment {
     }
 
     /**
-     * This method initiales the DatePickerDialog used for date selection
+     * This method initializes the DatePickerDialog used for date selection
      */
     public void initDatePickerDialog() {
 
@@ -222,7 +226,7 @@ public class FilterDateDialog extends DialogFragment {
      */
     public boolean compareDates() {
 
-        boolean comparaison = false;
+        boolean comparison = false;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
 
         try{
@@ -230,12 +234,12 @@ public class FilterDateDialog extends DialogFragment {
             Date endDate = dateFormat.parse(secondOptionEndDateInputText.getText().toString());
             if(startDate.compareTo(endDate) < 1){
                 // If start date before end date
-                comparaison = true;
+                comparison = true;
             }
         } catch(ParseException exception){
             exception.printStackTrace();
         }
-        return comparaison;
+        return comparison;
     }
 
     /**

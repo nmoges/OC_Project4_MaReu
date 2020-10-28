@@ -7,11 +7,6 @@ import java.util.Comparator;
  * in the ascending order
  */
 public class TimeComparator implements Comparator<String> {
-    /**
-     * @param startHour : String
-     * @param endHour : String
-     * @return : int
-     */
 
     private int comparatorResult;
 
@@ -34,8 +29,8 @@ public class TimeComparator implements Comparator<String> {
         }
         else { // If Start hour == End hour, must compare the minutes
             int minutesStartHour = Integer.parseInt(startHour.substring(3));
-            int minutesEndHoud = Integer.parseInt(endHour.substring(3));
-            if (minutesStartHour < minutesEndHoud) {
+            int minutesEndHour = Integer.parseInt(endHour.substring(3));
+            if (minutesStartHour < minutesEndHour) {
                 comparatorResult = 1; // OK
             }
             else {

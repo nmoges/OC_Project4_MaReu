@@ -15,7 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * Unit test file to test ListApiService class
+ */
 @RunWith(JUnit4.class)
 public class ListApiServiceTest {
 
@@ -46,6 +50,7 @@ public class ListApiServiceTest {
         assertThat(listEmployees, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedListEmployees.toArray()));
 
     }
+
     /**
      * Test to check if a new Meeting object is correctly added to the list
      */
@@ -68,7 +73,7 @@ public class ListApiServiceTest {
 
         // Add Meeting
         service.addMeeting(newMeeting);
-        assert service.getListMeetings().contains(newMeeting);
+        assertTrue(service.getListMeetings().contains(newMeeting));
     }
 
     /**
@@ -81,4 +86,5 @@ public class ListApiServiceTest {
          service.getListMeetings().remove(meetingToRemove);
          assertFalse(service.getListMeetings().contains(meetingToRemove));
      }
+
 }

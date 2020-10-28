@@ -11,7 +11,7 @@ import com.openclassrooms.mareu.ui.dialogs.inputtexts.InputTextChangeCallback;
  */
 public class TextWatcherTextInput implements TextWatcher {
 
-    private InputTextChangeCallback callback;
+    private final InputTextChangeCallback callback;
 
     public TextWatcherTextInput(InputTextChangeCallback callback) {
 

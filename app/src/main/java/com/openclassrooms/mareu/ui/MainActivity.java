@@ -16,8 +16,6 @@ import java.util.Objects;
  */
 public class MainActivity extends AppCompatActivity implements MainActivityCallback{
 
-    private Toolbar toolbar;
-
     // Parameters to handle fragments to display
     private static AddMeetingFragment addMeetingFragment;
     private static ListEmployeesFragment listEmployeesFragment;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
      */
     private void setupToolbar() {
 
-        toolbar = findViewById(R.id.toolbar_main);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
         // Configure
         toolbar.setTitle(R.string.toolbar_name_list_meeting_activity);
         setSupportActionBar(toolbar);
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     }
 
     /**
-     * Updates main toolbar titl with "title" String parameter
+     * Updates main toolbar title with "title" String parameter
      * @param title : String
      */
     @Override
@@ -153,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     }
 
     /**
-     * Removes current fragment from backstack
+     * Removes current fragment from back stack
      */
     @Override
     public void popBack() {

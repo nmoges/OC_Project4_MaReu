@@ -93,10 +93,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
         holder.subTextItem.setText(subText);
 
         // Icon Delete Item
-        holder.iconDeleteItem.setOnClickListener((View view) -> {
-                    listener.onDeleteItem(listToDisplay.get(position));
-                }
-        );
+        holder.iconDeleteItem.setOnClickListener((View view) -> listener.onDeleteItem(listToDisplay.get(position)));
     }
 
     @Override
@@ -138,9 +135,10 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
     public int compareDateMeetingToCurrentDate(final String date, final String hourStart, final String hourEnd) {
 
         // Initialize date/hour format
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         final Calendar calendar = Calendar.getInstance();
+
 
         // Current Date & Hour
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -218,7 +216,7 @@ public class RecyclerViewAdapterListMeetings extends RecyclerView.Adapter<Recycl
 
     /**
      * This method is called by Delete Dialog from ListMeetingsFragment to confirm
-     * @param meeting
+     * @param meeting : Meeting
      */
     public void deleteMeetingInListDisplayed(Meeting meeting) {
 

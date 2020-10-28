@@ -76,13 +76,11 @@ public class TimePickerMeetingDialog extends DialogFragment {
         // Create TimePickerDialog instance
         // Format HH:MM
         // Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, R.style.DialogTheme,
+        return new TimePickerDialog(context, R.style.DialogTheme,
                 (TimePicker timePicker, int hour, int minutes) -> {
                     // Format HH:MM
                     String timeToDisplay = DateAndTimeConverter.timeConverter(hour, minutes);
                     callback.onSetTime(timeToDisplay, timeType);
                 }, hourCalendarToSet, minutesCalendarToSet, true);
-
-        return timePickerDialog;
     }
 }

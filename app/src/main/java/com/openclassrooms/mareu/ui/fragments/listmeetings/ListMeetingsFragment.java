@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -195,10 +194,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      */
     public void handleFabClick() {
 
-        fab.setOnClickListener((View view) -> {
-                    ((MainActivityCallback) getActivity()).changeFragment(MainActivity.getAddMeetingFragment(), AddMeetingFragment.TAG);
-                }
-        );
+        fab.setOnClickListener((View view) -> ((MainActivityCallback) getActivity()).changeFragment(MainActivity.getAddMeetingFragment(), AddMeetingFragment.TAG));
     }
 
     /**
@@ -212,9 +208,8 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
         // Configure builder
         builder.setTitle(R.string.title_dialog_confirm_delete)
                 .setMessage(R.string.text_dialog_confirm_delete)
-                .setPositiveButton(R.string.btn_yes_dialog_confirm_delete, (DialogInterface dialogInterface, int i) -> {
-                            deleteItem(meeting);
-                        }
+                .setPositiveButton(R.string.btn_yes_dialog_confirm_delete,
+                        (DialogInterface dialogInterface, int i) -> deleteItem(meeting)
                 )
                 .setNegativeButton(R.string.btn_no_dialog_confirm_delete, (DialogInterface dialogInterface, int i) -> {
                             // Close Dialog
@@ -347,7 +342,7 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     }
 
     /**
-     * If click on FitlerRoomDialog negative button, restore previous selection applied for CheckBox,
+     * If click on Filter RoomDialog negative button, restore previous selection applied for CheckBox,
      * for next Dialog display
      */
     @Override

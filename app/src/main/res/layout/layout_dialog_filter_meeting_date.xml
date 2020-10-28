@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="À partir de : "
+        android:text="@string/checkbox_title_option1"
         android:textSize="18sp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:hint="Date :"
+        android:hint="@string/hint_option1_date"
         app:boxBackgroundColor="#ECECF1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Période : "
+        android:text="@string/checkbox_title_option2"
         android:textSize="18sp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,7 +50,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:hint="De :"
+        android:hint="@string/hint_option2_start_date"
         app:boxBackgroundColor="#ECECF1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:hint="À :"
+        android:hint="@string/hint_option2_end_date"
         app:boxBackgroundColor="#ECECF1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

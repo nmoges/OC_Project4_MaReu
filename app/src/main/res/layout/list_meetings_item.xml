@@ -21,7 +21,8 @@
             android:src="@drawable/ic_lens_light_green_24dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/icon_meeting_status_content_description" />
 
         <!-- Meeting name + Room Meeting name -->
         <TextView
@@ -71,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_delete_blue_24dp"/>
+        android:src="@drawable/ic_delete_blue_24dp"
+        android:contentDescription="TODO" />
 
 </androidx.cardview.widget.CardView>

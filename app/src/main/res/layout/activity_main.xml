@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:tag="TAG_LIST_MEETINGS_FRAGMENT"
-            class="com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment"/>
+            android:name="com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment"/>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

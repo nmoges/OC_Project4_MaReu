@@ -36,6 +36,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:borderWidth="0dp"
-        style="@style/FloatingActionButtonStyle"/>
+        style="@style/FloatingActionButtonStyle"
+        android:contentDescription="@string/fab_content_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

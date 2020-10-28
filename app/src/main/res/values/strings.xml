@@ -21,6 +21,7 @@
 
     <!-- fragment_list_meetings.xml -->
     <string name="background_txt">No meetings</string>
+    <string name="fab_content_description">Button to add a new meeting</string>
 
     <!-- fragment_list_employees.xml -->
     <string name="toolbar_name_frag_list_meeting">Ma Réu</string>
@@ -54,8 +55,10 @@
     <string name="title_icon_reset">Reset</string>
 
     <!-- list_meetings_item.xml -->
+    <string name="icon_meeting_status_content_description">Status Meeting icon</string>
+    <string name="icon_delete_meeting_content_description">Delete Meeting icon</string>
     <!-- THE FOLLOWING VALUES ARE DEFAULT VALUES FOR TESTING DISPLAY ONLY -->
-    <string name="title_item_recycler_view">Réunion A (Salle FARADAY)</string>
+    <string name="title_item_recycler_view">Meeting A (FARADAY)</string>
     <string name="text_item_recycler_view">01/10/20 – 10:00 - 11:00</string>
     <string name="subtext_item_recycler_view">nicolasmoges@gmail.com</string>
 
@@ -91,9 +94,13 @@
     <string name="title_dialog_filter_by_date">Select dates</string>
     <string name="btn_yes_confirm_filter_by_date">Yes</string>
     <string name="btn_no_confirm_filter_by_date">No</string>
+    <string name="checkbox_title_option1">From : </string>
+    <string name="checkbox_title_option2">Period : </string>
     <string name="hint_option1_date">Date :</string>
     <string name="hint_option2_start_date">From :</string>
     <string name="hint_option2_end_date">To :</string>
+
+
 </resources>
 
 

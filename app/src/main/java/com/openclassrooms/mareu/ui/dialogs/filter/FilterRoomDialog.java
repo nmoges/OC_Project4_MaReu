@@ -15,6 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This Dialog is displayed when user select option "Filter by Room" in @{@link com.openclassrooms.mareu.ui.fragments.listmeetings.ListMeetingsFragment}
+ * collapsing menu.
+ * It allows user to select which Meeting must be displayed according to a list of selected rooms.
+ */
+
 public class FilterRoomDialog extends DialogFragment {
 
     // List of Dialog CheckBox
@@ -30,13 +36,6 @@ public class FilterRoomDialog extends DialogFragment {
 
         this.listener = listener;
         for (int i = 0; i < tabRoomFiltersSelected.length; i++) {
-            this.tabRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
-        }
-    }
-
-    public void setTabRoomFiltersSelected(boolean[] tabRoomFiltersSelected) {
-        // TODO() : Check if needed
-        for(int i = 0; i < tabRoomFiltersSelected.length; i++){
             this.tabRoomFiltersSelected[i] = tabRoomFiltersSelected[i];
         }
     }
@@ -110,10 +109,10 @@ public class FilterRoomDialog extends DialogFragment {
     public void handleFiltersRoomSelection() {
 
         for(int i = 0; i < listCheckBox.size(); i++){
-            int indice = i;
+            int index = i;
             listCheckBox.get(i).setOnCheckedChangeListener((CompoundButton compoundButton, boolean isChecked) -> {
                         // Update tabRoomFiltersSelected from ListMeetingFragment
-                        listener.actionChangeFilterRoom(indice);
+                        listener.actionChangeFilterRoom(index);
                     }
             );
         }

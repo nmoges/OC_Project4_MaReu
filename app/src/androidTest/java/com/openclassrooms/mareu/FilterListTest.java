@@ -4,7 +4,6 @@ import android.widget.DatePicker;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import com.openclassrooms.mareu.di.DI;
 import com.openclassrooms.mareu.ui.MainActivity;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -22,10 +21,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.notNullValue;
 
+/**
+ * Instrumented test file to test filter functionalities of ListMeetingsFragment
+ */
 @RunWith(AndroidJUnit4.class)
 public class FilterListTest {
 
-    private static final int NB_MEETINGS = DI.getListApiService().getListMeetings().size();
     private MainActivity mainActivity;
 
     @Rule
@@ -42,7 +43,7 @@ public class FilterListTest {
      *      - The FilterDateDialog DialogFragment is launched by clicking on associated menu item
      *      - The FilterRoomDialog DialogFragment is launched by clicking on associated menu item
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_clickOnItemsMenu_display_associatedDialog() {
 
         // Open collapsing menu
@@ -67,7 +68,7 @@ public class FilterListTest {
      * Test to check if filtering the Meeting list using Filter by date "Option 1"
      * is performed correctly
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_filter_by_date_option1_isPerformedCorrectly() {
 
         // Open collapsing menu
@@ -102,7 +103,7 @@ public class FilterListTest {
      * Test to check if filtering the Meeting list using Filter by date "Option 2"
      * is performed correctly
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_filter_by_date_option2_isPerformedCorrectly() {
 
         // Open collapsing menu
@@ -146,10 +147,10 @@ public class FilterListTest {
     }
 
     /**
-     * Test to check if filtering the Meeting list using Filter by date "Option 2"
+     * Test to check if filtering the Meeting list using Filter by room
      * is performed correctly
      */
-    @Test // STATUS : OK
+    @Test
     public void checkIf_filter_by_room_isPerformedCorrectly() {
 
 
