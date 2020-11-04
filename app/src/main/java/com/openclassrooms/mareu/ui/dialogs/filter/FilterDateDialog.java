@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -82,6 +83,7 @@ public class FilterDateDialog extends DialogFragment {
                         listener.validFilterDateOption2(secondOptionStartDateInputText.getText().toString(),
                                                         secondOptionEndDateInputText.getText().toString());
                     }
+                    listener.updateRecyclerViewDisplay();
             }
                 ).setNegativeButton(R.string.btn_no_confirm_filter_by_date, (DialogInterface dialog, int which) -> {
                     // Close dialog
@@ -227,7 +229,7 @@ public class FilterDateDialog extends DialogFragment {
     public boolean compareDates() {
 
         boolean comparison = false;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         try{
             Date startDate = dateFormat.parse(secondOptionStartDateInputText.getText().toString());

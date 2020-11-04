@@ -10,4 +10,7 @@ public interface FilterActionListener {
     // Date filter actions
     void validFilterDateOption1(String dateFilter);
     void validFilterDateOption2(String startDateFilter, String endDateFilter);
+
+    // notify change action
+    void updateRecyclerViewDisplay();
 }

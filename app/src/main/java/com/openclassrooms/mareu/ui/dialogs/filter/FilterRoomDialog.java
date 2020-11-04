@@ -28,8 +28,6 @@ public class FilterRoomDialog extends DialogFragment {
 
     private final boolean[] tabRoomFiltersSelected = new boolean[10];
 
-
-
     private final FilterActionListener listener;
 
     public FilterRoomDialog(FilterActionListener listener, boolean[] tabRoomFiltersSelected) {
@@ -60,7 +58,7 @@ public class FilterRoomDialog extends DialogFragment {
         builder.setPositiveButton(R.string.btn_yes_confirm_filter_by_room, (DialogInterface dialogInterface, int i) -> {
                    // Apply selection to filter
                    listener.validFilterRoom();
-
+                   listener.updateRecyclerViewDisplay();
                 }
         ).setNegativeButton(R.string.btn_no_confirm_filter_by_room, (DialogInterface dialogInterface, int i) -> {
                     // No new selection, restore previous one

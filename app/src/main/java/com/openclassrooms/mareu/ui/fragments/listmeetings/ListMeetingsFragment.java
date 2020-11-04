@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,8 @@ import com.openclassrooms.mareu.ui.dialogs.filter.FilterActionListener;
 import com.openclassrooms.mareu.ui.dialogs.filter.FilterDateDialog;
 import com.openclassrooms.mareu.ui.dialogs.filter.FilterRoomDialog;
 import com.openclassrooms.mareu.ui.fragments.addmeeting.AddMeetingFragment;
+
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +56,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
 
     // Parameters for ConfirmDeleteDialog
     private int positionDelete;
+
+    private ArrayList<Meeting> listToDisplay = new ArrayList<>();
+
 
     public ListMeetingsFragment() { /* Empty constructor */ }
 
@@ -262,9 +268,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
      */
     public void filterListByRoomSelection() {
 
-        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+      //  ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
         ArrayList<String> filterNames = new ArrayList<>();
-
+        listToDisplay.clear();
         // Extract filter name
         for(int i =0; i < tabRoomFiltersSelected.length; i++) {
             if(tabRoomFiltersSelected[i]){ // If filter selected
@@ -309,15 +315,13 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
             int j = 0;
             while (j < filterNames.size() && !found) {
                 if (listMeetings.get(i).getMeetingRoom().toUpperCase().equals(filterNames.get(j))) {
-                    newFilteredListMeeting.add(listMeetings.get(i));
+                    listToDisplay.add(listMeetings.get(i));
                     found = true;
                 }
                 else j++;
             }
         }
 
-        // Update List
-        adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
     }
 
     /**
@@ -361,19 +365,16 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     public void validFilterDateOption1(final String dateFilter) {
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
-
+        //ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+        listToDisplay.clear();
         try{
             Date dateFilterFormat = dateFormat.parse(dateFilter);
             for(int i = 0; i < listMeetings.size(); i++){
                 Date dateMeetingFormat = dateFormat.parse(listMeetings.get(i).getDate());
                 if(dateMeetingFormat.compareTo(dateFilterFormat) >= 0){
-                    newFilteredListMeeting.add(listMeetings.get(i));
+                    listToDisplay.add(listMeetings.get(i));
                 }
             }
-
-            // Update List
-            adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
 
         } catch(ParseException exception){
             exception.printStackTrace();
@@ -388,9 +389,9 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     @Override
     public void validFilterDateOption2(final String startDateFilter, final String endDateFilter) {
 
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-        ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
-
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+   //     ArrayList<Meeting> newFilteredListMeeting = new ArrayList<>();
+        listToDisplay.clear();
         try {
             Date startDateFilterFormat = dateFormat.parse(startDateFilter);
             Date endDateFilterFormat = dateFormat.parse(endDateFilter);
@@ -399,17 +400,20 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
                 Date dateMeetingFormat = dateFormat.parse(listMeetings.get(i).getDate());
 
                 if (dateMeetingFormat.compareTo(startDateFilterFormat) >= 0 && dateMeetingFormat.compareTo(endDateFilterFormat) <= 0) {
-                    newFilteredListMeeting.add(listMeetings.get(i));
+                    listToDisplay.add(listMeetings.get(i));
                 }
             }
-
-            // Update List
-            adapterListMeetings.updateListMeetingToDisplay(newFilteredListMeeting);
 
         }
         catch(ParseException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateRecyclerViewDisplay() {
+        // Update List
+        adapterListMeetings.updateListMeetingToDisplay(listToDisplay);
     }
 
     /**
@@ -419,5 +423,34 @@ public class ListMeetingsFragment extends Fragment implements ListMeetingActionL
     private void storePreviousSelection() {
 
         System.arraycopy(tabRoomFiltersSelected, 0, previousRoomFiltersSelected, 0, tabRoomFiltersSelected.length);
+    }
+
+
+    /**
+     * The following methods are used by FiltersTest.java unit tests file
+     * to correctly initialize attributes needed to perform filter tests
+     */
+    @VisibleForTesting
+    public void initListMeetingTest(){
+        listMeetings = DI.getListApiService().getListMeetings();
+        adapterListMeetings = new RecyclerViewAdapterListMeetings(listMeetings, this, getContext());
+    }
+
+    @VisibleForTesting
+    public ArrayList<Meeting> getListToDisplay(){
+        return listToDisplay;
+    }
+
+    @VisibleForTesting
+    public void testTabSelectionValues(){
+        tabRoomFiltersSelected = new boolean[10];
+        for(int i = 0; i < tabRoomFiltersSelected.length; i++){
+            if(i == tabRoomFiltersSelected.length-1){
+                tabRoomFiltersSelected[i] = true; // Room PLANCK selected
+            }
+           else{
+                tabRoomFiltersSelected[i] = false; // Other room selected
+            }
+        }
     }
 }

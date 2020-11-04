@@ -86,5 +86,4 @@ public class ListApiServiceTest {
          service.getListMeetings().remove(meetingToRemove);
          assertFalse(service.getListMeetings().contains(meetingToRemove));
      }
-
 }
