@@ -1,10 +1,11 @@
-# OC_Project4_MaReu
+# Application MaRéu
 
-"Ma Réu" application
+Test project with basic functionalities. Allows user to plan meetings. 
 
-This repository contains all sources files of the "MaRéu" application. 
+# Technologie
+Java.
 
-This version 1.0 contains the following functionalities :
+# Features
 - Display a list of Meetings with their information
   - Name Meeting
   - Room Meeting
@@ -17,55 +18,10 @@ This version 1.0 contains the following functionalities :
 
 The current version of the app works for min API 21.
 
-Several unit and instrumented tests are implemented, and testing few of the implemented functionalities. New tests
-might be added later.
-
-Unit tests (V1.0) :
-
-FILE ListApiService.java 
-- Tests of the ListApiService used to generated pre-defined fake list of Meetings
-	- getListMeetingWithSuccess()
-	- getListEmployeeWithSuccess()
-	- addNewMeetingWithSuccess()
-	- removeMeetingWithSuccess()
- 
- FILE DateTimeFormatTest.java :
-- Tests of the implemented methods displaying date & hour Meeting in the correct format 
-	- testTimeConverter()
-	- testDateConverter()
-  
-All tests passed. 
-
-Instrumented tests (V1.0) :
-
-FILE MeetingListTest.java 
-- Tests of the ListMeetingsFragment :
-	- checkIf_ListMeetingsFragment_isDisplayed ()
-	- checkIf_listOfMeetings_isNotBeEmpty()
-	- checkIf_deleteMeetingIcon_displays_confirmSuppressDialog()
-	- checkIf_deleteMeetingIcon_displays_confirmSuppressDialog()
-	- checkIf_AddMeetingFragment_isLaunched_onFabCLick()
- 
-All tests passed. 
-
-FILE FilterListTest.java 
-- Test of the filter functions in ListMeetingsFragment :
-	- checkIf_clickOnItemsMenu_display_associatedDialog()
-	- checkIf_filter_by_date_option1_isPerformedCorrectly()
-	- checkIf_filter_by_date_option2_isPerformedCorrectly()
-	- checkIf_filter_by_room_isPerformedCorrectly()
-
-All tests passed. 
-
-FILE AddMeetingTest.java
-- Test of the differents views of AddMeetingTest, used to create a new Meeting
-	- checkIf_all_Dialog_areCorrectlyDisplayed()
-	- checkIf_RoomSelection_updateRoomTextInputEditText()
-	- checkIf_DateSelection_updateDateTextInputEditText()
-	- checkIf_HourSelection_updateHourTextInputEditText()
-	- checkIf_clickOnParticipantsTextInputEditText_displayListEmployeesFragment()
-	- check_ButtonsStatus_whenFragmentIsShown()
-	- checkIf_ParticipantsSelection_updated_TextInputEditText_inAddMeetingFragment()
-	- checkIf_MeetingCreation_isCorrectlyDone()
-  
- All tests passed. 
+# Setup 
+To run this projet :
+* Download the .zip package of the last commit with Github or using the "git clone" command line;
+* Open the project with Android Studio;
+* Connect a physical device via USB, or launch an Android emulator
+* Select "APP" configuration
+* CLick on "Run" option to install the app on device or emulator 
